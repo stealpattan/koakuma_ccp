@@ -34,7 +34,21 @@ table#table-02 td {
   margin-bottom: 20px;
 }
 
+.manager dd{
+  margin-bottom: 20px;
+}
+
+input{
+  text-align: center;
+  border-radius: 10px;
+}
+textarea{
+  text-align: center;
+  border-radius: 10px;
+}
+
 .manager_contents{
+  background-color: white;
   border: 1px solid #6EB7DB;
   border-radius: 20px;
   text-align: center;
