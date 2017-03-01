@@ -26,3 +26,20 @@ table#table-02 td {
   width: 90%;
   margin: 0 auto;
 }
+
+.manager{
+  width: 70%;
+  text-align: center;
+  color: #6EB7DB;
+  border: 1px solid #208dc3;
+  border-radius: 20px;
+  margin:0 auto;
+  margin-bottom: 20px;
+}
+
+#manager_page{
+
+}
+#manager_page a:hover{
+  background-color: black;
+}
