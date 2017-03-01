@@ -1,0 +1,65 @@
+/*recruitment.php*/
+.searchform form{
+  width: 60%;
+  margin: 0 auto;
+}
+.searchform ul{
+  overflow: hidden;
+  list-style-type: none;
+  margin: 0;
+}
+.submit,
+.reset{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.submit{
+  margin-right: 20px;
+}
+.selector li{
+  margin-top: 20px;
+  margin-right: 15px;
+  float: left;
+}
+ul.local_1{
+  margin-top: 10px;
+}
+.local_2 li{
+  margin-right: 15px;
+  float: left;
+}
+ul.indust_1{
+  margin: 0;
+  margin-top: 10px;
+  padding: 0;
+}
+ul.indust_2{
+  width: 50%;
+  margin: 0;
+  float: left;
+}
+ul.indust_3{
+  width: 50%;
+  margin: 0;
+}
+table{
+  width: 60%;
+  margin: 0 auto;
+}
+th{
+  text-align: center;
+}
+.company_name{
+  width: 50%;
+}
+.indust_type{
+  width: 29%;
+}
+.address{
+  width: 21%;
+}
+p.error{
+  color: #f33e3e;
+  margin: 0;
+  padding: 0;
+}

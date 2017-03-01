@@ -1,0 +1,81 @@
+body{
+	padding: 0;
+}
+/* コンテンツ部分 */
+.contents{
+	width: 100%;
+}
+.row{
+	width: 80%;
+	margin: 0 auto;
+}
+.position_table{
+	width: 100%;
+	margin: 0 auto 50px;
+}
+table {
+	border-collapse: collapse;
+	width:100%;
+}
+
+th.t_top{
+	border-top:  #be1309 4px solid;
+}
+th.td_top{
+	border-top: #b3b3b3 4px solid;
+}
+th {
+	border-bottom: #e3e3e3 1px dotted;
+	text-align: left;
+	padding: 10px;
+	font-weight: normal;
+}
+td {
+	border-bottom: #e3e3e3 1px solid;
+	text-align: center;
+	padding: 10px;
+}
+
+table.trhover tr:hover td{
+	background-color: #d9edf7;
+}
+
+.th_center{
+	text-align: center;
+}
+.th_jobtype{
+	font-size: 30px;
+}
+
+.th_center{
+	text-align: center;
+}
+
+.position_table .boldf td{
+	font-weight: bold;
+}
+
+.boldf{
+	font-weight: bold;
+}
+
+.table_job{
+	width: 100%;
+	margin: 0 auto 50px;
+}
+.table_job_area{
+	width: 100%;
+	margin: 0 auto 100px;
+}
+
+.pos_center{
+	text-align: center;
+}
+.pos_right{
+	text-align: right;
+	padding-right: 2px;
+}
+.select_department{
+	width: 100%;
+	margin: 10px auto 10px;
+}

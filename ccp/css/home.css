@@ -1,0 +1,309 @@
+/*home.php*/
+.top{
+  width: 80%;
+  overflow: auto;
+  margin: 5% auto;
+}
+.top-image{
+  float: left;
+  width: 40%;
+  margin: 2rem;
+}
+.top-image-inner{
+  width: 90%;
+  margin: 0 auto;
+}
+.top-image img{
+  width: 100%;
+}
+.top-introduction-title h1{
+  margin-top: 80px;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+.top-introduction-title h4{
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.tabs{
+  clear: both;
+  width: 496px;
+  height: 32px;
+  margin: 50px auto;
+}
+.tabs ul{
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  list-style-type: none;
+}
+.tabs li{
+  float: left;
+  text-align: center;
+  font-size: 20px;
+  width: 150px;
+  margin-left: 20px;
+  border: solid 1px #807f7f;
+  box-sizing:border-box;
+  -webkit-bo-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  border-radius: 10px;
+}
+.tabs li:hover{
+  background-color: #333;
+  border-color: #333;
+}
+.tabs li:first-child{
+  margin: 0;
+}
+.tabs li a{
+  width: 100%;
+  padding: 5px;
+  color: #807f7f;
+  text-decoration: none;
+  display: block;
+}
+.tabs li a:hover{
+  color: #fff;
+}
+.center{
+  text-align: center;
+  margin-bottom: 10px;
+}
+/*新着情報*/
+p.contentsTitle{
+  display: inline;
+  font-size: 30px;
+  color: #333;
+  padding-bottom: 10px;
+  margin: 0;
+}
+.b_contentsTitle{
+  color: #b3b3b3;
+}
+#information{
+	width: 80%;
+  margin: 0 auto;
+  color: #212121;
+  margin-bottom: 50px;
+}
+#information .info-content{
+  clear: both;
+  width: 100%;
+}
+#information .info-topic{
+  clear: both;
+  width: 100%;
+  border-top: solid 1px #e6e6fa;
+}
+#information .info-topic div{
+  float: left;
+  color: #333;
+  font-size: 13px;
+  padding-top: 10px;
+}
+#information .info-topic p{
+  margin: 0;
+}
+#information .info-date{
+  width: 200px;
+  padding-left: 20px;
+  text-align: center;
+}
+#information .info-tags{
+  clear: both;
+  width: 100%;
+  font-size: 10px;
+}
+#information .info-tags div{
+  float: left;
+}
+#information .info-tag{
+  margin-bottom: 5px;
+  margin-top: 2px;
+  margin-right: 10px;
+  float: left;
+  padding: 2px;
+  border: solid 1px #ccc;
+  box-sizing:border-box;
+  -webkit-bo-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+  border-radius: 6px;
+}
+/*#information .info-tag:hover{
+  background-color: #333;
+  border-color: #333;
+  color: #fff;
+}*/
+#information .info-tags:last-child{
+  height: 28px;
+  border-bottom: solid 1px #e6e6fa;
+}
+.info-tag p{
+  margin: 0;
+}
+#information .info-tag:first-child{
+  margin-left: 200px;
+}
+.allnews{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: right;
+  position: relative;
+  right: 40px;
+}
+.allnews a{
+  text-decoration: none;
+  color: #333;
+}
+#calendar{
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+#calendar h3{
+  margin: 0;
+  margin-top: 30px;
+  padding: 0;
+  text-align: center;
+}
+#calendar table{
+  width: 100%;
+  margin-top: 10px;
+}
+#calendar table th{
+  background-color: #ccc;
+}
+#calendar table th,
+#calendar table td{
+  width: 14.285%;
+  border-top: solid 1px #ccc;
+  text-align: center;
+  padding: 0 10px;
+}
+#calendar table tr{
+  height: 80px;
+}
+#calendar table tr:first-child{
+  height: auto;
+}
+#calendar table tr:last-child{
+  border-bottom: solid 1px #ccc;
+  height: 0;
+}
+#calendar table tr.day{
+  height: 25px;
+}
+.slider .slide {
+ width: 588px;
+ height: 500px;
+ /*border: 1px solid #f00;*/
+ float: left;
+}
+.slider .slideSet {
+ position: absolute;
+ left: -7056px;
+}
+.slider {
+ width: 588px;
+ height: 500px;
+ margin: 0 auto;
+ overflow: hidden;
+ position: relative;
+}
+tr.days td{
+  border: none;
+}
+.event{
+  border-bottom: solid 1px #ccc;
+}
+.doyoubi{
+  color:blue;
+}
+.nitiyoubi{
+  color:red;
+}
+/* 1列目 */ #calendar table tbody tr :nth-child(1) {color:red;}
+/* 7列目 */ #calendar table tbody tr :nth-child(7) {color:blue;}
+.image{
+  display: block;
+}
+.image img{
+  width: 100%;
+  height: auto;
+}
+.image a{
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+}
+.sirumoku-image{
+  width: 70%;
+  margin: 0 auto;
+}
+.tab_link{
+  position: relative;
+  bottom: 100px;
+}
+.tab_link .center{
+  text-align: center;
+}
+.tab_link_inside{
+  color: #fff;
+  font-size: 20px;
+  padding: 20px 50px;
+  border: solid 1px #fff;
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+}
+.intro p{
+  font-size: 15px;
+  text-align: center;
+}
+.intro .intro_margin{
+  margin-top: 10px;
+}
+.sirumoku_datas table{
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.sirumoku_datas h1{
+  text-align: center;
+  font-size: 2rem;
+}
+.s_data_list{
+  background-color: #2394ff;
+}
+.s_data_topic{
+  background-color: #e5edf3;
+}
+.sirumoku_datas th{
+  text-align: center;
+}
+.s_data_topic .s_data_day, .s_data_topic .s_data_time{
+  position: relative;
+  top: 10px;
+}
+.s_past{
+  width: auto;
+  height: 20px;
+}
+.s_past span{
+  float: right;
+  position: relative;
+  right: 40px;
+}
+.s_past a{
+  text-decoration: none;
+  color: #333;
+}
