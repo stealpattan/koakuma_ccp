@@ -29,17 +29,16 @@ table#table-02 td {
 
 .manager{
   width: 70%;
-  text-align: center;
-  color: #6EB7DB;
-  border: 1px solid #208dc3;
-  border-radius: 20px;
+  color: #208dc3;
   margin:0 auto;
   margin-bottom: 20px;
 }
 
-#manager_page{
-
+.manager_contents{
+  border: 1px solid #6EB7DB;
+  border-radius: 20px;
+  text-align: center;
 }
-#manager_page a:hover{
-  background-color: black;
+.manager_contents:hover{
+  background-color: #cbe6f3;
 }

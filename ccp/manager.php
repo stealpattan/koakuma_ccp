@@ -17,15 +17,18 @@
 	</head>
 	<body>
 		<?php require("header.php"); ?>
-		<div id="manager_page">
+		<div class='manager'>
+			<h5>ようこそ<?php echo "管理者"; ?>様</h5>
+		</div>
+		<div class="manager_page">
 			<a href="" style='text-decoration:none'>
-				<div class='manager' width='70%' height='60px'>
+				<div class='manager manager_contents'>
 					<h2>シルモク管理用ページ</h2>
 					<p>シルモクに関する変更、情報の閲覧を行います</p>
 				</div>
 			</a>
 			<a href="" style='text-decoration:none;'>
-				<div class='manager' width='70%' height='60px'>
+				<div class='manager manager_contents'>
 					<h2>新着情報更新ページ</h2>
 					<p>様々な新着情報の更新を行います</p>
 				</div>
