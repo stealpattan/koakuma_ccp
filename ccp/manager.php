@@ -13,7 +13,7 @@
 	    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 	    <link rel="stylesheet" href="css/common.css">
 	    <link rel="stylesheet" href="css/home.css">
-	    <link rel="stylesheet" type="text/css" href="css/intern.css">
+	    <link rel="stylesheet" href="css/intern.css">
 	    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
@@ -43,35 +43,58 @@
 			<?php endif; ?>
 			<?php if($_GET['page_type'] == 'new_event'): ?>
 				<!-- 新着情報の更新をここから行います -->
-				<div class='manager'>
-					<h2>新着情報更新ページ</h2>
-					<form action='manager.php' method='post'>
-						<dl>
-							<dt>イベント名：</dt>
-							<dd>
-								<input type='text' name='event_title'>
-							</dd>
-							<dt>日付：</dt>
-							<dd>
-								<input type='hidden' value='<?php echo date('Y'); ?>'>
-								<input type='number' name='month' min='1' max='12' value='<?php echo date('m'); ?>'>月 
-								<input type='number' name='day' min='1' max='31' value='<?php echo date('d'); ?>'>日	
-							</dd>
-							<dt>詳細な時間など</dt>
-							<dd>
-								<input type='text' name='time_detail'>
-							</dd>
-							<dt>イベント詳細などコメント</dt>
-							<dd>
-								<textarea name='comment' cols='50' rows='5'></textarea>
-							</dd>
-							<dt>入力内容に間違いはありませんか？</dt>
-							<dd>
-								<input type='submit' value='登録' class='manager_contents'>
-								<input type='button' value='戻る' class='manager_contents' onclick='history.back()'>
-							</dd>
-						</dl>
-					</form>
+				<div class='new_event'>
+					<table class='arrange_rows'>
+						<tr>
+							<th>
+								<div class='manager'>
+									<h2>新着情報更新ページ</h2>
+									<form action='manager.php' method='post'>
+										<dl>
+											<dt>イベント名：</dt>
+											<dd>
+												<input type='text' name='event_title'>
+											</dd>
+											<dt>日付：</dt>
+											<dd>
+												<input type='hidden' value='<?php echo date('Y'); ?>'>
+												<input type='number' name='month' min='1' max='12' value='<?php echo date('m'); ?>'>月 
+												<input type='number' name='day' min='1' max='31' value='<?php echo date('d'); ?>'>日	
+											</dd>
+											<dt>詳細な時間など</dt>
+											<dd>
+												<input type='text' name='time_detail'>
+											</dd>
+											<dt>イベント詳細などコメント</dt>
+											<dd>
+												<textarea name='comment' cols='50' rows='5'></textarea>
+											</dd>
+											<dt>入力内容に間違いはありませんか？</dt>
+											<dd>
+												<input type='submit' value='登録' class='manager_contents'>
+												<input type='button' value='戻る' class='manager_contents' onclick='history.back()'>
+											</dd>
+										</dl>
+									</form>
+								</div>
+							</th>
+							<th>
+								<div class='recent_update'>
+									<h2>最近の更新</h2>
+									<dl>
+										<dt>イベント名：</dt>
+										<dd>タイトル</dd>
+										<dt>日付：</dt>
+										<dt>4/4/4/4/4/4/4/4/4/4/4</dt>
+										<dt>詳細な時間：</dt>
+										<dd>４コマ目</dd>
+										<dt>コメント：</dt>
+										<dd>特になし</dd>	
+									</dl>
+								</div>
+							</th>
+						</tr>
+					</table>
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>

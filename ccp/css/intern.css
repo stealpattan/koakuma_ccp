@@ -27,8 +27,15 @@ table#table-02 td {
   margin: 0 auto;
 }
 
+
+/*manager.phpのcss*/
+.arrange_rows{
+  width: 90%;
+  margin: 0 auto;
+}
+
 .manager{
-  width: 70%;
+  width: 50%;
   color: #208dc3;
   margin:0 auto;
   margin-bottom: 20px;
@@ -38,11 +45,11 @@ table#table-02 td {
   margin-bottom: 20px;
 }
 
-input{
+.manager input{
   text-align: center;
   border-radius: 10px;
 }
-textarea{
+.manager textarea{
   text-align: center;
   border-radius: 10px;
 }
@@ -55,4 +62,13 @@ textarea{
 }
 .manager_contents:hover{
   background-color: #cbe6f3;
+}
+
+.recent_update{
+  width: 60%;
+  color: #208dc3;
+  position: relative;
+  border: 2px solid green;
+  border-radius: 20px;
+  text-align: center;
 }
