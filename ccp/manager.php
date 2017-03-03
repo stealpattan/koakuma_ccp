@@ -19,7 +19,7 @@
 		if($_POST['event_title'] == '' || $_POST['event_title'] == null){
 			$error_array['title_error'] = true;
 		}
-		if($_POST['month'] == '' || $_POST['month'] == null || $_POST['day'] == '' || $_POST['day'] == null){
+		if($_POST['month'] == '' || $_POST['month'] == null || $_POST['month'] < 1 || $_POST['month'] > 12 || $_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] < 1 || $_POST['day'] > 31){
 			$error_array['date_error'] = true;
 		}
 		if($_POST['time_detail'] == '' || $_POST['time_detail'] == null){
@@ -59,7 +59,11 @@
 	</head>
 	<body>
 		<?php require("header.php"); ?>
+
+		<!-- 管理者画面トップページ -->
 		<?php if(empty($_GET['page_type']) && !isset($_GET['page_type'])): ?>
+			<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
+			<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 			<div class='manager'>
 				<h5>ようこそ<?php echo "管理者"; ?>様</h5>
 			</div>
@@ -78,12 +82,31 @@
 				</a>
 			</div>
 		<?php endif; ?>
+		<!-- 管理者画面トップページはここまで -->
+
 		<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
 			<?php if($_GET['page_type'] == 'sirumoku'): ?>
 				<!-- シルモクのデータを表示する場所 -->
 			<?php endif; ?>
+
 			<?php if($_GET['page_type'] == 'new_event'): ?>
-				<!-- 新着情報の更新をここから行います -->
+				<!-- エラー発覚の際にここが処理されます -->
+				<?php if(!empty($_GET['error']) && isset($_GET['error'])): ?>
+					<div style='width:60%;' class='manager'>
+						<h3 style='color:red;'>エラーが存在します</h3>
+						<p style='color:red;'>
+							<?php 
+								if($_SESSION['error']['title_error']){echo "イベント名は正しく入力されていますか？";} 
+								echo "<br>";
+								if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";} 
+								echo "<br>";
+								if($_SESSION['error']['detail_error']){echo "詳細な時間は正しく指定されていますか？";} 
+							?>
+						</p>
+					</div>
+				<?php endif; ?>
+				<!-- 以上エラー部 -->
+				<!-- 以下新着情報コンテンツ部 -->
 				<div class='new_event'>
 					<table class='arrange_rows'>
 						<tr>
@@ -181,6 +204,7 @@
 						</tr>
 					</table>
 				</div>
+				<!-- 以上新着情報コンテンツ部 -->
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php require("footer.php"); ?>
