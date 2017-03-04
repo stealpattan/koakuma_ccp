@@ -30,14 +30,18 @@
 		}
 		else{
 			echo "none error";//ここで登録処理を行うようにすればいい
+			$alert = sprintf('<script type="text/javascript">
+													window.alert("タイトル: %s \n 日付: %s 月 %s 日 \n	詳細な時間: %s \n	イベント詳細: %s \n イベント区分: %s \n");
+												</script>',$_POST['event_title'],$_POST['month'],
+																		$_POST['day'],$_POST['time_detail'],
+																		$_POST['comment'],$_POST['event_type']);
+			echo $alert;
 		}
 	}
 
 	$sql = sprintf("SELECT * FROM `news` WHERE 1 ORDER BY created DESC LIMIT 1");
 	$rec = mysqli_query($db, $sql) or die(mysqli_error($db));
 	$recent_news = mysqli_fetch_assoc($rec);
-
-	var_dump($recent_news);
 
 	function find_error($error_content){
 		$_SESSION['event'] = $_POST;
@@ -95,6 +99,7 @@
 				<!-- シルモクのデータを表示する場所 -->
 			<?php endif; ?>
 
+			<!-- 以下新着情報の更新画面 -->
 			<?php if($_GET['page_type'] == 'new_event'): ?>
 				<!-- エラー発覚の際にここが処理されます -->
 				<?php if(!empty($_GET['error']) && isset($_GET['error'])): ?>
@@ -207,6 +212,8 @@
 										<dd><?php echo $recent_news['time_detail']; ?></dd>
 										<dt>コメント：</dt>
 										<dd><?php echo $recent_news['text']; ?></dd>	
+										<dt>イベント区分：</dt>
+										<dd><?php echo $recent_news['event_kind']; ?></dd>
 									</dl>
 								</div>
 							</th>
@@ -215,6 +222,8 @@
 				</div>
 				<!-- 以上新着情報コンテンツ部 -->
 			<?php endif; ?>
+			<!-- 以上新着情報更新部 -->
+
 		<?php endif; ?>
 		<?php require("footer.php"); ?>
 	</body>
