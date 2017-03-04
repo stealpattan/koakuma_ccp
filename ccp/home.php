@@ -11,7 +11,7 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
     <title>Top</title>
     <link rel="shortcut icon" href="img/logo/tpu_logo.png">
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/home.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
