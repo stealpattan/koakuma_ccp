@@ -37,7 +37,7 @@ $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC');
           while ($table = mysqli_fetch_assoc($record)) {
           ?>
             <div class="info-topic">
-              <div class="info-date"><p><?php echo $table['year'], "/", $table['month'], "/", $table['day']; ?></p></div>
+              <div class="info-date"><p><?php echo $table['year']. "/". $table['month']. "/". $table['day']; ?></p></div>
               <div class="info-title"><p><?php echo htmlspecialchars($table['title']); ?></p></div>
             </div>
             <div class="info-tags">
