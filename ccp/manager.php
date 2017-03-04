@@ -33,6 +33,12 @@
 		}
 	}
 
+	$sql = sprintf("SELECT * FROM `news` WHERE 1 ORDER BY created DESC LIMIT 1");
+	$rec = mysqli_query($db, $sql) or die(mysqli_error($db));
+	$recent_news = mysqli_fetch_assoc($rec);
+
+	var_dump($recent_news);
+
 	function find_error($error_content){
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
@@ -184,6 +190,9 @@
 											</dd>
 										</dl>
 									</form>
+									<div style='width:30%;' class='manager'>
+										<a href="manager.php"> <-管理者画面へ </a>
+									</div>
 								</div>
 							</th>
 							<th>
@@ -191,13 +200,13 @@
 									<h2>最近の更新</h2>
 									<dl>
 										<dt>イベント名：</dt>
-										<dd>タイトル</dd>
+										<dd><?php echo $recent_news['title']; ?></dd>
 										<dt>日付：</dt>
-										<dt>4/4/4/4/4/4/4/4/4/4/4</dt>
+										<dt><?php echo $recent_news['month'] . "月" . $recent_news['day'] . "日"; ?></dt>
 										<dt>詳細な時間：</dt>
-										<dd>４コマ目</dd>
+										<dd><?php echo $recent_news['time_detail']; ?></dd>
 										<dt>コメント：</dt>
-										<dd>特になし</dd>	
+										<dd><?php echo $recent_news['text']; ?></dd>	
 									</dl>
 								</div>
 							</th>
