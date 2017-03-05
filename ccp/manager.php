@@ -1,9 +1,5 @@
 <?php
 	session_start();
-
-	echo "<pre>";
-	var_dump($_SESSION);
-	echo "</pre>";
 	date_default_timezone_set('Asia/Tokyo');
 	require('dbconnect.php');
 
@@ -13,9 +9,6 @@
 	$error_array['detail_error'] = false;
 
 	if(!empty($_POST) && isset($_POST)){
-		echo "<pre>";
-			var_dump($_POST);
-		echo "</pre>";
 		if($_POST['event_title'] == '' || $_POST['event_title'] == null){
 			$error_array['title_error'] = true;
 		}
@@ -29,12 +22,18 @@
 			find_error($error_array);
 		}
 		else{
-			echo "none error";//ここで登録処理を行うようにすればいい
+			$_SESSION['regest_event'] = $_POST;
 			$alert = sprintf('<script type="text/javascript">
-													window.alert("タイトル: %s \n 日付: %s 月 %s 日 \n	詳細な時間: %s \n	イベント詳細: %s \n イベント区分: %s \n");
+													if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n対象学年: %s")){
+														location.href = "manager.php?page_type=regestration";
+													}
+													else{
+														history.back();
+													}
 												</script>',$_POST['event_title'],$_POST['month'],
 																		$_POST['day'],$_POST['time_detail'],
-																		$_POST['comment'],$_POST['event_type']);
+																		$_POST['comment'],$_POST['event_type'],
+																		$_POST['target']);
 			echo $alert;
 		}
 	}
@@ -46,10 +45,6 @@
 	function find_error($error_content){
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
-		echo "<pre>";
-			var_dump($_SESSION);
-			var_dump($error_content);
-		echo "</pre>";
 		header('location:manager.php?page_type=new_event&error=exist');
 	}
 ?>
@@ -64,8 +59,7 @@
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/common.css">
 		<link rel="stylesheet" href="css/home.css">
-		<link rel="stylesheet" href="css/intern.css">
-		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<link rel="stylesheet" href="css/intern.css">		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
 		<?php require("header.php"); ?>
@@ -75,8 +69,7 @@
 			<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 			<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 			<div class='manager'>
-				<h5>ようこそ<?php echo "管理者"; ?>様</h5>
-			</div>
+				<h5>ようこそ<?php echo "管理者"; ?>様</h5>			</div>
 			<div class="manager_page">
 				<a href="" style='text-decoration:none'>
 					<div class='manager manager_contents'>
@@ -86,8 +79,7 @@
 				</a>
 				<a href="manager.php?page_type=new_event" style='text-decoration:none;'>
 					<div class='manager manager_contents'>
-						<h2>新着情報更新ページ</h2>
-						<p>様々な新着情報の更新を行います</p>
+						<h2>新着情報更新ページ</h2>						<p>様々な新着情報の更新を行います</p>
 					</div>
 				</a>
 			</div>
@@ -98,7 +90,6 @@
 			<?php if($_GET['page_type'] == 'sirumoku'): ?>
 				<!-- シルモクのデータを表示する場所 -->
 			<?php endif; ?>
-
 			<!-- 以下新着情報の更新画面 -->
 			<?php if($_GET['page_type'] == 'new_event'): ?>
 				<!-- エラー発覚の際にここが処理されます -->
@@ -108,8 +99,7 @@
 						<p style='color:red;'>
 							<?php
 								if($_SESSION['error']['title_error']){echo "イベント名は正しく入力されていますか？";}
-								echo "<br>";
-								if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";}
+								echo "<br>";								if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";}
 								echo "<br>";
 								if($_SESSION['error']['detail_error']){echo "詳細な時間は正しく指定されていますか？";}
 							?>
@@ -138,7 +128,7 @@
 											</dd>
 											<dt>日付：</dt>
 											<dd>
-												<input type='hidden' name='year' value='<?php echo date('Y'); ?>'>
+												<input type='hidden' name='year' value='<?php echo (int)date('Y'); ?>'>
 												<input type='number' name='month' min='1' max='12' value='<?php
 																											if(!empty($_GET["error"]) && isset($_GET["error"])){
 																												if($_SESSION["error"]["date_error"] == false){
@@ -146,7 +136,11 @@
 																												}
 																											}
 																											else{
+ master
 																												echo date("m");
+
+																												echo (int)date("m"); 
+ master
 																											}
 																										?>'>月
 												<input type='number' name='day' min='1' max='31' value='<?php
@@ -156,9 +150,15 @@
 																												}
 																											}
 																											else{
+ master
 																												echo date("d");
 																											}
 																										?>'>日
+
+																												echo (int)date("d");
+																											} 
+																										?>'>日	
+ master
 											</dd>
 											<dt>詳細な時間など</dt>
 											<dd>
@@ -186,6 +186,19 @@
 													<option>キャリア形成論</option>
 													<option>就職支援</option>
 													<option>その他お知らせ</option>
+												</select>
+											</dd>
+											<dt>対象学年</dt>
+											<dd>
+												<select name='target' class='manager_contents'>
+													<option>全学年</option>
+													<option>学部1年生(B1)</option>
+													<option>学部2年生(B2)</option>
+													<option>学部3年生(B3)</option>
+													<option>学部4年生(B4)</option>
+													<option>大学院1年生(B1)</option>
+													<option>大学院2年生(B2)</option>
+													<option>博士課程</option>
 												</select>
 											</dd>
 											<dt>入力内容に間違いはありませんか？</dt>
@@ -223,7 +236,19 @@
 				<!-- 以上新着情報コンテンツ部 -->
 			<?php endif; ?>
 			<!-- 以上新着情報更新部 -->
-
+			<?php if($_GET['page_type'] == "regestration"): ?>
+				<?php 
+					$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`text`,`event_kind`,`target`,`created`)
+													VALUES('%s','%s','%s','%s','%s','%s','%s','%s',NOW())",
+																	$_SESSION['regest_event']['year'],$_SESSION['regest_event']['month'],$_SESSION['regest_event']['day'],
+																	$_SESSION['regest_event']['event_title'],$_SESSION['regest_event']['time_detail'],$_SESSION['regest_event']['comment'],
+																	$_SESSION['regest_event']['event_type'],$_SESSION['regest_event']['target']);
+					mysqli_query($db, $sql) or die(mysqli_error($db));
+					$_SESSION['regest_event'] = array();
+					header('location: manager.php?page_type=new_event');
+					exit();
+				?>
+			<?php endif; ?>
 		<?php endif; ?>
 		<?php require("footer.php"); ?>
 	</body>
