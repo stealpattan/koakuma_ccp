@@ -14,4 +14,15 @@
   function sum_num_private_decision($a, $b, $c, $d, $e){
     return $a + $b + $c + $d + $e;
   }
+
+  function ip_tracer(){
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = explode(".", $ip);
+    if($ip[0] != 100){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 ?>
