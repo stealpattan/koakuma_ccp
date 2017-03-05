@@ -24,7 +24,7 @@
 		else{
 			$_SESSION['regest_event'] = $_POST;
 			$alert = sprintf('<script type="text/javascript">
-													if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n")){
+													if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n対象学年: %s")){
 														location.href = "manager.php?page_type=regestration";
 													}
 													else{
@@ -32,7 +32,8 @@
 													}
 												</script>',$_POST['event_title'],$_POST['month'],
 																		$_POST['day'],$_POST['time_detail'],
-																		$_POST['comment'],$_POST['event_type']);
+																		$_POST['comment'],$_POST['event_type'],
+																		$_POST['target']);
 			echo $alert;
 		}
 	}
@@ -182,6 +183,19 @@
 													<option>その他お知らせ</option>
 												</select>
 											</dd>
+											<dt>対象学年</dt>
+											<dd>
+												<select name='target' class='manager_contents'>
+													<option>全学年</option>
+													<option>学部1年生(B1)</option>
+													<option>学部2年生(B2)</option>
+													<option>学部3年生(B3)</option>
+													<option>学部4年生(B4)</option>
+													<option>大学院1年生(B1)</option>
+													<option>大学院2年生(B2)</option>
+													<option>博士課程</option>
+												</select>
+											</dd>
 											<dt>入力内容に間違いはありませんか？</dt>
 											<dd>
 												<input type='submit' value='登録' class='manager_contents'>
@@ -219,11 +233,11 @@
 			<!-- 以上新着情報更新部 -->
 			<?php if($_GET['page_type'] == "regestration"): ?>
 				<?php 
-					$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`text`,`event_kind`,`created`)
-													VALUES('%s','%s','%s','%s','%s','%s','%s',NOW())",
+					$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`text`,`event_kind`,`target`,`created`)
+													VALUES('%s','%s','%s','%s','%s','%s','%s','%s',NOW())",
 																	$_SESSION['regest_event']['year'],$_SESSION['regest_event']['month'],$_SESSION['regest_event']['day'],
 																	$_SESSION['regest_event']['event_title'],$_SESSION['regest_event']['time_detail'],$_SESSION['regest_event']['comment'],
-																	$_SESSION['regest_event']['event_type']);
+																	$_SESSION['regest_event']['event_type'],$_SESSION['regest_event']['target']);
 					mysqli_query($db, $sql) or die(mysqli_error($db));
 					$_SESSION['regest_event'] = array();
 					header('location: manager.php?page_type=new_event');
