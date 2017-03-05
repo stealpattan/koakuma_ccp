@@ -1,9 +1,5 @@
 <?php 
 	session_start();
-
-	echo "<pre>";
-	var_dump($_SESSION);
-	echo "</pre>";
 	date_default_timezone_set('Asia/Tokyo');
 	require('dbconnect.php');
 
@@ -13,9 +9,6 @@
 	$error_array['detail_error'] = false;
 
 	if(!empty($_POST) && isset($_POST)){
-		echo "<pre>";
-			var_dump($_POST);
-		echo "</pre>";
 		if($_POST['event_title'] == '' || $_POST['event_title'] == null){
 			$error_array['title_error'] = true;
 		}
@@ -29,22 +22,18 @@
 			find_error($error_array);
 		}
 		else{
-			echo "none error";//ここで登録処理を行うようにすればいい
 			$_SESSION['regest_event'] = $_POST;
 			$alert = sprintf('<script type="text/javascript">
 													if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n")){
 														location.href = "manager.php?page_type=regestration";
 													}
 													else{
-														location.href = "manager.php";
+														history.back();
 													}
 												</script>',$_POST['event_title'],$_POST['month'],
 																		$_POST['day'],$_POST['time_detail'],
 																		$_POST['comment'],$_POST['event_type']);
 			echo $alert;
-			echo "<pre>";
-				var_dump($_SESSION['regest_event']);
-			echo "</pre>";
 		}
 	}
 
@@ -55,10 +44,6 @@
 	function find_error($error_content){
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
-		echo "<pre>";
-			var_dump($_SESSION);
-			var_dump($error_content);
-		echo "</pre>";
 		header('location:manager.php?page_type=new_event&error=exist');
 	}
 ?>
