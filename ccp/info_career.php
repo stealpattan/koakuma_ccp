@@ -81,7 +81,7 @@ if (isset($_POST['department_id']) && $_POST['department_id'] != 0) {
     <title>就職情報</title>
     <link rel="shortcut icon" href="img/logo/tpu_logo.png">
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/info-career.css">
   </head>

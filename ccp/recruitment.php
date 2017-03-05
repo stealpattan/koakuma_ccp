@@ -121,7 +121,7 @@ while($table = mysqli_fetch_assoc($recordSet)){
     <title>求人の検索結果</title>
     <link rel="shortcut icon" href="img/logo/tpu_logo.png">
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/recruitment.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>

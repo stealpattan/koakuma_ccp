@@ -9,7 +9,7 @@ $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC');
     <meta charset="utf-8">
     <title>新着情報一覧</title>
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/home.css">
   </head>
@@ -37,7 +37,7 @@ $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC');
           while ($table = mysqli_fetch_assoc($record)) {
           ?>
             <div class="info-topic">
-              <div class="info-date"><p><?php echo $table['year'], "/", $table['month'], "/", $table['day']; ?></p></div>
+              <div class="info-date"><p><?php echo $table['year']. "/". $table['month']. "/". $table['day']; ?></p></div>
               <div class="info-title"><p><?php echo htmlspecialchars($table['title']); ?></p></div>
             </div>
             <div class="info-tags">

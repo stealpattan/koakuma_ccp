@@ -1,4 +1,4 @@
-<?php 
+<?php
 	session_start();
 	date_default_timezone_set('Asia/Tokyo');
 	require('dbconnect.php');
@@ -56,11 +56,10 @@
 		<title>管理者ページ</title>
 		<link rel="shortcut icon" href="img/logo/tpu_logo.png">
 		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/common.css">
 		<link rel="stylesheet" href="css/home.css">
-		<link rel="stylesheet" href="css/intern.css">
-		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<link rel="stylesheet" href="css/intern.css">		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
 		<?php require("header.php"); ?>
@@ -70,8 +69,7 @@
 			<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 			<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 			<div class='manager'>
-				<h5>ようこそ<?php echo "管理者"; ?>様</h5>
-			</div>
+				<h5>ようこそ<?php echo "管理者"; ?>様</h5>			</div>
 			<div class="manager_page">
 				<a href="" style='text-decoration:none'>
 					<div class='manager manager_contents'>
@@ -81,8 +79,7 @@
 				</a>
 				<a href="manager.php?page_type=new_event" style='text-decoration:none;'>
 					<div class='manager manager_contents'>
-						<h2>新着情報更新ページ</h2>
-						<p>様々な新着情報の更新を行います</p>
+						<h2>新着情報更新ページ</h2>						<p>様々な新着情報の更新を行います</p>
 					</div>
 				</a>
 			</div>
@@ -93,7 +90,6 @@
 			<?php if($_GET['page_type'] == 'sirumoku'): ?>
 				<!-- シルモクのデータを表示する場所 -->
 			<?php endif; ?>
-
 			<!-- 以下新着情報の更新画面 -->
 			<?php if($_GET['page_type'] == 'new_event'): ?>
 				<!-- エラー発覚の際にここが処理されます -->
@@ -101,12 +97,11 @@
 					<div style='width:60%;' class='manager'>
 						<h3 style='color:red;'>エラーが存在します</h3>
 						<p style='color:red;'>
-							<?php 
-								if($_SESSION['error']['title_error']){echo "イベント名は正しく入力されていますか？";} 
+							<?php
+								if($_SESSION['error']['title_error']){echo "イベント名は正しく入力されていますか？";}
+								echo "<br>";								if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";}
 								echo "<br>";
-								if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";} 
-								echo "<br>";
-								if($_SESSION['error']['detail_error']){echo "詳細な時間は正しく指定されていますか？";} 
+								if($_SESSION['error']['detail_error']){echo "詳細な時間は正しく指定されていますか？";}
 							?>
 						</p>
 					</div>
@@ -123,12 +118,12 @@
 										<dl>
 											<dt>イベント名：</dt>
 											<dd>
-												<input type='text' name='event_title' value='<?php 
+												<input type='text' name='event_title' value='<?php
 																								if(!empty($_GET["error"]) && isset($_GET["error"])){
 																									if($_SESSION["error"]["title_error"] == false){
 																										echo $_SESSION["event"]["event_title"];
 																									}
-																								} 
+																								}
 																							?>'>
 											</dd>
 											<dt>日付：</dt>
@@ -141,23 +136,33 @@
 																												}
 																											}
 																											else{
+ master
+																												echo date("m");
+
 																												echo (int)date("m"); 
+ master
 																											}
-																										?>'>月 
-												<input type='number' name='day' min='1' max='31' value='<?php 
+																										?>'>月
+												<input type='number' name='day' min='1' max='31' value='<?php
 																											if(!empty($_GET["error"]) && isset($_GET["error"])){
 																												if($_SESSION["error"]["date_error"] == false){
 																													echo $_SESSION["event"]["day"];
 																												}
 																											}
 																											else{
+ master
+																												echo date("d");
+																											}
+																										?>'>日
+
 																												echo (int)date("d");
 																											} 
 																										?>'>日	
+ master
 											</dd>
 											<dt>詳細な時間など</dt>
 											<dd>
-												<input type='text' name='time_detail' value='<?php 
+												<input type='text' name='time_detail' value='<?php
 																								if(!empty($_GET["error"]) && isset($_GET["error"])){
 																									if($_SESSION["error"]["detail_error"] == false){
 																										echo $_SESSION["event"]["time_detail"];
@@ -167,7 +172,7 @@
 											</dd>
 											<dt>イベント詳細などコメント</dt>
 											<dd>
-												<textarea name='comment' cols='50' rows='5'><?php 
+												<textarea name='comment' cols='50' rows='5'><?php
 																								if(!empty($_GET['error']) && isset($_GET['error'])){
 																									echo $_SESSION['event']['comment'];
 																								}
@@ -219,7 +224,7 @@
 										<dt>詳細な時間：</dt>
 										<dd><?php echo $recent_news['time_detail']; ?></dd>
 										<dt>コメント：</dt>
-										<dd><?php echo $recent_news['text']; ?></dd>	
+										<dd><?php echo $recent_news['text']; ?></dd>
 										<dt>イベント区分：</dt>
 										<dd><?php echo $recent_news['event_kind']; ?></dd>
 									</dl>

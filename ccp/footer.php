@@ -29,23 +29,22 @@
         <h2>関連リンク</h2>
         <ul class="foot_link">
           <li>
-            <h3>北陸・新潟</h3>
+            <h3>北陸・愛知</h3>
             <ul class="foot_list">
-              <li><a href="#"><span>アイザック</span></a></li>
-              <li><a href="#"><span>サンロクゴ</span></a></li>
-              <li><a href="#"><span>TOWN-NAVI とやま</span></a></li>
-              <li><a href="#"><span>となみ野</span></a></li>
-              <li><a href="#"><span>kinect-navi</span></a></li>
+              <li><a href="http://www.ibac.co.jp/"><span>アイバック</span></a></li>
+              <li><a href="http://kitanippon.jp/kinet/2017/top/"><span>Kinet</span></a></li>
+              <li><a href="http://www.internship-toyama.jp/"><span>富山県インターン推進協議会</span></a></li>
+              <li><a href="http://www.meidaisha.co.jp/"><span>名大社</span></a></li>
             </ul>
           </li>
           <li>
             <h3>その他</h3>
             <ul class="foot_list">
               <li><a href="#"><span>リクナビ</span></a></li>
-              <li><a href="#"><span>朝日ジョブネット</span></a></li>
-              <li><a href="#"><span>日経就職ナビ</span></a></li>
               <li><a href="#"><span>マイナビ</span></a></li>
-              <li><a href="#"><span>ジョブタッチ</span></a></li>
+              <li><a href="https://www.s-walker.net/"><span>就職ウォーカー</span></a></li>
+              <li><a href="https://www.gakujo.ne.jp/2018/"><span>あさがくナビ</span></a></li>
+              <li><a href="https://www.wdb.com/office/"><span>WDB.com</span></a></li>
             </ul>
           </li>
         </ul>
