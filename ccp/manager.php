@@ -30,12 +30,21 @@
 		}
 		else{
 			echo "none error";//ここで登録処理を行うようにすればいい
+			$_SESSION['regest_event'] = $_POST;
 			$alert = sprintf('<script type="text/javascript">
-													window.alert("タイトル: %s \n 日付: %s 月 %s 日 \n	詳細な時間: %s \n	イベント詳細: %s \n イベント区分: %s \n");
+													if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n")){
+														location.href = "manager.php?page_type=regestration";
+													}
+													else{
+														location.href = "manager.php";
+													}
 												</script>',$_POST['event_title'],$_POST['month'],
 																		$_POST['day'],$_POST['time_detail'],
 																		$_POST['comment'],$_POST['event_type']);
 			echo $alert;
+			echo "<pre>";
+				var_dump($_SESSION['regest_event']);
+			echo "</pre>";
 		}
 	}
 
@@ -138,7 +147,7 @@
 											</dd>
 											<dt>日付：</dt>
 											<dd>
-												<input type='hidden' name='year' value='<?php echo date('Y'); ?>'>
+												<input type='hidden' name='year' value='<?php echo (int)date('Y'); ?>'>
 												<input type='number' name='month' min='1' max='12' value='<?php
 																											if(!empty($_GET["error"]) && isset($_GET["error"])){
 																												if($_SESSION["error"]["date_error"] == false){
@@ -146,7 +155,7 @@
 																												}
 																											}
 																											else{
-																												echo date("m"); 
+																												echo (int)date("m"); 
 																											}
 																										?>'>月 
 												<input type='number' name='day' min='1' max='31' value='<?php 
@@ -156,7 +165,7 @@
 																												}
 																											}
 																											else{
-																												echo date("d");
+																												echo (int)date("d");
 																											} 
 																										?>'>日	
 											</dd>
@@ -223,7 +232,19 @@
 				<!-- 以上新着情報コンテンツ部 -->
 			<?php endif; ?>
 			<!-- 以上新着情報更新部 -->
-
+			<?php if($_GET['page_type'] == "regestration"): ?>
+				<?php 
+					$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`text`,`event_kind`,`created`)
+													VALUES('%s','%s','%s','%s','%s','%s','%s',NOW())",
+																	$_SESSION['regest_event']['year'],$_SESSION['regest_event']['month'],$_SESSION['regest_event']['day'],
+																	$_SESSION['regest_event']['event_title'],$_SESSION['regest_event']['time_detail'],$_SESSION['regest_event']['comment'],
+																	$_SESSION['regest_event']['event_type']);
+					mysqli_query($db, $sql) or die(mysqli_error($db));
+					$_SESSION['regest_event'] = array();
+					header('location: manager.php?page_type=new_event');
+					exit();
+				?>
+			<?php endif; ?>
 		<?php endif; ?>
 		<?php require("footer.php"); ?>
 	</body>
