@@ -227,6 +227,7 @@ if (isset($_POST['department_id']) && $_POST['department_id'] != 0) {
         </div>
       </div>
     <?php else: ?>
+      <?php require('top_of_career_center.php'); ?>
       <div style='text-align:center;'>
         <h1>学外からのアクセスを制限しています。申し訳有りません.</h1>
       </div>
