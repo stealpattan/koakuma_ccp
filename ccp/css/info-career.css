@@ -50,7 +50,9 @@ table.trhover tr:hover td{
 .th_center{
 	text-align: center;
 }
-
+.position_table > table > tbody > tr.align_cent{
+	background-color: #fff;
+}
 .position_table .boldf td{
 	font-weight: bold;
 }
@@ -63,11 +65,19 @@ table.trhover tr:hover td{
 	width: 100%;
 	margin: 0 auto 50px;
 }
+.table-striped>tbody>tr:nth-of-type(even){
+	background-color: #fff;
+}
 .table_job_area{
 	width: 100%;
 	margin: 0 auto 100px;
 }
-
+table.table-bordered > tbody > tr{
+	background-color: #fff;
+}
+.table_job_area table.table-bordered > tbody > tr:first-child{
+	background-color: #f9f9f9;
+}
 .pos_center{
 	text-align: center;
 }

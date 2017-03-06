@@ -6,7 +6,9 @@ table#table-02 {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
+table#table-02 tr{
+  background-color: #fff;
+}
 table#table-02 th {
   padding: 5px;
   border: #E3E3E3 solid;
@@ -25,48 +27,4 @@ table#table-02 td {
 .introduce{
   width: 90%;
   margin: 0 auto;
-}
-
-
-/*manager.phpのcss*/
-.arrange_rows{
-  width: 90%;
-  margin: 0 auto;
-}
-
-.manager{
-  color: #208dc3;
-  margin:0 auto;
-  margin-bottom: 20px;
-}
-
-.manager dd{
-  margin-bottom: 20px;
-}
-
-.manager input{
-  text-align: center;
-  border-radius: 10px;
-}
-.manager textarea{
-  border-radius: 10px;
-}
-
-.manager_contents{
-  background-color: white;
-  border: 1px solid #6EB7DB;
-  border-radius: 20px;
-  text-align: center;
-}
-.manager_contents:hover{
-  background-color: #cbe6f3;
-}
-
-.recent_update{
-  width: 80%;
-  color: #208dc3;
-  position: relative;
-  border: 2px solid green;
-  border-radius: 20px;
-  text-align: center;
 }

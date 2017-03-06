@@ -14,6 +14,7 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/sirumoku.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
@@ -58,9 +59,13 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
         </ul>
       </div>
       <div id="information">
-        <div class="center">
-          <p class="contentsTitle">新着情報</p>
-          <p class="b_contentsTitle">News</p>
+        <div class="b_border center">
+          <div class="ja_title">
+            <p class="contentsTitle">新着情報</p>
+          </div>
+          <div class="en_title">
+            <p class="b_contentsTitle">News</p>
+          </div>
         </div>
         <div class="info-content">
           <?php
@@ -83,9 +88,13 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
         </div>
       </div>
       <div id="calendar">
-        <div class="center">
-          <p class="contentsTitle">スケジュール</p>
-          <p class="b_contentsTitle">Schedule</p>
+        <div class="b_border center">
+          <div class="ja_title">
+            <p class="contentsTitle">スケジュール</p>
+          </div>
+          <div class="en_title">
+            <p class="b_contentsTitle">Schedule</p>
+          </div>
         </div>
         <div class="slider">
           <div class="slideSet">
@@ -173,9 +182,13 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
       </div>
       <script src="js/calendar-slide.js"></script>
       <div id="sirumoku">
-        <div class="center">
-          <p class="contentsTitle">シルモク</p>
-          <p class="b_contentsTitle">企業を知る木曜日</p>
+        <div class="b_border center">
+          <div class="ja_title">
+            <p class="contentsTitle">シルモク</p>
+          </div>
+          <div class="en_title">
+            <p class="b_contentsTitle">企業を知る木曜日</p>
+          </div>
         </div>
         <div class="image">
           <div class="sirumoku-image">

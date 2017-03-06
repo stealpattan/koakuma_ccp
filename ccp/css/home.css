@@ -44,6 +44,7 @@
   font-size: 20px;
   width: 150px;
   margin-left: 20px;
+  background-color: #fff;
   border: solid 1px #807f7f;
   box-sizing:border-box;
   -webkit-bo-sizing:border-box;
@@ -68,21 +69,6 @@
 }
 .tabs li a:hover{
   color: #fff;
-}
-.center{
-  text-align: center;
-  margin-bottom: 10px;
-}
-/*新着情報*/
-p.contentsTitle{
-  display: inline;
-  font-size: 30px;
-  color: #333;
-  padding-bottom: 10px;
-  margin: 0;
-}
-.b_contentsTitle{
-  color: #b3b3b3;
 }
 #information{
 	width: 80%;
@@ -127,6 +113,7 @@ p.contentsTitle{
   margin-right: 10px;
   float: left;
   padding: 2px;
+  background-color: #fff;
   border: solid 1px #ccc;
   box-sizing:border-box;
   -webkit-bo-sizing:border-box;
@@ -280,19 +267,6 @@ tr.days td{
 .sirumoku_datas h1{
   text-align: center;
   font-size: 2rem;
-}
-.s_data_list{
-  background-color: #2394ff;
-}
-.s_data_topic{
-  background-color: #e5edf3;
-}
-.sirumoku_datas th{
-  text-align: center;
-}
-.s_data_topic .s_data_day, .s_data_topic .s_data_time{
-  position: relative;
-  top: 10px;
 }
 .s_past{
   width: auto;
