@@ -136,11 +136,7 @@
 																												}
 																											}
 																											else{
- master
-																												echo date("m");
-
 																												echo (int)date("m"); 
- master
 																											}
 																										?>'>月
 												<input type='number' name='day' min='1' max='31' value='<?php
@@ -150,15 +146,9 @@
 																												}
 																											}
 																											else{
- master
-																												echo date("d");
-																											}
-																										?>'>日
-
 																												echo (int)date("d");
 																											} 
 																										?>'>日	
- master
 											</dd>
 											<dt>詳細な時間など</dt>
 											<dd>
