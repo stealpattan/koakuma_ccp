@@ -80,3 +80,12 @@ table#table-02 td {
   border-radius: 20px;
   text-align: center;
 }
+
+/*recruitment.phpのcss*/
+.borders{
+  border-bottom: 1px solid #6EB7DB;
+  border-top: 1px solid #6EB7DB;
+}
+.borders:hover{
+  background-color: #cbe6f3;
+}
