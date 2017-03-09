@@ -59,7 +59,8 @@
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/common.css">
 		<link rel="stylesheet" href="css/home.css">
-		<link rel="stylesheet" href="css/intern.css">		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<link rel="stylesheet" href="css/intern.css">		
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
 		<?php require("header.php"); ?>
@@ -69,7 +70,8 @@
 			<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 			<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 			<div class='manager'>
-				<h5>ようこそ<?php echo "管理者"; ?>様</h5>			</div>
+				<h5>ようこそ<?php echo "管理者"; ?>様</h5>
+			</div>
 			<div class="manager_page">
 				<a href="" style='text-decoration:none'>
 					<div class='manager manager_contents'>
@@ -79,7 +81,8 @@
 				</a>
 				<a href="manager.php?page_type=new_event" style='text-decoration:none;'>
 					<div class='manager manager_contents'>
-						<h2>新着情報更新ページ</h2>						<p>様々な新着情報の更新を行います</p>
+						<h2>新着情報更新ページ</h2>						
+						<p>様々な新着情報の更新を行います</p>
 					</div>
 				</a>
 			</div>
@@ -111,7 +114,7 @@
 				<div class='new_event'>
 					<table class='arrange_rows'>
 						<tr>
-							<th width='60%'>
+							<th width='50%'>
 								<div class='manager'>
 									<h2>新着情報更新ページ</h2>
 									<form action='manager.php?page_type=new_event' method='post'>
