@@ -29,6 +29,11 @@ table#table-02 td {
 
 
 /*manager.phpのcss*/
+.manager_page{
+  width: 70%;
+  margin: 0 auto;
+}
+
 .new_event{
   width: 70%;
   margin: 0 auto;

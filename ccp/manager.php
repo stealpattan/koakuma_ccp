@@ -69,7 +69,7 @@
 		<?php if(empty($_GET['page_type']) && !isset($_GET['page_type'])): ?>
 			<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 			<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
-			<div class='manager'>
+			<div class='manager manager_page'>
 				<h5>ようこそ<?php echo "管理者"; ?>様</h5>
 			</div>
 			<div class="manager_page">
