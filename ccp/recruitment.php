@@ -155,7 +155,8 @@ while($table = mysqli_fetch_assoc($recordSet)){
       </div>
       <div class="clear"></div>
     </header>
-    <?php if(ip_tracer() == false): ?>
+
+    <?php if(ip_tracer() == true): ?>
       <div class="searchform">
         <form class="searchform_re" action="recruitment.php#result" method="post">
           <ul class="selector">
