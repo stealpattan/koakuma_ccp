@@ -40,7 +40,10 @@ function calendar($y,$m){
 		 //var_dump($calendar);//データを全部表示する
 		 //echo "</pre>";
 
-		 $_SESSION['calendar'] = $calendar;
+		 //テストのため一旦コメントアウト2017-3-11
+		 //$_SESSION['calendar'] = $calendar;
+
+		 return $calendar;
  }
 function ssp_holiday(){
 	$y = date('Y');
