@@ -2,11 +2,24 @@
 require('dbconnect.php');
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
 require('calendar.php');
-$calendar =  calendar((int)date('Y'), (int)date('m'));
-//$calendar = calendar(2017,2);
-echo "<pre>";
-var_dump($calendar);
-echo "</pre>";
+if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
+  $year = (int)date('Y');
+  $month = (int)date('m');
+}
+if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
+  echo "check";
+  $year = (int)date('Y');
+  $month = (int)date('m') - (int)$_GET['calendar'];
+  while($month <= 0){
+    $month = 12 + $month;
+    $year = $year - 1;
+  }
+  while($month >= 13){
+    $month = 1 + ($month - 12);
+    $year = $year + 1;
+  }
+}
+$calendar =  calendar($year, $month);
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,8 +70,25 @@ echo "</pre>";
       </div>
       <div id="calendar">
         <div class="center">
+          <button class='cal_button' onclick='calendar_change(<?php 
+                                              if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
+                                                echo $_GET["calendar"] + 1;
+                                              }
+                                              else{
+                                                echo 1;
+                                              }
+                                          ?>)'><</button>
           <p class="contentsTitle">スケジュール</p>
-          <p class="b_contentsTitle">Schedule</p>
+          <button class='cal_button' onclick='calendar_change(<?php 
+                                              if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
+                                                echo $_GET["calendar"] - 1;
+                                              }
+                                              else{
+                                                echo -1;
+                                              }
+                                          ?>)'>></button>
+          <p><?php echo $year; ?>年<?php echo $month; ?>月</p>
+          <p class="b_contentsTitle">Schedule</p>          
         </div>
         <table>
           <tr>
@@ -89,6 +119,17 @@ echo "</pre>";
           <?php endfor; ?>
         </table>
       </div>
+      <script type="text/javascript">
+        function calendar_change(num){
+          if(num == 0){
+            var str = 'home.php';
+          }
+          else{
+            var str = "home.php?calendar=" + num;
+          }
+          document.location = str;
+        }
+      </script>
       <script src="js/calendar-slide.js"></script>
       <div id="sirumoku">
         <div class="center">
