@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set("Asia/Tokyo");
 require('dbconnect.php');
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
 require('calendar.php');
@@ -109,7 +110,7 @@ $_SESSION['cal_event'] = $table;
             <th>水</th>
             <th>木</th>
             <th>金</th>
-            <th style='color:red;'>土</th>
+            <th style='color:blue;'>土</th>
           </tr>
           <?php for($i=0;$i<count($calendar);$i++): ?>
             <tr>
