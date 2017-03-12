@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('dbconnect.php');
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
 require('calendar.php');
@@ -6,6 +7,8 @@ if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
   $year = (int)date('Y');
   $month = (int)date('m');
 }
+
+// 以下カレンダー表示に必要な部分
 if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
   echo "check";
   $year = (int)date('Y');
@@ -20,6 +23,14 @@ if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
   }
 }
 $calendar =  calendar($year, $month);
+$sql = sprintf('SELECT day,title,event_kind FROM news WHERE year="%s" AND month="%s"',$year,$month);
+$record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
+$table = array();
+while($rec = mysqli_fetch_assoc($record2)){
+  $table[] = $rec;
+}
+$_SESSION['cal_event'] = $table;
+//以上
 ?>
 <!DOCTYPE html>
 <html>
@@ -109,6 +120,13 @@ $calendar =  calendar($year, $month);
                       break;
                     }
                     echo $calendar[$i]['day'];
+                    echo "<br>";
+                    echo "<br>";
+                    foreach($_SESSION['cal_event'] as $cal_event){
+                      if($cal_event['day'] == $calendar[$i]['day']){
+                        echo $cal_event['title'];
+                      }
+                    }
                     if($j < 6){
                       $i++;
                     }
