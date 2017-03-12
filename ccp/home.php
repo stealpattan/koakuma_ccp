@@ -23,7 +23,7 @@ if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
   }
 }
 $calendar =  calendar($year, $month);
-$sql = sprintf('SELECT day,title,event_kind FROM news WHERE year="%s" AND month="%s"',$year,$month);
+$sql = sprintf('SELECT id,day,title,event_kind FROM news WHERE year="%s" AND month="%s"',$year,$month);
 $record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
 $table = array();
 while($rec = mysqli_fetch_assoc($record2)){
@@ -124,7 +124,9 @@ $_SESSION['cal_event'] = $table;
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
+                        echo "<a style='text-decoration:none;' href=''>";
                         echo $cal_event['title'];
+                        echo "</a>";
                       }
                     }
                     if($j < 6){
