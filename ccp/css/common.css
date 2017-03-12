@@ -179,3 +179,14 @@ footer .copyright{
 .calendar_content{
 	height: 100px;
 }
+
+.cal_button{
+	width: 10%;
+	background-color: white;
+	color: black;
+	text-decoration: none;
+	border-radius: 20px;
+}
+.cal_button:hover{
+	background-color: #cbe6f3;
+}
