@@ -1,8 +1,12 @@
 <?php
 require('dbconnect.php');
-
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
-$recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
+require('calendar.php');
+$calendar =  calendar((int)date('Y'), (int)date('m'));
+//$calendar = calendar(2017,2);
+echo "<pre>";
+var_dump($calendar);
+echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html>
@@ -56,89 +60,34 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
           <p class="contentsTitle">スケジュール</p>
           <p class="b_contentsTitle">Schedule</p>
         </div>
-        <div class="slider">
-          <div class="slideSet">
-            <?php
-            for($x=-12;$x<13;$x++){
-              $y = date('Y',strtotime(date('Y-n-1').' +'.$x.' month'));
-              $m=date('n', strtotime(date('Y-n-1').' +'.$x.' month'));
-              require_once('calendar.php');
-            ?>
-            <div class="slide">
-              <h3>
-              <button id="funcAdd1" type="buttun" class="btn btn-default b-left" aria-label="Left Align" name="sengetu" >
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-              </button>
-              <span id="year"><?php echo $y ?>年</span><span id="month"><?php echo $m; ?>月</span>
-              <button id="funcAdd2" type="buttun" class="btn btn-default b-right" aria-label="Left Align" name="raigetu" onClick="nex()">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              </button>
-              </h3>
-              <table>
-                <tr>
-                  <th class="nitiyoubi">日</th>
-                  <th>月</th>
-                  <th>火</th>
-                  <th>水</th>
-                  <th>木</th>
-                  <th>金</th>
-                  <th class="doyoubi">土</th>
-                </tr>
-                <tr class="days">
-                  <?php
-                  $holidays = ssp_holiday();
-                  ksort($holidays);//祝日の配列を降順にする
-                  $holidays = devide_holiday_data($holidays);
-                  $holidays = current_date($y,$m,$holidays);
-                  $cnt = 0;
-                  calendar($y,$m);
-                  foreach ($_SESSION['calendar'] as $key => $value):
+        <table>
+          <tr>
+            <th style='color:red;'>日</th>
+            <th>月</th>
+            <th>火</th>
+            <th>水</th>
+            <th>木</th>
+            <th>金</th>
+            <th style='color:red;'>土</th>
+          </tr>
+          <?php for($i=0;$i<count($calendar);$i++): ?>
+            <tr>
+              <?php for($j=0;$j<7;$j++): ?>
+                <td class='calendar_content'>
+                  <?php 
+                    if($i >= count($calendar)){
+                      break;
+                    }
+                    echo $calendar[$i]['day'];
+                    if($j < 6){
+                      $i++;
+                    }
                   ?>
-                  <td>
-                    <?php
-                    $cnt++;
-                    $bool = false;
-                    for($i=0;$i<count($holidays);$i++){
-                      if($holidays[$i][2] == $value['day']){
-                        echo '<span style="color:red;">' . $value['day'] . '</span>';
-                        $bool = true;
-                        break;
-                      }
-                    }
-                    if($bool == false){
-                      echo $value['day'];
-                    }?>
-                    <br>
-                    <?php $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas ORDER BY id DESC');
-                    while($table = mysqli_fetch_assoc($recordSet)){
-                      if (htmlspecialchars($table['year']) == $y) {
-                        if(htmlspecialchars($table['month']) == $m){
-                          if(htmlspecialchars($table['day']) == $value['day']){
-                    ?>
-                    <a href="karendar_syousai.php?event=<?php echo htmlspecialchars($table['event']); ?> & detail=<?php echo htmlspecialchars($table['detail']);?>" onClick="document.kdetail.submit(); return false;">
-                      <?php echo htmlspecialchars($table['event']);?>
-                    </a>
-                    <?php
-                          }
-                        }
-                      }
-                    }
-                    ?>
-                  </td>
-                  <?php if ($cnt == 7): ?>
-                </tr>
-                <tr>
-                <?php
-                $cnt = 0;
-                endif;
-                endforeach;
-                ?>
-                </tr>
-              </table>
-            </div>
-          <?php }?>
-          </div>
-        </div>
+                </td>
+              <?php endfor; ?>
+            </tr>
+          <?php endfor; ?>
+        </table>
       </div>
       <script src="js/calendar-slide.js"></script>
       <div id="sirumoku">
@@ -152,7 +101,9 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
           </div>
           <div class="tab_link">
             <div class="center">
-              <a href="sirumoku-subscription.php"><span class="tab_link_inside">申し込みはこちら</span></a>
+              <a href="sirumoku-subscription.php">
+                <span class="tab_link_inside">申し込みはこちら</span>
+              </a>
             </div>
           </div>
         </div>
@@ -185,7 +136,7 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
         </div>
       </div>
     </div>
-    <?php require('top_of_career_center.html'); ?>
+    <?php require('top_of_career_center.php'); ?>
     <?php include('footer.php'); ?>
   </body>
 </html>
