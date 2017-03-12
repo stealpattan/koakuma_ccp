@@ -174,3 +174,8 @@ footer .copyright{
 	background-color: #2390de;
 	color: #fff;
 }
+
+/*home.phpのカレンダー部分で使う*/
+.calendar_content{
+	height: 100px;
+}
