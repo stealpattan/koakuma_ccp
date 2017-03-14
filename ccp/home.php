@@ -32,6 +32,10 @@ while($rec = mysqli_fetch_assoc($record2)){
 }
 $_SESSION['cal_event'] = $table;
 //以上
+
+$sql_date=sprintf('SELECT * FROM `sirumoku_data` WHERE 1');
+$record_date=mysqli_query($db,$sql_date);
+$deadline=date('Y-m-d', strtotime("+3 day"));
 ?>
 <!DOCTYPE html>
 <html>
@@ -190,8 +194,47 @@ $_SESSION['cal_event'] = $table;
               <th class="s_data_time">時間</th>
               <th class="s_data_name">企業名</th>
             </tr>
+            <?php
+              while($table_date=mysqli_fetch_assoc($record_date)){
+                if($table_date['date'] > $deadline){
+                  //開催日
+                  $array = explode("-", $table_date['date']);
+                  $str1 = str_split($array[1]);
+                  $str2 = str_split($array[2]);
+                  if($str1[0] == 0){
+                    $str1[0] = '';
+                  }
+                  if($str2[0] == 0){
+                    $str2[0] = '';
+                  }
+                  $str1=$str1[0].$str1[1];
+                  $str2=$str2[0].$str2[1];
+                  $date_time=$array[0]."/".$str1."/".$str2;
+
+                  //開始時間
+                  $table_st_data=$table_date['start-time'];
+                  $array = explode(":", $table_st_data);
+                  $data_start=$array[0].":".$array[1];
+
+                  //終了時間
+                  $table_ft_data=$table_date['finish-time'];
+                  $array = explode(":", $table_ft_data);
+                  $data_finish=$array[0].":".$array[1];
+
+                  //会社名
+                  $table_company_data=$table_date['name_company'];
+                  $array = explode(",", $table_company_data);
+            ?>
+            <tr>
+              <th class="table_data_date"><?php echo htmlspecialchars($date_time); ?></th>
+              <th class="table_data_time"><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></th>
+              <th><?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?></th>
+            </tr>
+            <?php
+              }
+            }
+            ?>
           </table>
-          <h1>本年度のシルモクは終了しました</h1>
         </div>
         <div class="s_past">
           <span><a href="sirumoku.php">過去のシルモクをみる</a></span>
