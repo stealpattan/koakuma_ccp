@@ -47,6 +47,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/sirumoku.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
@@ -188,7 +189,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
           </p>
         </div>
         <div class="sirumoku_datas">
-          <table>
+          <table class="table table-bordered table-striped trhover">
             <tr class="s_data_list">
               <th class="s_data_day">開催日</th>
               <th class="s_data_time">時間</th>
