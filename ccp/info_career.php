@@ -2,8 +2,6 @@
 require('dbconnect.php');
 require('function.php');
 
-$out_of_university = ip_tracer();
-
 $department_name = array();
 $selected_depart_name = array();
 $people_number = array();
@@ -89,7 +87,7 @@ if (isset($_POST['department_id']) && $_POST['department_id'] != 0) {
     <!-- ヘッダー -->
     <?php require("header.php"); ?>
     <!-- コンテンツ -->
-    <?php if($out_of_university == false): ?>
+    <?php if(ip_tracer() == true): ?>
       <script type="text/javascript">
         function move_to_intern_page(job_alpha){
           var str = "intern.php?business_type=" + job_alpha;
