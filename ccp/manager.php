@@ -11,6 +11,10 @@
 	if(!empty($_GET['page_type']) && isset($_GET['page_type'])){
 		//新着情報の追加・更新の場合以下の比較処理がされます
 		if($_GET['page_type'] == "new_event"){
+			//新着情報の追加・更新画面に表示する’最近の更新’のデータを取得しています
+			$sql = sprintf("SELECT * FROM `news` WHERE 1 ORDER BY created DESC LIMIT 1");
+			$rec = mysqli_query($db, $sql) or die(mysqli_error($db));
+			$recent_news = mysqli_fetch_assoc($rec);
 			if(!empty($_POST) && isset($_POST)){
 				if($_POST['event_title'] == '' || $_POST['event_title'] == null){
 					$error_array['title_error'] = true;
@@ -43,12 +47,24 @@
 				}
 			}	
 		}
-		
+		else if($_GET['page_type'] == 'sirumoku'){
+			$sirumoku_data = array();
+			$sql = sprintf('SELECT * FROM `sirumoku_data` WHERE 1');
+			$record = mysqli_query($db,$sql) or die(mysqli_error($db));
+			while($rec = mysqli_fetch_assoc($record)){
+				$sirumoku_data[] = $rec;
+			}
+			$sql = sprintf('SELECT event_date,COUNT(student_number) FROM `sirumoku_entry` GROUP BY event_date');
+			$record = mysqli_query($db,$sql) or die(mysqli_error($db));
+			$total = array();
+			while($rec = mysqli_fetch_assoc($record)){
+				$total[] = $rec;
+			}
+			$sql = sprintf('SELECT COUNT(id) FROM `sirumoku_entry`');
+			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
+			$sum = mysqli_fetch_assoc($record);
+		}
 	}
-	//新着情報の追加・更新画面に表示する’最近の更新’のデータを取得しています
-	$sql = sprintf("SELECT * FROM `news` WHERE 1 ORDER BY created DESC LIMIT 1");
-	$rec = mysqli_query($db, $sql) or die(mysqli_error($db));
-	$recent_news = mysqli_fetch_assoc($rec);
 	//新着情報追加・更新の際にエラーが発見されると以下が処理されます。
 	function find_error($error_content){
 		$_SESSION['event'] = $_POST;
@@ -96,24 +112,44 @@
 			</div>
 		<?php endif; ?>
 		<!-- 管理者画面トップページはここまで -->
-
 		<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
 			<!-- シルモクデータ表示 -->
 			<?php if($_GET['page_type'] == 'sirumoku'): ?>
-				<table width='70%' class='manager'>
-					<tr>
-						<th>開催日</th>
-						<th>時間</th>
-						<th>エントリー企業様</th>
-						<th>申し込み総数</th>
-					</tr>
-					<tr>
-						<td>7/5</td>
-						<td>15:00</td>
-						<td>ホゲホゲ</td>
-						<td>60名</td>
-					</tr>
-				</table>
+				<div class=''>
+					<table width='70%' class='manager'>
+						<tr>
+							<th>開催日</th>
+							<th>時間</th>
+							<th>エントリー企業様</th>
+							<th>申し込み総数</th>
+						</tr>
+						<?php foreach($sirumoku_data as $sirumoku_data): ?>
+							<tr>
+								<td><?php echo $sirumoku_data['date']; ?></td>
+								<td><?php echo $sirumoku_data['start-time']; ?>~<?php echo $sirumoku_data['finish-time']; ?></td>
+								<td><?php echo $sirumoku_data['name_company']; ?></td>
+								<td>
+									<?php 
+										for ($i=0; $i < count($total); $i++) { 
+											if($total[$i]['event_date'] == $sirumoku_data['date']){
+												echo $total[$i]['COUNT(student_number)'];
+											}
+										}
+									?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+						<tr>
+							<th>開催日</th>
+							<th>時間</th>
+							<th style='text-align:right;'>合計</th>
+							<th><?php echo $sum['COUNT(id)']; ?></th>
+						</tr>
+					</table>
+					<div style='width:30%;' class='manager'>
+						<a href="manager.php"> <-管理者画面へ </a>
+					</div>
+				</div>
 			<?php endif; ?>
 			<!-- 以上シルモクデータ表示部分 -->
 
