@@ -80,6 +80,20 @@ table#table-02 td {
   border-radius: 20px;
   text-align: center;
 }
+.manager tr{
+  border-radius: 20px;
+}
+.manager th{
+  text-align: center;
+  border: 1px solid #6EB7DB;
+}
+.manager td{
+ text-align:center;
+ padding-top: 10px;
+ padding-bottom: 10px;
+ border: 1px solid #6EB7DB;
+}
+
 
 /*recruitment.phpのcss*/
 .borders{
