@@ -33,7 +33,7 @@
     mysqli_real_escape_string($db, $student_number),
     mysqli_real_escape_string($db, $opinion)
     );
-    mysqli_query($db, $sql_entry) or die(mysqli_error());
+    mysqli_query($db, $sql_entry) or die(mysqli_error($db));
     $sql_student = sprintf('INSERT INTO `student_datas` SET `student_name` = "%s",`department_id` = "%d", `student_number` = "%s", `sex` = "%s", `mail` = "%s", `prefecture_id` = "%d"',
     mysqli_real_escape_string($db, $name),
     mysqli_real_escape_string($db, $department),
@@ -42,7 +42,7 @@
     mysqli_real_escape_string($db, $email),
     mysqli_real_escape_string($db, $pref)
     );
-    mysqli_query($db, $sql_student) or die(mysqli_error());
+    mysqli_query($db, $sql_student) or die(mysqli_error($db));
     //$_SESSIONの情報を削除
     unset($_SESSION['join']);
     //thanks.phpへ遷移

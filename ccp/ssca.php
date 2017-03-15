@@ -23,7 +23,7 @@
     mysqli_real_escape_string($db, $student_number),
     mysqli_real_escape_string($db, $opinion)
     );
-    mysqli_query($db, $sql) or die(mysqli_error());
+    mysqli_query($db, $sql) or die(mysqli_error($db));
     //$_SESSIONの情報を削除
     unset($_SESSION['join']);
     //thanks.phpへ遷移
