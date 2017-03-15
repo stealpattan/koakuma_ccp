@@ -8,40 +8,48 @@
 	$error_array['date_error'] = false;
 	$error_array['detail_error'] = false;
 
-	if(!empty($_POST) && isset($_POST)){
-		if($_POST['event_title'] == '' || $_POST['event_title'] == null){
-			$error_array['title_error'] = true;
+	if(!empty($_GET['page_type']) && isset($_GET['page_type'])){
+		//新着情報の追加・更新の場合以下の比較処理がされます
+		if($_GET['page_type'] == "new_event"){
+			if(!empty($_POST) && isset($_POST)){
+				if($_POST['event_title'] == '' || $_POST['event_title'] == null){
+					$error_array['title_error'] = true;
+				}
+				if($_POST['month'] == '' || $_POST['month'] == null || $_POST['month'] < 1 || $_POST['month'] > 12 || $_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] < 1 || $_POST['day'] > 31){
+					$error_array['date_error'] = true;
+				}
+				if($_POST['time_detail'] == '' || $_POST['time_detail'] == null){
+					$error_array['detail_error'] = true;
+				}
+				if($error_array['title_error'] == true || $error_array['date_error'] == true || $error_array['detail_error'] == true){
+					find_error($error_array);
+				}
+				else{
+					$_SESSION['regest_event'] = $_POST;
+					$alert = sprintf('<script type="text/javascript">
+											if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n対象学年: %s")){
+												location.href = "manager.php?page_type=regestration";
+											}
+											else{
+												history.back();
+											}
+										</script>',
+										$_POST['event_title'],$_POST['month'],
+										$_POST['day'],$_POST['time_detail'],
+										$_POST['comment'],$_POST['event_type'],
+										$_POST['target']
+									);
+					echo $alert;
+				}
+			}	
 		}
-		if($_POST['month'] == '' || $_POST['month'] == null || $_POST['month'] < 1 || $_POST['month'] > 12 || $_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] < 1 || $_POST['day'] > 31){
-			$error_array['date_error'] = true;
-		}
-		if($_POST['time_detail'] == '' || $_POST['time_detail'] == null){
-			$error_array['detail_error'] = true;
-		}
-		if($error_array['title_error'] == true || $error_array['date_error'] == true || $error_array['detail_error'] == true){
-			find_error($error_array);
-		}
-		else{
-			$_SESSION['regest_event'] = $_POST;
-			$alert = sprintf('<script type="text/javascript">
-													if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n対象学年: %s")){
-														location.href = "manager.php?page_type=regestration";
-													}
-													else{
-														history.back();
-													}
-												</script>',$_POST['event_title'],$_POST['month'],
-																		$_POST['day'],$_POST['time_detail'],
-																		$_POST['comment'],$_POST['event_type'],
-																		$_POST['target']);
-			echo $alert;
-		}
+		
 	}
-
+	//新着情報の追加・更新画面に表示する’最近の更新’のデータを取得しています
 	$sql = sprintf("SELECT * FROM `news` WHERE 1 ORDER BY created DESC LIMIT 1");
 	$rec = mysqli_query($db, $sql) or die(mysqli_error($db));
 	$recent_news = mysqli_fetch_assoc($rec);
-
+	//新着情報追加・更新の際にエラーが発見されると以下が処理されます。
 	function find_error($error_content){
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
@@ -73,7 +81,7 @@
 				<h5>ようこそ<?php echo "管理者"; ?>様</h5>
 			</div>
 			<div class="manager_page">
-				<a href="" style='text-decoration:none'>
+				<a href="manager.php?page_type=sirumoku" style='text-decoration:none'>
 					<div class='manager manager_contents'>
 						<h2>シルモク管理用ページ</h2>
 						<p>シルモクに関する変更、情報の閲覧を行います</p>
@@ -90,9 +98,25 @@
 		<!-- 管理者画面トップページはここまで -->
 
 		<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
+			<!-- シルモクデータ表示 -->
 			<?php if($_GET['page_type'] == 'sirumoku'): ?>
-				<!-- シルモクのデータを表示する場所 -->
+				<table width='70%' class='manager'>
+					<tr>
+						<th>開催日</th>
+						<th>時間</th>
+						<th>エントリー企業様</th>
+						<th>申し込み総数</th>
+					</tr>
+					<tr>
+						<td>7/5</td>
+						<td>15:00</td>
+						<td>ホゲホゲ</td>
+						<td>60名</td>
+					</tr>
+				</table>
 			<?php endif; ?>
+			<!-- 以上シルモクデータ表示部分 -->
+
 			<!-- 以下新着情報の更新画面 -->
 			<?php if($_GET['page_type'] == 'new_event'): ?>
 				<!-- エラー発覚の際にここが処理されます -->
