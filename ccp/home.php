@@ -11,7 +11,6 @@ if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
 
 // 以下カレンダー表示に必要な部分
 if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
-  echo "check";
   $year = (int)date('Y');
   $month = (int)date('m') - (int)$_GET['calendar'];
   while($month <= 0){
@@ -19,7 +18,7 @@ if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
     $year = $year - 1;
   }
   while($month >= 13){
-    $month = 1 + ($month - 12);
+    $month = 0 + ($month - 12);
     $year = $year + 1;
   }
 }
