@@ -190,3 +190,14 @@ footer .copyright{
 .cal_button:hover{
 	background-color: #cbe6f3;
 }
+.nav-menu{
+	text-align: center;
+	width: 100%;
+}
+.header_style{
+	display: inline-block;
+	width: 30%;
+	text-align: center;
+	font-size: 150%;
+	padding-bottom: 3px
+}
