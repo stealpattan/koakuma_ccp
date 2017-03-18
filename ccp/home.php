@@ -52,11 +52,11 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
   <body>
     <?php require("header.php"); ?>
     <div class="contents">
-      <div class="tabs">
+      <div class='jump_tab'>
         <ul>
-          <li><a href="#information">新着情報</a></li>
-          <li><a href="#calendar">スケジュール</a></li>
-          <li><a href="#sirumoku">シルモク</a></li>
+          <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
+          <a href="#calendar"><div class='jump_button'style='font-size:100%;'>スケジュール</div></a>
+          <a href="#sirumoku"><div class='jump_button'style='font-size:100%;'>シルモク</div></a>
         </ul>
       </div>
       <div id="information">

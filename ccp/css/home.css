@@ -307,3 +307,26 @@ tr.days td{
   text-decoration: none;
   color: #333;
 }
+.jump_tab{
+  width:100%;
+  text-align: center;
+}
+.jump_button{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  text-decoration:none;
+  text-align:center;
+  color: black;
+  display: inline-block;
+  width: 30%;
+}
+.jump_button:hover{
+  background-color: black;
+  color: white;
+}
+.jump_button a:hover{
+  color: white;
+  text-decoration: none;
+}
