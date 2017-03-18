@@ -124,6 +124,7 @@ while($table = mysqli_fetch_assoc($recordSet)){
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/recruitment.css">
+    <link rel="stylesheet" type="text/css" href="css/intern.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <!-- .selectorのcheckboxを単一選択にする -->
     <script type="text/javascript">
@@ -155,7 +156,8 @@ while($table = mysqli_fetch_assoc($recordSet)){
       </div>
       <div class="clear"></div>
     </header>
-    <?php if(ip_tracer() == false): ?>
+
+    <?php if(ip_tracer() == true): ?>
       <div class="searchform">
         <form class="searchform_re" action="recruitment.php#result" method="post">
           <ul class="selector">
@@ -206,7 +208,7 @@ while($table = mysqli_fetch_assoc($recordSet)){
             <th class="address">所在地</th>
           </tr>
           <?php   foreach($dates as $date): ?>
-            <tr>
+            <tr class='borders'>
               <td class="company_name"><?php print(htmlspecialchars($date['company_name'])); ?></td>
               <td class="indust_type"><?php print(htmlspecialchars($date['indust_name'])); ?></td>
               <td class="address"><?php print(htmlspecialchars($date['location_name'])); ?></td>

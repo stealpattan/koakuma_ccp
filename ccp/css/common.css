@@ -2,7 +2,6 @@ body{
 	background-color: #fff;
 	width: 100%;
 	margin: 0 auto;
-	background-image: url(../img/material/bg_img.jpg);
 }
 header{
 	width: 80%;
@@ -78,33 +77,6 @@ li#info-career {
 	width: 80%;
 	margin: 0 auto;
 }
-.center{
-  text-align: center;
-}
-.b_border{
-  border-bottom: solid 2px #999;
-  width: 250px;
-  margin: 0 auto;
-  margin-bottom: 10px;
-}
-.ja_title,
-.en_title{
-  display: block;
-  padding-bottom: 10px;
-}
-/*新着情報*/
-p.contentsTitle{
-  display: inline;
-  font-size: 30px;
-  color: #333;
-  margin: 0;
-}
-p.b_contentsTitle{
-  color: #c3c3c3;
-  margin: 0;
-  display: inline;
-  overflow: auto;
-}
 /*footer部分*/
 /*footerのスタイル*/
 footer{
@@ -118,9 +90,6 @@ footer{
 .contacts{
 	background: #e5edf3;
 	color: #333;
-}
-.contacts span{
-	font-size: 13px;
 }
 .contact-inner{
 	width: 40%;
@@ -204,4 +173,20 @@ footer .copyright{
 	text-align: center;
 	background-color: #2390de;
 	color: #fff;
+}
+
+/*home.phpのカレンダー部分で使う*/
+.calendar_content{
+	height: 100px;
+}
+
+.cal_button{
+	width: 10%;
+	background-color: white;
+	color: black;
+	text-decoration: none;
+	border-radius: 20px;
+}
+.cal_button:hover{
+	background-color: #cbe6f3;
 }

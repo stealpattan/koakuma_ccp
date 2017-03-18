@@ -1,0 +1,67 @@
+.sirumoku_datas > table > tbody > tr > th.table_data_date,
+.sirumoku_datas > table > tbody > tr > th.table_data_time,
+.sirumoku_datas > table > tbody > tr > th.table_data_place{
+  padding-top: 2rem;
+}
+.sirumoku_datas > table > tbody > tr.s_data_list{
+  background-color: #2394ff;
+}
+.sirumoku_datas th{
+  text-align: center;
+}
+.table-striped>tbody>tr:nth-of-type(even){
+	background-color: #fff;
+}
+.table-striped>tbody>tr:nth-of-type(odd){
+  background-color: #e5edf3;
+}
+.table>tbody>tr>th{
+  padding: 4px;
+}
+.sub{
+  margin-top: 50px;
+  width: 80%;
+  margin: 0 auto;
+}
+.subs{
+  padding-top: 50px;
+  width: 60%;
+  margin: 0 auto;
+}
+.data-title{
+  padding-left: 16rem;
+}
+.data-content{
+  margin-left: 16rem;
+}
+.submit{
+  text-align: center;
+}
+.check{
+  margin-top: 50px;
+  width: 80%;
+  margin: 0 auto;
+}
+.thanks{
+  margin-top: 50px;
+  width: 80%;
+  margin: 0 auto;
+}
+.content-margin{
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.link-top{
+  text-align: center;
+}
+.well p{
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+.name, .student_number, .sex, .pref, .opinion{
+  margin-top: 20px;
+}
+p.error{
+  text-align: center;
+}

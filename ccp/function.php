@@ -18,8 +18,13 @@
   function ip_tracer(){
     $ip = $_SERVER['REMOTE_ADDR'];
     $ip = explode(".", $ip);
-    if($ip[0] != 100){
-      return true;
+    if($ip[0] == 133){
+      if($ip[1] == 55){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
     else{
       return false;

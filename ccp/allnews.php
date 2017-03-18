@@ -28,20 +28,16 @@ $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC');
     </header>
     <div class="contents">
       <div id="information">
-        <div class="b_border center">
-          <div class="ja_title">
-            <p class="contentsTitle">新着情報</p>
-          </div>
-          <div class="en_title">
-            <p class="b_contentsTitle">News</p>
-          </div>
+        <div class="center">
+          <p class="contentsTitle">新着情報</p>
+          <p class="b_contentsTitle">News</p>
         </div>
         <div class="info-content">
           <?php
           while ($table = mysqli_fetch_assoc($record)) {
           ?>
             <div class="info-topic">
-              <div class="info-date"><p><?php echo $table['year'], "/", $table['month'], "/", $table['day']; ?></p></div>
+              <div class="info-date"><p><?php echo $table['year']. "/". $table['month']. "/". $table['day']; ?></p></div>
               <div class="info-title"><p><?php echo htmlspecialchars($table['title']); ?></p></div>
             </div>
             <div class="info-tags">

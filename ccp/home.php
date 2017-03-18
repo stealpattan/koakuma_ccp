@@ -1,8 +1,54 @@
 <?php
+session_start();
+date_default_timezone_set("Asia/Tokyo");
 require('dbconnect.php');
-
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
-$recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
+require('calendar.php');
+if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
+  $year = (int)date('Y');
+  $month = (int)date('m');
+}
+
+// 以下カレンダー表示に必要な部分
+if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
+  echo "check";
+  $year = (int)date('Y');
+  $month = (int)date('m') - (int)$_GET['calendar'];
+  while($month <= 0){
+    $month = 12 + $month;
+    $year = $year - 1;
+  }
+  while($month >= 13){
+    $month = 1 + ($month - 12);
+    $year = $year + 1;
+  }
+}
+$calendar =  calendar($year, $month);
+$sql = sprintf('SELECT id,day,title,event_kind FROM news WHERE year="%s" AND month="%s"',$year,$month);
+$record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
+$table = array();
+while($rec = mysqli_fetch_assoc($record2)){
+  $table[] = $rec;
+}
+$_SESSION['cal_event'] = $table;
+//以上
+$date_y = date('Y');
+echo $date_y;
+$date_m = date('m');
+//$date_m = '11';
+echo $date_m;
+
+if($date_m >= '03' && $date_m < '09'){
+  $sql_date = sprintf('SELECT * FROM `sirumoku_data` WHERE sirumoku_data.date >= "%d-03-01" AND sirumoku_data.date < "%d-09-01"', $date_y, $date_y);
+  $record_date = mysqli_query($db, $sql_date);
+
+}else{
+  $sql_date = sprintf('SELECT * FROM `sirumoku_data` WHERE sirumoku_data.date >= "%d-09-01" AND sirumoku_data.date < "%d-03-01"', $date_y, $date_y+1);
+  $record_date = mysqli_query($db, $sql_date);
+}
+// $sql_date=sprintf('SELECT * FROM `sirumoku_data` WHERE 1');
+// $record_date=mysqli_query($db,$sql_date);
+$deadline=date('Y-m-d', strtotime("+3 day"));
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,13 +74,9 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
         </ul>
       </div>
       <div id="information">
-        <div class="b_border center">
-          <div class="ja_title">
-            <p class="contentsTitle">新着情報</p>
-          </div>
-          <div class="en_title">
-            <p class="b_contentsTitle">News</p>
-          </div>
+        <div class="center">
+          <p class="contentsTitle">新着情報</p>
+          <p class="b_contentsTitle">News</p>
         </div>
         <div class="info-content">
           <?php
@@ -57,107 +99,81 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
         </div>
       </div>
       <div id="calendar">
-        <div class="b_border center">
-          <div class="ja_title">
-            <p class="contentsTitle">スケジュール</p>
-          </div>
-          <div class="en_title">
-            <p class="b_contentsTitle">Schedule</p>
-          </div>
+        <div class="center">
+          <button class='cal_button' onclick='calendar_change(<?php
+                                              if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
+                                                echo $_GET["calendar"] + 1;
+                                              }
+                                              else{
+                                                echo 1;
+                                              }
+                                          ?>)'><</button>
+          <p class="contentsTitle">スケジュール</p>
+          <button class='cal_button' onclick='calendar_change(<?php
+                                              if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
+                                                echo $_GET["calendar"] - 1;
+                                              }
+                                              else{
+                                                echo -1;
+                                              }
+                                          ?>)'>></button>
+          <p><?php echo $year; ?>年<?php echo $month; ?>月</p>
+          <p class="b_contentsTitle">Schedule</p>
         </div>
-        <div class="slider">
-          <div class="slideSet">
-            <?php
-            for($x=-12;$x<13;$x++){
-              $y = date('Y',strtotime(date('Y-n-1').' +'.$x.' month'));
-              $m=date('n', strtotime(date('Y-n-1').' +'.$x.' month'));
-              require_once('calendar.php');
-            ?>
-            <div class="slide">
-              <h3>
-              <button id="funcAdd1" type="buttun" class="btn btn-default b-left" aria-label="Left Align" name="sengetu" >
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-              </button>
-              <span id="year"><?php echo $y ?>年</span><span id="month"><?php echo $m; ?>月</span>
-              <button id="funcAdd2" type="buttun" class="btn btn-default b-right" aria-label="Left Align" name="raigetu" onClick="nex()">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              </button>
-              </h3>
-              <table>
-                <tr>
-                  <th class="nitiyoubi">日</th>
-                  <th>月</th>
-                  <th>火</th>
-                  <th>水</th>
-                  <th>木</th>
-                  <th>金</th>
-                  <th class="doyoubi">土</th>
-                </tr>
-                <tr class="days">
+        <table>
+          <tr>
+            <th style='color:red;'>日</th>
+            <th>月</th>
+            <th>火</th>
+            <th>水</th>
+            <th>木</th>
+            <th>金</th>
+            <th style='color:blue;'>土</th>
+          </tr>
+          <?php for($i=0;$i<count($calendar);$i++): ?>
+            <tr>
+              <?php for($j=0;$j<7;$j++): ?>
+                <td class='calendar_content'>
                   <?php
-                  $holidays = ssp_holiday();
-                  ksort($holidays);//祝日の配列を降順にする
-                  $holidays = devide_holiday_data($holidays);
-                  $holidays = current_date($y,$m,$holidays);
-                  $cnt = 0;
-                  calendar($y,$m);
-                  foreach ($_SESSION['calendar'] as $key => $value):
+                    if($i >= count($calendar)){
+                      break;
+                    }
+                    echo $calendar[$i]['day'];
+                    echo "<br>";
+                    echo "<br>";
+                    foreach($_SESSION['cal_event'] as $cal_event){
+                      if($cal_event['day'] == $calendar[$i]['day']){
+                        echo "<a style='text-decoration:none;' href=''>";
+                        echo $cal_event['title'];
+                        echo "</a>";
+                      }
+                    }
+                    if($j < 6){
+                      $i++;
+                    }
                   ?>
-                  <td>
-                    <?php
-                    $cnt++;
-                    $bool = false;
-                    for($i=0;$i<count($holidays);$i++){
-                      if($holidays[$i][2] == $value['day']){
-                        echo '<span style="color:red;">' . $value['day'] . '</span>';
-                        $bool = true;
-                        break;
-                      }
-                    }
-                    if($bool == false){
-                      echo $value['day'];
-                    }?>
-                    <br>
-                    <?php $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas ORDER BY id DESC');
-                    while($table = mysqli_fetch_assoc($recordSet)){
-                      if (htmlspecialchars($table['year']) == $y) {
-                        if(htmlspecialchars($table['month']) == $m){
-                          if(htmlspecialchars($table['day']) == $value['day']){
-                    ?>
-                    <a href="karendar_syousai.php?event=<?php echo htmlspecialchars($table['event']); ?> & detail=<?php echo htmlspecialchars($table['detail']);?>" onClick="document.kdetail.submit(); return false;">
-                      <?php echo htmlspecialchars($table['event']);?>
-                    </a>
-                    <?php
-                          }
-                        }
-                      }
-                    }
-                    ?>
-                  </td>
-                  <?php if ($cnt == 7): ?>
-                </tr>
-                <tr>
-                <?php
-                $cnt = 0;
-                endif;
-                endforeach;
-                ?>
-                </tr>
-              </table>
-            </div>
-          <?php }?>
-          </div>
-        </div>
+                </td>
+              <?php endfor; ?>
+            </tr>
+          <?php endfor; ?>
+        </table>
       </div>
+      <script type="text/javascript">
+        function calendar_change(num){
+          if(num == 0){
+            var str = 'home.php';
+          }
+          else{
+            var str = "home.php?calendar=" + num;
+          }
+          document.location = str;
+        }
+      </script>
       <script src="js/calendar-slide.js"></script>
       <div id="sirumoku">
-        <div class="b_border center">
-          <div class="ja_title">
-            <p class="contentsTitle">シルモク</p>
-          </div>
-          <div class="en_title">
-            <p class="b_contentsTitle">企業を知る木曜日</p>
-          </div>
+        <div class="center">
+          <p class="contentsTitle">シルモク</p>
+          <p class="b_contentsTitle">企業を知る木曜日</p>
         </div>
         <div class="image">
           <div class="sirumoku-image">
@@ -165,7 +181,9 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
           </div>
           <div class="tab_link">
             <div class="center">
-              <a href="sirumoku-subscription.php"><span class="tab_link_inside">申し込みはこちら</span></a>
+              <a href="sirumoku-subscription.php">
+                <span class="tab_link_inside">申し込みはこちら</span>
+              </a>
             </div>
           </div>
         </div>
@@ -184,21 +202,60 @@ $recordSet=mysqli_query($db, 'SELECT * FROM calendar_datas');
           </p>
         </div>
         <div class="sirumoku_datas">
-          <table>
+          <table class="table table-bordered table-striped trhover">
             <tr class="s_data_list">
               <th class="s_data_day">開催日</th>
               <th class="s_data_time">時間</th>
               <th class="s_data_name">企業名</th>
             </tr>
+            <?php
+              while($table_date=mysqli_fetch_assoc($record_date)){
+                //if($table_date['date'] > $deadline){
+                  //開催日
+                  $array = explode("-", $table_date['date']);
+                  $str1 = str_split($array[1]);
+                  $str2 = str_split($array[2]);
+                  if($str1[0] == 0){
+                    $str1[0] = '';
+                  }
+                  if($str2[0] == 0){
+                    $str2[0] = '';
+                  }
+                  $str1=$str1[0].$str1[1];
+                  $str2=$str2[0].$str2[1];
+                  $date_time=$array[0]."/".$str1."/".$str2;
+
+                  //開始時間
+                  $table_st_data=$table_date['start-time'];
+                  $array = explode(":", $table_st_data);
+                  $data_start=$array[0].":".$array[1];
+
+                  //終了時間
+                  $table_ft_data=$table_date['finish-time'];
+                  $array = explode(":", $table_ft_data);
+                  $data_finish=$array[0].":".$array[1];
+
+                  //会社名
+                  $table_company_data=$table_date['name_company'];
+                  $array = explode(",", $table_company_data);
+            ?>
+            <tr>
+              <th class="table_data_date"><?php echo htmlspecialchars($date_time); ?></th>
+              <th class="table_data_time"><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></th>
+              <th><?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?></th>
+            </tr>
+            <?php
+              //}
+            }
+            ?>
           </table>
-          <h1>本年度のシルモクは終了しました</h1>
         </div>
         <div class="s_past">
           <span><a href="sirumoku.php">過去のシルモクをみる</a></span>
         </div>
       </div>
     </div>
-    <?php require('top_of_career_center.html'); ?>
+    <?php require('top_of_career_center.php'); ?>
     <?php include('footer.php'); ?>
   </body>
 </html>
