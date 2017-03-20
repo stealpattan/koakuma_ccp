@@ -30,4 +30,37 @@
       return false;
     }
   }
+
+  function log_in($user_name,$pass){
+    require('dbconnect.php');
+    $sql = sprintf('SELECT * FROM `managers` WHERE 1');
+    $record = mysqli_query($db,$sql) or die(mysqli_error($db));
+    $manager_data = array();
+    while($rec = mysqli_fetch_assoc($record)){
+      $manager_data[] = $rec;
+    }
+    foreach($manager_data as $m){
+      if($m['user_name'] == $user_name){
+        if($m['password'] == $pass){
+          return true;
+        }
+        else{
+          return false;
+        }
+      }
+    }
+  }
+
+  function login_checker(){
+    if(empty($_SESSION['manager_login']) && !isset($_SESSION['manager_login'])){
+      header('location:manager.php?page_type=log_in');
+      exit();
+    }
+    else{
+      if($_SESSION['manager_login'] != true){
+        header('location:manager.php?page_type=log_in');
+        exit();
+      }
+    } 
+  }
 ?>

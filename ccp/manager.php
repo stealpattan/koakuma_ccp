@@ -1,8 +1,18 @@
 <?php
 	session_start();
 	date_default_timezone_set('Asia/Tokyo');
+
 	require('dbconnect.php');
 	require('function.php');
+	if(!empty($_POST) && isset($_POST)){
+		if(!empty($_POST['user_name']) && isset($_POST['user_name'])){
+			if(!empty($_POST['pass']) && isset($_POST['pass'])){
+				if(log_in($_POST['user_name'], $_POST['pass']) == true){
+					$_SESSION['manager_login'] = true;
+				}
+			}
+		}
+	}
 
 	$error_array = array();
 	$error_array['title_error'] = false;
@@ -89,9 +99,11 @@
 	</head>
 	<body>
 		<?php require("header.php"); ?>
-		<?php if(ip_tracer() == true): ?>
+		<!-- 以下学内専用ページ部 -->
+		<?php if(1): ?>
 			<!-- 管理者画面トップページ -->
 			<?php if(empty($_GET['page_type']) && !isset($_GET['page_type'])): ?>
+				<?php login_checker(); ?>
 				<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 				<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 				<div class='manager manager_page'>
@@ -110,12 +122,16 @@
 							<p>様々な新着情報の更新を行います</p>
 						</div>
 					</a>
+					<div style='width:30%;text-align:left;'>
+						<a href="manager.php?page_type=log_out">ログアウト</a>
+					</div>
 				</div>
 			<?php endif; ?>
 			<!-- 管理者画面トップページはここまで -->
 			<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
 				<!-- シルモクデータ表示 -->
 				<?php if($_GET['page_type'] == 'sirumoku'): ?>
+					<?php login_checker(); ?>
 					<div class=''>
 						<table width='70%' class='manager'>
 							<tr>
@@ -156,6 +172,7 @@
 
 				<!-- 以下新着情報の更新画面 -->
 				<?php if($_GET['page_type'] == 'new_event'): ?>
+					<?php login_checker(); ?>
 					<!-- エラー発覚の際にここが処理されます -->
 					<?php if(!empty($_GET['error']) && isset($_GET['error'])): ?>
 						<div style='width:60%;' class='manager'>
@@ -290,6 +307,37 @@
 					<!-- 以上新着情報コンテンツ部 -->
 				<?php endif; ?>
 				<!-- 以上新着情報更新部 -->
+
+				<!-- 以下ログイン部 -->
+				<?php if($_GET['page_type'] == "log_in"): ?>
+					<div style='width:70%' class='manager'>
+						<h1>ユーザログインページ</h1>
+						<p>以下の項目を入力の上、ログインボタンを押してください</p>
+						<form method='post' action='manager.php'>
+							<dl>
+								<dt>ユーザネーム</dt>
+								<dd><input type='text' name='user_name'></dd>
+								<dt>パスワード</dt>
+								<dd><input type='password' name='pass'></dd>
+								<input type='submit' value='ログイン'>
+							</dl>
+						</form>
+					</div>
+				<?php endif; ?>
+				<!-- 以上ログイン部 -->
+
+				<!-- 以下ログアウト部 -->
+				<?php if($_GET['page_type'] == "log_out"): ?>
+					<?php 
+						login_checker();
+						$_SESSION['manager_login'] = false;
+						header('location:manager.php');
+						exit();
+					?>
+				<?php endif; ?>
+				<!-- 以上ログアウト部 -->
+
+				<!-- 以下情報登録部 -->
 				<?php if($_GET['page_type'] == "regestration"): ?>
 					<?php 
 						$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`text`,`event_kind`,`target`,`created`)
@@ -303,7 +351,9 @@
 						exit();
 					?>
 				<?php endif; ?>
+				<!-- 以上情報登録部 -->
 			<?php endif; ?>
+			<!-- 学内専用ページ部 -->
 		<?php else: ?>
 			<h1 style='width:70%;' class='manager'>学外からのアクセスを制限しています。申し訳ありません</h1>
 		<?php endif; ?>
