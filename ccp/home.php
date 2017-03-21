@@ -31,10 +31,6 @@ while($rec = mysqli_fetch_assoc($record2)){
   $table[] = $rec;
 }
 $_SESSION['cal_event'] = $table;
-print_r($table);
-print_r($table[0]['event_kind']);
-echo "<br>";
-print_r($_SESSION['cal_event'][0]);
 //以上
 $date_y = date('Y');
 $date_m = date('m');
