@@ -31,12 +31,13 @@ while($rec = mysqli_fetch_assoc($record2)){
   $table[] = $rec;
 }
 $_SESSION['cal_event'] = $table;
+print_r($table);
+print_r($table[0]['event_kind']);
+echo "<br>";
+print_r($_SESSION['cal_event'][0]);
 //以上
 $date_y = date('Y');
-echo $date_y;
 $date_m = date('m');
-//$date_m = '11';
-echo $date_m;
 
 if($date_m >= '03' && $date_m < '09'){
   $sql_date = sprintf('SELECT * FROM `sirumoku_data` WHERE sirumoku_data.date >= "%d-03-01" AND sirumoku_data.date < "%d-09-01"', $date_y, $date_y);
@@ -143,9 +144,12 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
-                        echo "<a style='text-decoration:none;' href=''>";
-                        echo $cal_event['title'];
-                        echo "</a>";
+                        if($cal_event['event_kind'] != "報告書"){
+                          echo "<a style='text-decoration:none; font-size:10px;' href=''>";
+                          echo $cal_event['title'];
+                          echo "</a>";
+                          echo "<br>";
+                        }
                       }
                     }
                     if($j < 6){
