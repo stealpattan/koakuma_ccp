@@ -14,6 +14,10 @@
 		}
 	}
 
+	echo "<pre>";
+	var_dump($_SESSION);
+	echo "</pre>";
+
 	$error_array = array();
 	$error_array['title_error'] = false;
 	$error_array['date_error'] = false;
@@ -74,6 +78,80 @@
 			$sql = sprintf('SELECT COUNT(id) FROM `sirumoku_entry`');
 			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
 			$sum = mysqli_fetch_assoc($record);
+			if(!empty($_POST) && isset($_POST)){
+				if($_POST['year'] == '' || $_POST['year'] == null ||
+					$_POST['month'] == '' || $_POST['month'] == null || $_POST['month'] > 12 || $_POST['month'] < 1 ||
+					$_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] > 31 || $_POST['day'] < 1)
+				{
+					$error_content['date_error'] = true;
+				}
+				if($_POST['place'] == '' || $_POST['place'] == null){
+					$error_content['place_error'] = true;
+				}
+				if($_POST['com_1'] == '' || $_POST['com_1'] == null || $_POST['com_2'] == '' || $_POST['com_2'] == null){
+					$error_content['com_error'] = true;
+				}
+				if($_POST['number_people'] == '' || $_POST['number_people'] == null){
+					$error_content['number_people_error'] = true;
+				}
+				if($_POST['department_1'] == $_POST['department_2']){
+					$errot_content['department_error'] = true;
+				}
+				if($error_content['date_error'] == true || 
+					$error_content['place_error'] == true || 
+					$error_content['com_error'] == true || 
+					$error_content['number_people_error'] == true || 
+					$error_content['department_error'] == true)
+				{
+					sirumoku_registration_error($error_content);
+				}
+				else{
+					$_SESSION['regist_sirumoku'] = $_POST;
+					$alert = sprintf('<script type="text/javascript">
+											if(window.confirm("登録内容をご確認ください\n\n日付: %s 年 %s 月 %s 日\n開催時間: %s \n開催場所: %s \n参加企業様: %s,%s \n定員: %s \n対象学科: %s,%s")){
+												location.href = "manager.php?page_type=sirumoku";
+											}
+											else{
+												history.back();
+											}
+										</script>',
+										$_POST['year'],$_POST['month'],$_POST['day'],
+										$_POST['time'],
+										$_POST['place'],
+										$_POST['com_1'],$_POST['com_2'],
+										$_POST['number_people'],
+										$_POST['department_1'],$_POST['department_2']
+									);
+					echo $alert;
+				}
+			}
+			else if(!empty($_SESSION['regist_sirumoku']) && isset($_SESSION['regist_sirumoku'])){
+				$year = $_SESSION['regist_sirumoku']['year'];
+				if((int)$_SESSION['regist_sirumoku']['month'] < 10){
+					$month = "0" . $_SESSION['regist_sirumoku']['month'];
+				}
+				else{
+					$month = $_SESSION['regist_sirumoku']['month'];
+				}
+				if((int)$_SESSION['regist_sirumoku']['day'] < 10){
+					$day = "0" . $_SESSION['regist_sirumoku']['day'];
+				}
+				else{
+					$day = $_SESSION['regist_sirumoku']['day'];
+				}
+				$date = sprintf('%s-%s-%s',$year,$month,$day);
+				$t = explode("~",$_SESSION['regist_sirumoku']['time']);
+				$place = $_SESSION['regist_sirumoku']['place'];
+				$number_people = $_SESSION['regist_sirumoku']['number_people'];
+				$name_company = sprintf('%s,%s',$_SESSION['regist_sirumoku']['com_1'],$_SESSION['regist_sirumoku']['com_2']);
+				$recommend = sprintf('[%s,%s]',$_SESSION['regist_sirumoku']['department_1'],$_SESSION['regist_sirumoku']['department_2']);
+				
+				$sql = sprintf('INSERT INTO `sirumoku_data`(`date`, `start-time`, `finish-time`, `place`, `number_people`, `name_company`, `recommend`)
+								VALUES("%s","%s","%s","%s","%s","%s","%s")', $date, $t[0], $t[1], $place, $number_people, $name_company, $recommend);
+				echo $sql;
+				mysqli_query($db,$sql) or die(mysqli_error($db));
+				$_SESSION['regist_sirumoku'] = array();
+			}
 		}
 	}
 	//新着情報追加・更新の際にエラーが発見されると以下が処理されます。
@@ -81,6 +159,9 @@
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
 		header('location:manager.php?page_type=new_event&error=exist');
+	}
+	function sirumoku_registration_error($error_content){
+
 	}
 ?>
 
@@ -129,6 +210,7 @@
 			<?php endif; ?>
 			<!-- 管理者画面トップページはここまで -->
 			<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
+				
 				<!-- シルモクデータ表示 -->
 				<?php if($_GET['page_type'] == 'sirumoku'): ?>
 					<?php login_checker(); ?>
@@ -145,7 +227,7 @@
 									<td><?php echo $sirumoku_data['date']; ?></td>
 									<td><?php echo $sirumoku_data['start-time']; ?>~<?php echo $sirumoku_data['finish-time']; ?></td>
 									<td><?php echo $sirumoku_data['name_company']; ?></td>
-									<td>
+									<td style='color:red;'>
 										<?php 
 											for ($i=0; $i < count($total); $i++) { 
 												if($total[$i]['event_date'] == $sirumoku_data['date']){
@@ -159,10 +241,53 @@
 							<tr>
 								<th>開催日</th>
 								<th>時間</th>
-								<th style='text-align:right;'>合計</th>
-								<th><?php echo $sum['COUNT(id)']; ?></th>
+								<th style='text-align:right;'>合計 </th>
+								<th style='color:red;'><?php echo $sum['COUNT(id)']; ?></th>
 							</tr>
 						</table>
+						<div style='width:70%;' class="manager">
+							<form class="" action="manager.php?page_type=sirumoku" method="post">
+								<p>開催日</p>
+									<input type='number' name='year' value='<?php echo (int)date("Y"); ?>'>年
+									<input type='number' name='month' min='1' max='12' value='<?php echo (int)date("m"); ?>'>月
+									<input type='number' name='day' min='1' max='31' value='<?php echo (int)date("d"); ?>'>日
+								<p>開催時間</p>
+								<select class="" name="time">
+									<option value="09:00~10:30">9:00 ~ 10:30</option>
+									<option value="10:40~12:10">10:40 ~ 12:10</option>
+									<option value="13:10~14:40">13:10 ~ 14:40</option>
+									<option value="14:50~16:20">14:50 ~ 16:20</option>
+								  	<option value="16:30~18:00">16:30 ~ 18:00</option>
+								</select>
+								<p>開催場所</p>
+								<input type="text" name="place">
+								<p>企業名</p>
+
+								<input type="text" name="com_1">
+								<input type="text" name="com_2">
+								<p>定員</p>
+								<input type="number" name="number_people">
+								<p>オススメの学科</p>
+								<select class="" name="department_1">
+									<option value="機械" >機械システム工学科</option>
+									<option value="知能" >知能デザイン工学科</option>
+									<option value="情報" >電子・情報工学科</option>
+									<option value="生物" >生物工学科</option>
+									<option value="環境" >環境工学科</option>
+									<option value="医薬品" >医薬品工学科</option>
+								</select>
+								<select class="" name="department_2">
+									<option value="機械" >機械システム工学科</option>
+									<option value="知能" >知能デザイン工学科</option>
+									<option value="情報" >電子・情報工学科</option>
+									<option value="生物" >生物工学科</option>
+									<option value="環境" >環境工学科</option>
+									<option value="医薬品" >医薬品工学科</option>
+								</select>
+								<br>
+                				<input type="submit" class="manager_contents" value="編集">
+              				</form>
+              			</div>
 						<div style='width:30%;' class='manager'>
 							<a href="manager.php"> <-管理者画面へ </a>
 						</div>
@@ -188,6 +313,7 @@
 						</div>
 					<?php endif; ?>
 					<!-- 以上エラー部 -->
+
 					<!-- 以下新着情報コンテンツ部 -->
 					<div class='new_event'>
 						<table class='arrange_rows'>
@@ -209,7 +335,7 @@
 												</dd>
 												<dt>日付：</dt>
 												<dd>
-													<input type='hidden' name='year' value='<?php echo (int)date('Y'); ?>'>
+													<input type='number' name='year' value='<?php echo (int)date('Y'); ?>'>年
 													<input type='number' name='month' min='1' max='12' value='<?php
 																												if(!empty($_GET["error"]) && isset($_GET["error"])){
 																													if($_SESSION["error"]["date_error"] == false){
@@ -257,6 +383,7 @@
 														<option>キャリア形成論</option>
 														<option>就職支援</option>
 														<option>その他お知らせ</option>
+														<option value='報告書'>報告書(カレンダーに表示されません)</option>
 													</select>
 												</dd>
 												<dt>対象学年</dt>
