@@ -199,7 +199,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
           <p>学内企業説明会</p>
           <p>富山県に関係のある企業の方にお越しいただき</p>
           <p>業務内容や自社製品について紹介していただきます。</p>
-          <p>シルモクの受付はキャリアカフェで行なっています。</p>
+          <p class="sub">シルモクの受付はキャリアカフェで行なっています。</p>
         </div>
         <div class="sirumoku_datas">
           <table class="table table-bordered table-striped trhover">
