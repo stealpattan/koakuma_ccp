@@ -210,9 +210,6 @@
 		echo $str;
 		echo "</h4>";
 	}
-	echo "<pre>";
-	var_dump($_SESSION['error']);
-	echo "</pre>";
 ?>
 
 <!DOCTYPE html>
