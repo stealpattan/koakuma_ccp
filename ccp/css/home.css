@@ -4,6 +4,13 @@
   overflow: auto;
   margin: 5% auto;
 }
+.top{
+  width: 100%;
+}
+.top img{
+  width: 100%;
+  height: auto;
+}
 .top-image{
   float: left;
   width: 40%;

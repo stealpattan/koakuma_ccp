@@ -52,6 +52,9 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
   <body>
     <?php require("header.php"); ?>
     <div class="contents">
+      <div class="top">
+        <img src="img/pic/tpu-image.jpg" alt="">
+      </div>
       <div class='jump_tab'>
         <ul>
           <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
@@ -86,7 +89,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
       </div>
       <div id="calendar">
         <div class="center">
-          <button class='cal_button' onclick='calendar_change(<?php 
+          <button class='cal_button' onclick='calendar_change(<?php
                                               if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
                                                 echo $_GET["calendar"] + 1;
                                               }
@@ -95,7 +98,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                                               }
                                           ?>)'><</button>
           <p class="contentsTitle">スケジュール</p>
-          <button class='cal_button' onclick='calendar_change(<?php 
+          <button class='cal_button' onclick='calendar_change(<?php
                                               if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
                                                 echo $_GET["calendar"] - 1;
                                               }
@@ -104,7 +107,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                                               }
                                           ?>)'>></button>
           <p><?php echo $year; ?>年<?php echo $month; ?>月</p>
-          <p class="b_contentsTitle">Schedule</p>          
+          <p class="b_contentsTitle">Schedule</p>
         </div>
         <table>
           <tr>
@@ -120,7 +123,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
             <tr>
               <?php for($j=0;$j<7;$j++): ?>
                 <td class='calendar_content'>
-                  <?php 
+                  <?php
                     if($i >= count($calendar)){
                       break;
                     }
