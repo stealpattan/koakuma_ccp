@@ -1,34 +1,34 @@
 /*home.php*/
 .top{
-  width: 80%;
-  overflow: auto;
-  margin: 5% auto;
-}
-.top{
   width: 100%;
 }
 .top img{
   width: 100%;
   height: auto;
 }
-.top-image{
+.introduce{
+  width: 80%;
+  overflow: auto;
+  margin: 5% auto;
+}
+.introduce-image{
   float: left;
   width: 40%;
   margin: 2rem;
 }
-.top-image-inner{
+.introduce-image-inner{
   width: 90%;
   margin: 0 auto;
 }
-.top-image img{
+.introduce-image img{
   width: 100%;
 }
-.top-introduction-title h1{
+.introduce-introduction-title h1{
   margin-top: 80px;
   margin-bottom: 15px;
   font-size: 2rem;
 }
-.top-introduction-title h4{
+.introduce-introduction-title h4{
   margin-bottom: 20px;
   font-size: 1.2rem;
   font-weight: bold;

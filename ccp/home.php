@@ -55,6 +55,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
       <div class="top">
         <img src="img/pic/tpu-image.jpg" alt="">
       </div>
+      <?php require('top_of_career_center.php'); ?>
       <div class='jump_tab'>
         <ul>
           <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
@@ -244,7 +245,6 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
         </div>
       </div>
     </div>
-    <?php require('top_of_career_center.php'); ?>
     <?php include('footer.php'); ?>
   </body>
 </html>
