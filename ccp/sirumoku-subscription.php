@@ -133,13 +133,14 @@ if(!empty($_POST)){
     <div class="contents">
       <div class="progress sub">
         <div class="one one-success-color"></div><div class="two two-success-color"></div><div class="three three-success-color"></div>
-        <div class="progress-bar progress-bar-success" style="width: 0%"></div>
-      </div>
+  			<div class="progress-bar progress-bar-success" style="width: 0%"></div>
+		  </div>
       <div class="sirumoku_datas">
         <table class="table table-bordered table-striped trhover">
           <tr class="s_data_list">
             <th class="s_data_day">開催日</th>
-            <th class="s_data_time">時間</th>
+            <th class="s_data_time">時間帯</th>
+            <th class="s_data_place">開催場所</th>
             <th class="s_data_name">企業名</th>
           </tr>
           <?php
@@ -172,12 +173,34 @@ if(!empty($_POST)){
               //会社名
               $table_company_data=$table_date['name_company'];
               $array = explode(",", $table_company_data);
+
+              //sirumoku_entryの各受付数を取得
+              $sql_entry=sprintf('SELECT COUNT(`event_date`) AS cnt FROM `sirumoku_entry` WHERE event_date = "%s"', $table_date['date']);
+              $record_entry=mysqli_query($db,$sql_entry);
+              $entry_number = mysqli_fetch_assoc($record_entry);
+              $cnt = $entry_number["cnt"];
+              $remain = $table_date['number_people'] - $cnt;
+              $errors['entry'] = '';
+              if($cnt == $table_date['number_people']){
+                $errors['entry'] = 'over';
+              }elseif($remain <= 5){
+                $errors['entry'] = 'warning';
+              }
           ?>
-              <tr>
-                <th class="table_data_date"><?php echo htmlspecialchars($date_time); ?></th>
-                <th class="table_data_time"><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></th>
-                <th><?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?></th>
-              </tr>
+          <tr>
+            <th class="table_data_date"><?php echo htmlspecialchars($date_time); ?></th>
+            <th class="table_data_time"><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></th>
+            <th class="table_data_place"><?php echo htmlspecialchars($table_date['place']) ?></th>
+            <th>
+              <p style="margin:0; font-size:10px;"><?php echo  htmlspecialchars($table_date['recommend']); ?></p>
+              <?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?>
+              <?php if (isset($errors['entry']) && $errors['entry'] == 'over' ) : ?>
+                <p class="error" style="color: red; font-size: 10px; margin: 0;">定員に達しました</p>
+              <?php elseif (isset($errors['entry']) && $errors['entry'] == 'warning') : ?>
+                <p class="error" style="color: red; font-size: 10px; margin: 0;">残り<?php echo $remain; ?>名で定員に達します</p>
+              <?php endif; ?>
+            </th>
+          </tr>
           <?php
             }
           }
@@ -193,10 +216,10 @@ if(!empty($_POST)){
           }
         }
       ?>
-      <div class="sub">
+      <div class="subs">
         <form id="form" action="sirumoku-subscription.php" method="post">
           <div class="date">
-            <label for="">開催日:</label><span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span><br>
+            <span class="data-title">開催日:　　</span>
             <select class="" name="date">
               <?php
               while($table_data=mysqli_fetch_assoc($record_data)){
@@ -216,33 +239,43 @@ if(!empty($_POST)){
                   //POST(submit)された値を$selectに取得
                   $select_date="";
                   if(isset($_POST['date']))$select_date=$_POST['date'];
+                  //sirumoku_entryの各受付数を取得
+                  $sql_entry=sprintf('SELECT COUNT(`event_date`) AS cnt FROM `sirumoku_entry` WHERE event_date = "%s"', $table_data['date']);
+                  $record_entry=mysqli_query($db,$sql_entry);
+                  $entry_number = mysqli_fetch_assoc($record_entry);
+                  $cnt = $entry_number["cnt"];
+                  if($cnt < $table_data['number_people']){
                   ?>
                   <option name="date" value="<?php print(htmlspecialchars($table_data['date'])); ?>" <?php if($select_date==$table_data['date']) echo 'selected'; ?>><?php echo htmlspecialchars($date_time); ?></option>
               <?php
+                  }
                 }
               }
               ?>
             </select>
+            <span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span>
           </div>
           <div class="personal">
             <div class="name">
-              <label for="">氏名:</label><span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span><br>
+              <span class="data-title">氏名:　　　</span>
               <input type="text" name="name" placeholder="氏名" value="<?php echo $name; ?>">
+              <span style="color: red; font-size: 10px; margin: 0; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span>
               <?php if (isset($errors['name']) && $errors['name'] == 'blank' ) : ?>
-                <span style="color: red; font-size: 10px; margin-top: 10px;">*&nbsp;氏名を入力してください</span>
+                <p class="error" style="color: red; font-size: 10px; margin: 0; margin-top: 10px;">*&nbsp;氏名を入力してください</p>
               <?php endif; ?>
             </div>
             <div class="student_number">
-              <label for="">学籍番号:</label><span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span><br>
+              <span class="data-title">学籍番号:　</span>
               <input type="text" name="student_number" placeholder="学籍番号" value="<?php echo $student_number; ?>">
+              <span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span>
               <?php if (isset($errors['student_number']) && $errors['student_number'] == 'blank' ) : ?>
-                <span style="color: red; font-size: 10px; margin-top: 10px;">*&nbsp;学籍番号を入力してください</span>
+                <p class="error" style="color: red; font-size: 10px; margin: 0; margin-top: 10px;">*&nbsp;学籍番号を入力してください</p>
               <?php elseif (isset($errors['student_number']) && $errors['student_number'] == 'length') : ?>
-                <span style="color: red; font-size: 10px; margin-top: 10px;">*&nbsp;学籍番号を正しく入力してください</span>
+                <p class="error" style="color: red; font-size: 10px; margin: 0; margin-top: 10px;">*&nbsp;学籍番号を正しく入力してください</p>
               <?php endif; ?>
             </div>
             <div class="sex">
-              <label for="">性別:</label><span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span><br>
+              <span class="data-title">性別:　　　</span>
               <select name="sex">
                 <?php
                 //POST(submit)された値を$selectに取得
@@ -251,26 +284,23 @@ if(!empty($_POST)){
                 <option name="sex" value="男" <?php if($select_sex=='男') echo 'selected'; ?>>男</option>
                 <option name="sex" value="女" <?php if($select_sex=='女') echo 'selected'; ?>>女</option>
               </select>
+              <span style="color: red; font-size: 10px; margin: 0; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span>
             </div>
             <div class="pref">
-              <label for="">出身:</label><span style="color: red; font-size: 10px; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span><br>
+              <span class="data-title">出身:　　　</span>
               <select class="prefecture" name="pref">
                 <?php while($table_pref=mysqli_fetch_assoc($record_pref)){
                   //POST(submit)された値を$selectに取得
                   $select_pref="";
                   if(isset($_POST['pref']))$select_pref=$_POST['pref']; ?>
-                  <option name="date" value="<?php print(htmlspecialchars($table_pref['prefecture_id'])); ?>" 
-                    <?php if($select_pref==$table_pref['prefecture_name']) echo 'selected'; 
-                    ?>>
-                    <?php print(htmlspecialchars($table_pref['prefecture_name'])); 
-                    ?>
-                  </option>
+                  <option name="date" value="<?php print(htmlspecialchars($table_pref['prefecture_id'])); ?>" <?php if($select_pref==$table_pref['prefecture_name']) echo 'selected'; ?>><?php print(htmlspecialchars($table_pref['prefecture_name'])); ?></option>
                 <?php } ?>
               </select>
+              <span style="color: red; font-size: 10px; margin: 0; margin-top: 10px;">&nbsp;&nbsp;*&nbsp;必須</span>
             </div>
             <div class="opinion">
-              <label for="">意見:</label><br>
-              <textarea name="opinion" rows="8" cols="80"><?php echo $opinion; ?></textarea>
+              <span class="data-title">意見:</span>
+              <textarea class="data-content" name="opinion" width="80px" rows="8" cols="40"><?php echo $opinion; ?></textarea>
             </div>
           </div>
           <div class="submit">
