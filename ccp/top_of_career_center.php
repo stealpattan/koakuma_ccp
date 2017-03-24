@@ -1,10 +1,10 @@
-<div class="top">
-  <div class="top-image">
-    <div class="top-image-inner">
-      <img src="img/pic/top-image.jpg" alt="">
+<div class="introduce">
+  <div class="introduce-image">
+    <div class="introduce-image-inner">
+      <img src="img/pic/introduce-image.jpg" alt="">
     </div>
   </div>
-  <div class="top-introduction-title">
+  <div class="introduce-introduction-title">
     <h1>キャリアセンター所長挨拶</h1>
     <h4>キャリアセンター長 医薬品工学科 教授 中島 範行</h4>
   </div>

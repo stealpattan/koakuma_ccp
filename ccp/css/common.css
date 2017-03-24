@@ -2,6 +2,7 @@ body{
 	background-color: #fff;
 	width: 100%;
 	margin: 0 auto;
+	background-image: url(../img/material/bg_img.jpg);
 }
 header{
 	width: 80%;

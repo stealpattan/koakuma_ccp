@@ -23,9 +23,6 @@
     $department = $_SESSION['join']['department'];
     $email = $_SESSION['join']['email'];
 
-    echo $department;
-
-
     //DBに会員情報を登録
     $sql_entry = sprintf('INSERT INTO `sirumoku_entry` SET `event_date` = "%s", `application_date` = "%s", `student_number` = "%s", `opinion` = "%s"',
     mysqli_real_escape_string($db, $date),
@@ -123,21 +120,23 @@
         <div class="one one-success-color"></div><div class="two two-success-color"></div><div class="three three-success-color"></div>
   			<div class="progress-bar progress-bar-success" style="width: 50%"></div>
 		  </div>
-      <div class="col-md-4 col-md-offset-4 content-margin">
+      <div class="col-md-6 col-md-offset-3 content-margin">
         <form method="post" action="" class="form-horizontal" role="form">
           <input type="hidden" name="action" value="submit">
-          <div class="well">ご登録内容をご確認ください。</div>
+          <div class="well"><p>ご登録内容をご確認ください。</p></div>
           <div class="sirumoku_datas">
-            <table class="table table-bordered table-striped trhover">
+            <table class="table table-striped trhover">
               <tr class="s_data_list">
                 <th class="s_data_day">開催日</th>
                 <th class="s_data_time">時間</th>
+                <th class="s_data_time">開催場所</th>
                 <th class="s_data_name">企業名</th>
               </tr>
               <tr>
                 <th class="table_data_date"><?php echo htmlspecialchars($date_time); ?></th>
                 <th class="table_data_time"><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></th>
-                <th><?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?></th>
+                <th class="table_data_place"><?php echo htmlspecialchars($sirumoku['place']) ?></th>
+                <th><p style="margin:0; font-size:10px;"><?php echo  htmlspecialchars($sirumoku['recommend']); ?></p><?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?></th>
               </tr>
             </table>
           </div>
