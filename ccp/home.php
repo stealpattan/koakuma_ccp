@@ -193,27 +193,13 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
           <div class="sirumoku-image">
             <img src="img/pic/sirumoku.jpg" alt="" />
           </div>
-          <div class="tab_link">
-            <div class="center">
-              <a href="sirumoku-subscription.php">
-                <span class="tab_link_inside">申し込みはこちら</span>
-              </a>
-            </div>
-          </div>
         </div>
         <div class="intro">
-          <p>
-            県内企業が自社の魅力・実力を学生に紹介する
-          </p>
-          <p>
-            学内企業説明会
-          </p>
-          <p class="intro_margin">
-            富山県に関係のある企業の方にお越しいただき
-          </p>
-          <p>
-            業務内容や自社製品について紹介していただきます。
-          </p>
+          <p>県内企業が自社の魅力・実力を学生に紹介する</p>
+          <p>学内企業説明会</p>
+          <p>富山県に関係のある企業の方にお越しいただき</p>
+          <p>業務内容や自社製品について紹介していただきます。</p>
+          <p>シルモクの受付はキャリアカフェで行なっています。</p>
         </div>
         <div class="sirumoku_datas">
           <table class="table table-bordered table-striped trhover">
@@ -250,19 +236,20 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
               $table_company_data=$data['name_company'];
               $array = explode(",", $table_company_data);
               //sirumoku_entryの各受付数を取得
-              $sql_entry=sprintf('SELECT COUNT(`event_date`) AS cnt FROM `sirumoku_entry` WHERE event_date = "%s"', $data['date']);
-              $record_entry=mysqli_query($db,$sql_entry);
-              $entry_number = mysqli_fetch_assoc($record_entry);
-              $cnt = $entry_number["cnt"];
-              $remain = $data['number_people'] - $cnt;
+              // $sql_entry=sprintf('SELECT COUNT(`event_date`) AS cnt FROM `sirumoku_entry` WHERE event_date = "%s"', $data['date']);
+              // $record_entry=mysqli_query($db,$sql_entry);
+              // $entry_number = mysqli_fetch_assoc($record_entry);
+              // $cnt = $entry_number["cnt"];
+              // $remain = $data['number_people'] - $cnt;
               $errors['entry'] = '';
               if($data['date'] < $deadline){
                 $errors['entry'] = 'deadline';
-              }elseif($cnt == $data['number_people']){
-                $errors['entry'] = 'over';
-              }elseif($remain <= 5){
-                $errors['entry'] = 'warning';
               }
+              // elseif($cnt == $data['number_people']){
+              //   $errors['entry'] = 'over';
+              // }elseif($remain <= 5){
+              //   $errors['entry'] = 'warning';
+              // }
               ?>
               <tr>
                 <?php if(!empty($errors['entry'])): ?>
@@ -279,10 +266,10 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                   <?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?>
                   <?php if (isset($errors['entry']) && $errors['entry'] == 'deadline' ) : ?>
                     <p class="error" style="color: red; font-size: 10px; margin: 0;">受付を終了しました</p>
-                  <?php elseif (isset($errors['entry']) && $errors['entry'] == 'over' ) : ?>
+                  <!-- <?php //elseif (isset($errors['entry']) && $errors['entry'] == 'over' ) : ?>
                     <p class="error" style="color: red; font-size: 10px; margin: 0;">定員に達しました</p>
-                  <?php elseif (isset($errors['entry']) && $errors['entry'] == 'warning') : ?>
-                    <p class="error" style="color: red; font-size: 10px; margin: 0;">残り<?php echo $remain; ?>名で定員に達します</p>
+                  <?php //elseif (isset($errors['entry']) && $errors['entry'] == 'warning') : ?>
+                    <p class="error" style="color: red; font-size: 10px; margin: 0;">残り<?php echo $remain; ?>名で定員に達します</p> -->
                   <?php endif; ?>
                 </th>
               </tr>

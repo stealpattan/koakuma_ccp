@@ -272,12 +272,15 @@ tr.days td{
 	-ms-box-sizing:border-box;
 	-o-box-sizing:border-box;
 }
+.intro{
+  margin-top: 3rem;
+}
 .intro p{
   font-size: 15px;
   text-align: center;
 }
-.intro .intro_margin{
-  margin-top: 10px;
+.sirumoku_datas{
+  margin-bottom: 3rem;
 }
 .sirumoku_datas table{
   width: 80%;
