@@ -148,7 +148,7 @@ while($table = mysqli_fetch_assoc($recordSet)){
         <form class="searchform_re" action="recruitment.php#result" method="post">
           <ul class="selector">
             <li><input type="checkbox" name="employment" class="select" value="10" checked>就職求人情報</li>
-            <li><input type="checkbox" name="intern" class="select" value="11">インターンシップ求人情報</li>
+            <li><input type="checkbox" name="intern" class="select" value="11">インターンシップ情報</li>
             <?php if($error['employment'] == 'blank'): ?>
               <li><p class="error">* どちらか選択してください</p></li>
             <?php else:
@@ -181,8 +181,8 @@ while($table = mysqli_fetch_assoc($recordSet)){
             <li><input type="checkbox" name="industryType[]" value="3000">その他</li>
           </ul>
           <div class="clear"></div>
-          <input class="submit btn btn-primary" type="submit" name="検索">
-          <input class="reset btn btn-warning" type="reset" name="リセット">
+          <input class="submit btn btn-primary" type="submit" value="検索">
+          <input class="reset btn btn-warning" type="reset" value="リセット">
         </form>
       </div>
       <div class="clear"></div>
