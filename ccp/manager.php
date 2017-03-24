@@ -4,7 +4,6 @@
 
 	require('dbconnect.php');
 	require('function.php');
-
 	// ユーザ認証部分
 	if(!empty($_POST) && isset($_POST)){
 		if(!empty($_POST['user_name']) && isset($_POST['user_name'])){
@@ -19,7 +18,6 @@
 	$error_array['title_error'] = false;
 	$error_array['date_error'] = false;
 	$error_array['detail_error'] = false;
-
 	if(!empty($_GET['page_type']) && isset($_GET['page_type'])){
 		//新着情報の追加・更新の場合以下の比較処理がされます
 		if($_GET['page_type'] == "new_event"){
@@ -38,7 +36,7 @@
 					$error_array['detail_error'] = true;
 				}
 				if($error_array['title_error'] == true || $error_array['date_error'] == true || $error_array['detail_error'] == true){
-					find_error($error_array);
+					newEvent_registration_error($error_array);
 				}
 				else{
 					$_SESSION['regest_event'] = $_POST;
@@ -59,7 +57,14 @@
 				}
 			}	
 		}
+		// シルモクページ部分
 		else if($_GET['page_type'] == 'sirumoku'){
+			if(!empty($_GET['delete']) && isset($_GET['delete'])){
+				$sql = sprintf("DELETE FROM `sirumoku_data` WHERE id='%s'",$_GET['delete']);
+				mysqli_query($db,$sql) or die(mysqli_error($db));
+				header('location:manager.php?page_type=sirumoku');
+				exit();
+			}
 			$sirumoku_data = array();
 			$sql = sprintf('SELECT * FROM `sirumoku_data` WHERE 1');
 			$record = mysqli_query($db,$sql) or die(mysqli_error($db));
@@ -75,6 +80,7 @@
 			$sql = sprintf('SELECT COUNT(id) FROM `sirumoku_entry`');
 			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
 			$sum = mysqli_fetch_assoc($record);
+			// シルモクページからのフォーム検出
 			if(!empty($_POST) && isset($_POST)){
 				// 未入力項目検出部分
 				if($_POST['year'] == '' || $_POST['year'] == null ||
@@ -95,6 +101,7 @@
 				if($_POST['department_1'] == $_POST['department_2']){
 					$errot_content['department_error'] = true;
 				}
+				// エラーによる再入力要求をします
 				if($error_content['date_error'] == true || 
 					$error_content['place_error'] == true || 
 					$error_content['com_error'] == true || 
@@ -103,10 +110,10 @@
 				{
 					sirumoku_registration_error($error_content);
 				}
-				// 確認用のポップアップを起動します
+				// エラーがなければ確認用のポップアップを起動します
 				else{
 					$_SESSION['regist_sirumoku'] = $_POST;
-					$alert = sprintf('<script type="text/javascript">
+					$alert = sprintf('  <script type="text/javascript">
 											if(window.confirm("登録内容をご確認ください\n\n日付: %s 年 %s 月 %s 日\n開催時間: %s \n開催場所: %s \n参加企業様: %s,%s \n定員: %s \n対象学科: %s,%s")){
 												location.href = "manager.php?page_type=sirumoku";
 											}
@@ -124,7 +131,7 @@
 					echo $alert;
 				}
 			}
-			// シルモクデータの更新部分
+			// シルモクデータの登録部分
 			else if(!empty($_SESSION['regist_sirumoku']) && isset($_SESSION['regist_sirumoku'])){
 				$year = $_SESSION['regist_sirumoku']['year'];
 				if((int)$_SESSION['regist_sirumoku']['month'] < 10){
@@ -146,22 +153,66 @@
 				$name_company = sprintf('%s,%s',$_SESSION['regist_sirumoku']['com_1'],$_SESSION['regist_sirumoku']['com_2']);
 				$recommend = sprintf('[%s、%s]',$_SESSION['regist_sirumoku']['department_1'],$_SESSION['regist_sirumoku']['department_2']);
 				
-				$sql = sprintf('INSERT INTO `sirumoku_data`(`date`, `start-time`, `finish-time`, `place`, `number_people`, `name_company`, `recommend`)
-								VALUES("%s","%s","%s","%s","%s","%s","%s")', $date, $t[0], $t[1], $place, $number_people, $name_company, $recommend);
+				if(!empty($_SESSION['update_id']) && isset($_SESSION['update_id'])){
+					if($_SESSION['update_data'] == true){
+						$sql = sprintf('UPDATE `sirumoku_data` SET `date`="%s", `start-time`="%s", `finish-time`="%s",`place`="%s",`number_people`="%s",`name_company`="%s",`recommend`="%s"
+										WHERE id=%s',
+										$date,
+										$t[0],$t[1],
+										$place,
+										$number_people,
+										$name_company,
+										$recommend,
+										$_SESSION['update_id']);
+					}
+				}
+				else{
+					$sql = sprintf('INSERT INTO `sirumoku_data`(`date`, `start-time`, `finish-time`, `place`, `number_people`, `name_company`, `recommend`)
+									VALUES("%s","%s","%s","%s","%s","%s","%s")', 
+									$date, 
+									$t[0], $t[1], 
+									$place, 
+									$number_people, 
+									$name_company, 
+									$recommend);
+				}
 				echo $sql;
 				mysqli_query($db,$sql) or die(mysqli_error($db));
 				$_SESSION['regist_sirumoku'] = array();
+				$_SESSION['update_id'] = "";
+				$_SESSION['update_data'] = "";
 				header('location:manager.php?page_type=sirumoku');
 				exit();
 			}
 		}
 	}
 	//新着情報追加・更新の際にエラーが発見されると以下が処理されます。
-	function find_error($error_content){
+	function newEvent_registration_error($error_content){
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
 		header('location:manager.php?page_type=new_event&error=exist');
+		exit();
 	}
+	function sirumoku_registration_error($error_content){
+		$_SESSION['sirumoku'] = $_POST;
+		$_SESSION['error'] = $error_content;
+		if(!empty($_SESSION['update_id']) && isset($_SESSION['update_id'])){
+			$location = sprintf('location:manager.php?page_type=sirumoku&rewrite=%s',$_SESSION['update_id']);
+		}
+		else{
+			$location = 'location:manager.php?page_type=sirumoku&rewrite=exist';
+		}
+		header($location);
+		exit();
+	}
+	function error_massage($str){
+		echo "<h4 class='manager' style='width:70%;color:red'>";
+		echo $str;
+		echo "</h4>";
+	}
+	echo "<pre>";
+	var_dump($_SESSION['error']);
+	echo "</pre>";
 ?>
 
 <!DOCTYPE html>
@@ -187,6 +238,7 @@
 				<?php if(!empty($_SESSION['cal_event']) && isset($_SESSION['cal_event'])){$_SESSION['cal_event'] = array();} ?>
 				<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 				<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
+				<?php if(!empty($_SESSION['sirumoku']) && isset($_SESSION['sirumoku'])){$_SESSION['sirumoku'] = array();} ?>
 				<div class='manager manager_page'>
 					<h5>ようこそ<?php echo "管理者"; ?>様</h5>
 				</div>
@@ -209,20 +261,49 @@
 				</div>
 			<?php endif; ?>
 			<!-- 管理者画面トップページはここまで -->
+
+			<!-- 以下ページ切り替え部分 -->
 			<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
 				
 				<!-- シルモクデータ表示 -->
 				<?php if($_GET['page_type'] == 'sirumoku'): ?>
 					<?php login_checker(); ?>
 					<?php 
-						if(!empty($_GET['update']) && isset($_GET['update'])){
-							$execute_update = true;
+						if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
+							$execute_rewrite = true;
+							if($_GET['rewrite'] == "exist"){
+								$rd = explode("~" , $_SESSION['sirumoku']['time']);
+								$rewrite_data['start-time'] = $rd[0];
+								$rewrite_data['finish-time'] = $rd[1];
+								$rewrite_data['place'] = $_SESSION['sirumoku']['place'];
+								$rewrite_data['name_company'] = $_SESSION['sirumoku']['com_1'] . "," . $_SESSION['sirumoku']['com_2'];
+								$rewrite_data['number_people'] = $_SESSION['sirumoku']['number_people'];
+								$rewrite_data['recommend'] = "[" . $_SESSION['sirumoku']['department_1'] . "、" . $_SESSION['sirumoku']['department_2'] . "]";
+							}
 						}
 						else{
-							$execute_update = false;
+							$execute_rewrite = false;
 						}
 					?>
 					<h2 style='width:70%' class='manager'>シルモク管理ページ</h2>
+					<?php  
+						if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
+							if(!empty($_SESSION['error']) && isset($_SESSION['error'])){
+								if($_SESSION['error']['date_error'] == true){
+									error_massage("日付が正しく入力されませんでした。再入力してください");
+								}
+								if($_SESSION['error']['place_error'] == true){
+									error_massage("開催場所が正しく入力されませんでした");
+								}
+								if($_SESSION['error']['com_error'] == true){
+									error_massage("企業名のどちらかが空欄になっていませんが？");
+								}
+								if($_SESSION['error']['number_people_error'] == true){
+									error_massage("人数は正しく入力されていますか？");
+								}
+							}
+						}
+					?>
 					<div class=''>
 						<table width='70%' class='manager'>
 							<tr>
@@ -233,13 +314,15 @@
 							</tr>
 							<?php foreach($sirumoku_data as $sirumoku_data): ?>
 								<?php 
-									if(!empty($_GET['update']) && isset($_GET['update'])){
-										if($_GET['update'] == $sirumoku_data['id']){
-											$update_data = $sirumoku_data;
+									if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
+										if($_GET['rewrite'] == $sirumoku_data['id']){
+											$rewrite_data = $sirumoku_data;
+											$_SESSION['update_id'] = $_GET['rewrite'];
+											$_SESSION['update_data'] = true;
 										}
 									}
 								?>
-								<tr class='sirumoku_update' onclick='update_sirumoku(<?php echo $sirumoku_data['id']; ?>)'>
+								<tr class='sirumoku_update' onclick='rewrite_sirumoku(<?php echo $sirumoku_data['id']; ?>)'>
 									<td><?php echo $sirumoku_data['date']; ?></td>
 									<td><?php echo $sirumoku_data['start-time']; ?>~<?php echo $sirumoku_data['finish-time']; ?></td>
 									<td><?php echo $sirumoku_data['name_company']; ?></td>
@@ -262,20 +345,30 @@
 							</tr>
 						</table>
 						<h3 style='width:70%' class='manager'>新規登録・更新はこちらから</h3>
-						<?php if($execute_update == true): ?>
-
-						<?php endif; ?>
 						<div style='width:70%;' class="manager">
 							<form class="" action="manager.php?page_type=sirumoku" method="post">
 								<p>開催日</p>
-									<input type='number' name='year' value='<?php echo (int)date("Y"); ?>'>年
-									<input type='number' name='month' min='1' max='12' value='<?php echo (int)date("m"); ?>'>月
-									<input type='number' name='day' min='1' max='31' value='<?php echo (int)date("d"); ?>'>日
+								<?php  
+									if($execute_rewrite == true){
+										$date = explode("-", $rewrite_data['date']);
+										$y = (int)$date[0];
+										$m = (int)$date[1];
+										$d = (int)$date[2];
+									}
+									else{
+										$y = (int)date("Y");
+										$m = (int)date("m");
+										$d = (int)date("d");
+									}
+								?>
+								<input type='number' name='year' value='<?php echo $y; ?>'>年
+								<input type='number' name='month' min='1' max='12' value='<?php echo $m; ?>'>月
+								<input type='number' name='day' min='1' max='31' value='<?php echo $d; ?>'>日
 								<p>開催時間</p>
 								<select class="" name="time">
 									<?php 
-										if($execute_update == true){
-											$str = sprintf('<option value="%s~%s">%s ~ %s</option>',$update_data['start-time'],$update_data['finish-time'],$update_data['start-time'],$update_data['finish-time']);
+										if($execute_rewrite == true){
+											$str = sprintf('<option value="%s~%s">%s ~ %s</option>',$rewrite_data['start-time'],$rewrite_data['finish-time'],$rewrite_data['start-time'],$rewrite_data['finish-time']);
 											echo $str;
 										}
 									?>
@@ -286,28 +379,28 @@
 								  	<option value="16:30~18:00">16:30 ~ 18:00</option>
 								</select>
 								<p>開催場所</p>
-								<input type="text" name="place" <?php if($execute_update == true){echo "value='" . $update_data['place'] . "'";} ?>>
+								<input type="text" name="place" <?php if($execute_rewrite == true){echo "value='" . $rewrite_data['place'] . "'";} ?>>
 								<p>企業名</p>
 								<?php
-									if($execute_update == true){
-										$c = explode(",", $update_data['name_company']);
+									if($execute_rewrite == true){
+										$c = explode(",", $rewrite_data['name_company']);
 									}
 								?>
-								<input type="text" name="com_1" value="<?php if($execute_update == true){echo $c[0];} ?>">
-								<input type="text" name="com_2" value="<?php if($execute_update == true){echo $c[1];} ?>">
+								<input type="text" name="com_1" value="<?php if($execute_rewrite == true){echo $c[0];} ?>">
+								<input type="text" name="com_2" value="<?php if($execute_rewrite == true){echo $c[1];} ?>">
 								<p>定員</p>
-								<input type="number" name="number_people" value="<?php if($execute_update == true){echo $update_data['number_people'];} ?>">
+								<input type="number" name="number_people" value="<?php if($execute_rewrite == true){echo $rewrite_data['number_people'];} ?>">
 								<p>オススメの学科</p>
 								<?php
-									if($execute_update == true){
-										$update_data['recommend'] = str_replace("[","",$update_data['recommend']);
-										$update_data['recommend'] = str_replace("]","",$update_data['recommend']);
-										$d = explode("、" , $update_data['recommend']);
+									if($execute_rewrite == true){
+										$rewrite_data['recommend'] = str_replace("[","",$rewrite_data['recommend']);
+										$rewrite_data['recommend'] = str_replace("]","",$rewrite_data['recommend']);
+										$d = explode("、" , $rewrite_data['recommend']);
 									}
 								?>
 								<select class="" name="department_1">
 									<?php
-										if($execute_update == true){
+										if($execute_rewrite == true){
 											$str = sprintf("<option value='%s'>%s</option>",$d[0],$d[0]);
 											echo $str;
 										}
@@ -321,7 +414,7 @@
 								</select>
 								<select class="" name="department_2">
 									<?php  
-										if($execute_update == true){
+										if($execute_rewrite == true){
 											$str = sprintf("<option value='%s'>%s</option>",$d[1],$d[1]);
 											echo $str;
 										}
@@ -336,15 +429,33 @@
 								<br>
                 				<input type="submit" class="manager_contents" value="編集">
               				</form>
+              				<?php if($execute_rewrite == true): ?>
+	                			<?php if($_GET['rewrite'] != "exist"): ?>
+	                				<br>
+	                				<br>
+	                				<h3>シルモクのデータを削除する場合はこちらから</h3>
+	                				<br>
+    		            			<button calss='manager_contents' style='color:red;' onclick='sirumoku_delete(<?php echo $_GET['rewrite']; ?>)'>削除</button>
+    		            		<?php endif; ?>
+    		            	<?php endif; ?>
               			</div>
 						<div style='width:30%;' class='manager'>
 							<a href="manager.php"> <-管理者画面へ </a>
 						</div>
 					</div>
 					<script type="text/javascript">
-						function update_sirumoku(id){
-							var str = "manager.php?page_type=sirumoku&update=" + id;
+						function rewrite_sirumoku(id){
+							var str = "manager.php?page_type=sirumoku&rewrite=" + id;
 							document.location = str;
+						}
+						function sirumoku_delete(id){
+							if(window.confirm("本当に削除しますか？\n削除した場合、復旧することができません")){
+								var str = "manager.php?page_type=sirumoku&delete=" + id;
+								location.href = str;
+							}
+							else{
+								history.back();
+							}
 						}
 					</script>
 				<?php endif; ?>
