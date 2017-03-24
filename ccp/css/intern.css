@@ -93,7 +93,9 @@ table#table-02 td {
  padding-bottom: 10px;
  border: 1px solid #6EB7DB;
 }
-
+.sirumoku_update:hover{
+  background-color: #e3e3e3;
+}
 
 /*recruitment.phpのcss*/
 .borders{

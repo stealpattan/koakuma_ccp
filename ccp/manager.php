@@ -151,6 +151,8 @@
 				echo $sql;
 				mysqli_query($db,$sql) or die(mysqli_error($db));
 				$_SESSION['regist_sirumoku'] = array();
+				header('location:manager.php?page_type=sirumoku');
+				exit();
 			}
 		}
 	}
@@ -214,6 +216,7 @@
 				<!-- シルモクデータ表示 -->
 				<?php if($_GET['page_type'] == 'sirumoku'): ?>
 					<?php login_checker(); ?>
+					<h2 style='width:70%' class='manager'>シルモク管理ページ</h2>
 					<div class=''>
 						<table width='70%' class='manager'>
 							<tr>
@@ -223,7 +226,7 @@
 								<th>申し込み総数</th>
 							</tr>
 							<?php foreach($sirumoku_data as $sirumoku_data): ?>
-								<tr>
+								<tr class='sirumoku_update'>
 									<td><?php echo $sirumoku_data['date']; ?></td>
 									<td><?php echo $sirumoku_data['start-time']; ?>~<?php echo $sirumoku_data['finish-time']; ?></td>
 									<td><?php echo $sirumoku_data['name_company']; ?></td>
@@ -245,6 +248,7 @@
 								<th style='color:red;'><?php echo $sum['COUNT(id)']; ?></th>
 							</tr>
 						</table>
+						<h3 style='width:70%' class='manager'>新規登録・更新はこちらから</h3>
 						<div style='width:70%;' class="manager">
 							<form class="" action="manager.php?page_type=sirumoku" method="post">
 								<p>開催日</p>
