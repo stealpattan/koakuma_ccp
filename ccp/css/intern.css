@@ -58,6 +58,14 @@ table#table-02 td {
   text-align: center;
   border-radius: 10px;
 }
+.manager button{
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+}
+.manager button:hover{
+  background-color: #cbe6f3;
+}
 .manager textarea{
   border-radius: 10px;
 }
@@ -93,7 +101,9 @@ table#table-02 td {
  padding-bottom: 10px;
  border: 1px solid #6EB7DB;
 }
-
+.sirumoku_update:hover{
+  background-color: #e3e3e3;
+}
 
 /*recruitment.phpのcss*/
 .borders{
