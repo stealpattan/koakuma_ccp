@@ -240,9 +240,6 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
             ?>
           </table>
         </div>
-        <div class="s_past">
-          <span><a href="sirumoku.php">過去のシルモクをみる</a></span>
-        </div>
       </div>
     </div>
     <?php include('footer.php'); ?>
