@@ -1,12 +1,12 @@
-<div class="top">
-  <div class="top-image">
-    <div class="top-image-inner">
-      <img src="img/pic/top-image.jpg" alt="">
+<div class="introduce">
+  <div class="introduce-image">
+    <div class="introduce-image-inner">
+      <img src="img/pic/introduce-image.jpg" alt="">
     </div>
   </div>
-  <div class="top-introduction-title">
+  <div class="introduce-introduction-title">
     <h1>キャリアセンター所長挨拶</h1>
-    <h4>キャリアセンター長 医薬品工学科 教授 中島 範行</h4>
+    <h4>キャリアセンター長 知能デザイン工学科 教授 大島 徹</h4>
   </div>
   <p>　富山県立大学では、建学の理念と目的とする「視野の広い、人間性豊かな、創造力と実践力を兼ね備えた、地域及び社会に有為な人材」を育み、輩出するため、教職員が一丸となって学生および院生の指導に取り組んでいます。</p>
   <p>　キャリアセンターでは、特に、学生一人ひとりが、特性、適性を見出し、自分自身の適性や能力を理解しながら自分の生き方を考えるために必要な能力を身につけられる様、支援しています。キャリアセンターの具体的な主な支援事業として、</p>
