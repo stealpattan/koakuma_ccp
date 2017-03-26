@@ -23,7 +23,7 @@ if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
   }
 }
 $calendar =  calendar($year, $month);
-$sql = sprintf('SELECT id,day,title,event_kind FROM news WHERE year="%s" AND month="%s"',$year,$month);
+$sql = sprintf('SELECT id,day,title,event_type FROM news WHERE year="%s" AND month="%s"',$year,$month);
 $record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
 $table = array();
 while($rec = mysqli_fetch_assoc($record2)){
@@ -102,7 +102,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
             </div>
             <div class="info-tags">
               <div class="info-tag"><p><?php echo htmlspecialchars($table['target']); ?></p></div>
-              <div class="info-tag"><p><?php echo htmlspecialchars($table['event_kind']); ?></p></div>
+              <div class="info-tag"><p><?php echo htmlspecialchars($table['event_type']); ?></p></div>
             </div>
           <?php
           }
