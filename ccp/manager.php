@@ -18,15 +18,29 @@
 	$error_array['title_error'] = false;
 	$error_array['date_error'] = false;
 	$error_array['detail_error'] = false;
+	$rewrite = false;
 	if(!empty($_GET['page_type']) && isset($_GET['page_type'])){
 		//新着情報の追加・更新の場合以下の比較処理がされます
 		if($_GET['page_type'] == "new_event"){
+			//新着情報のデータ更新のためのデータ取得を行います
+			if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
+				if(empty($_GET['error']) && !isset($_GET['error'])){
+					$sql = 'SELECT * FROM `news` WHERE id=' . $_GET['rewrite'];
+					$record = mysqli_query($db,$sql) or die(mysqli_error($db));
+					$_SESSION['event'] = mysqli_fetch_assoc($record);
+				}
+				$rewrite = true;
+			}
+			else{
+				$rewrite = false;
+			}
 			//新着情報の追加・更新画面に表示する’最近の更新’のデータを取得しています
 			$sql = sprintf("SELECT * FROM `news` WHERE 1 ORDER BY created DESC LIMIT 1");
 			$rec = mysqli_query($db, $sql) or die(mysqli_error($db));
 			$recent_news = mysqli_fetch_assoc($rec);
+			// フォームからのデータが存在するとき、以下が処理されます
 			if(!empty($_POST) && isset($_POST)){
-				if($_POST['event_title'] == '' || $_POST['event_title'] == null){
+				if($_POST['title'] == '' || $_POST['title'] == null){
 					$error_array['title_error'] = true;
 				}
 				if($_POST['month'] == '' || $_POST['month'] == null || $_POST['month'] < 1 || $_POST['month'] > 12 || $_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] < 1 || $_POST['day'] > 31){
@@ -35,27 +49,43 @@
 				if($_POST['time_detail'] == '' || $_POST['time_detail'] == null){
 					$error_array['detail_error'] = true;
 				}
+
 				if($error_array['title_error'] == true || $error_array['date_error'] == true || $error_array['detail_error'] == true){
-					newEvent_registration_error($error_array);
+					if($rewrite == true){
+						newEvent_registration_error($error_array, $_GET['rewrite']);
+					}
+					else{
+						newEvent_registration_error($error_array, "none");
+					}
 				}
+				// 入力エラーが存在しなかった場合
 				else{
-					$_SESSION['regest_event'] = $_POST;
+					$_SESSION['event'] = array();
+					$_SESSION['event'] = $_POST;
+					if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
+						$location = 'update_news';
+						$_SESSION['event']['id'] = $_GET['rewrite'];
+					}
+					else{
+						$location = 'registration';
+					}
 					$alert = sprintf('<script type="text/javascript">
 											if(window.confirm("登録内容をご確認ください\n\nタイトル: %s \n日付: %s 月 %s 日 \n詳細な時間: %s \nイベント詳細: %s \nイベント区分: %s \n対象学年: %s")){
-												location.href = "manager.php?page_type=regestration";
+												location.href = "manager.php?page_type=%s";
 											}
 											else{
 												history.back();
 											}
 										</script>',
-										$_POST['event_title'],$_POST['month'],
+										$_POST['title'],$_POST['month'],
 										$_POST['day'],$_POST['time_detail'],
 										$_POST['comment'],$_POST['event_type'],
-										$_POST['target']
+										$_POST['target'],
+										$location
 									);
 					echo $alert;
 				}
-			}	
+			}
 		}
 		// シルモクページ部分
 		else if($_GET['page_type'] == 'sirumoku'){
@@ -185,14 +215,36 @@
 				exit();
 			}
 		}
+		else if($_GET['page_type'] == 'lists'){
+			$sql = 'SELECT `id`,`year`,`month`,`day`,`title` FROM `news` WHERE 1 ORDER BY `year`,`month`,`day` DESC';
+			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
+			$news_lists = array();
+			while($rec = mysqli_fetch_assoc($record)){
+				$news_lists[] = $rec;
+			}
+			$sql = 'SELECT `id`,`date`,`name_company` FROM `sirumoku_data` WHERE 1 ORDER BY `date` DESC';
+			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
+			$sirumoku_lists = array();
+			while($rec = mysqli_fetch_assoc($record)){
+				$sirumoku_lists[] = $rec;
+			}
+		}
 	}
 	//新着情報追加・更新の際にエラーが発見されると以下が処理されます。
-	function newEvent_registration_error($error_content){
+	function newEvent_registration_error($error_content, $id){
 		$_SESSION['event'] = $_POST;
 		$_SESSION['error'] = $error_content;
-		header('location:manager.php?page_type=new_event&error=exist');
+		if($id == "none"){
+			$location = "location:manager.php?page_type=new_event&error=exist";
+		}
+		else{
+			$location = sprintf('location:manager.php?page_type=new_event&error=exist&rewrite=%s',$id);
+		}
+		echo $location;
+		header($location);
 		exit();
 	}
+	//シルモク更新時のエラーの際は以下が処理されます
 	function sirumoku_registration_error($error_content){
 		$_SESSION['sirumoku'] = $_POST;
 		$_SESSION['error'] = $error_content;
@@ -236,6 +288,7 @@
 				<?php if(!empty($_SESSION['error']) && isset($_SESSION['error'])){$_SESSION['error'] = array();} ?>
 				<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 				<?php if(!empty($_SESSION['sirumoku']) && isset($_SESSION['sirumoku'])){$_SESSION['sirumoku'] = array();} ?>
+				<?php if(!empty($_SESSION['event']) && isset($_SESSION['event'])){$_SESSION['event'] = array();} ?>
 				<div class='manager manager_page'>
 					<h5>ようこそ<?php echo "管理者"; ?>様</h5>
 				</div>
@@ -248,8 +301,14 @@
 					</a>
 					<a href="manager.php?page_type=new_event" style='text-decoration:none;'>
 						<div class='manager manager_contents'>
-							<h2>新着情報更新ページ</h2>						
-							<p>様々な新着情報の更新を行います</p>
+							<h2>新着情報登録ページ</h2>						
+							<p>様々な新着情報の登録を行います</p>
+						</div>
+					</a>
+					<a href="manager.php?page_type=lists" style='text-decoration:none;'>
+						<div class='manager manager_contents'>
+							<h2>各種データリストページ</h2>
+							<p>各種データの閲覧を行います</p>
 						</div>
 					</a>
 					<div style='width:30%;text-align:left;'>
@@ -468,12 +527,14 @@
 							<p style='color:red;'>
 								<?php
 									if($_SESSION['error']['title_error']){echo "イベント名は正しく入力されていますか？";}
-									echo "<br>";								if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";}
+									echo "<br>";
+									if($_SESSION['error']['date_error']){echo " 日付が正しく入力されませんでした。再入力してください。";}
 									echo "<br>";
 									if($_SESSION['error']['detail_error']){echo "詳細な時間は正しく指定されていますか？";}
 								?>
 							</p>
 						</div>
+						<?php $news_error = true; ?>
 					<?php endif; ?>
 					<!-- 以上エラー部 -->
 
@@ -484,59 +545,58 @@
 								<th width='50%'>
 									<div class='manager'>
 										<h2>新着情報更新ページ</h2>
-										<form action='manager.php?page_type=new_event' method='post'>
+										<form method='post' action='manager.php?page_type=new_event<?php if($rewrite == true){echo "&rewrite=" . $_GET["rewrite"];} ?>'>
 											<dl>
 												<dt>イベント名：</dt>
 												<dd>
-													<input type='text' name='event_title' value='<?php
-																									if(!empty($_GET["error"]) && isset($_GET["error"])){
-																										if($_SESSION["error"]["title_error"] == false){
-																											echo $_SESSION["event"]["event_title"];
-																										}
-																									}
-																								?>'>
+													<input 
+														type='text' 
+														name='title' 
+														value='<?php  
+																	if(!empty($news_error) && isset($news_error) || $rewrite == true) {
+																		echo $_SESSION["event"]["title"];
+																	}
+																?>'>
 												</dd>
 												<dt>日付：</dt>
 												<dd>
 													<input type='number' name='year' value='<?php echo (int)date('Y'); ?>'>年
 													<input type='number' name='month' min='1' max='12' value='<?php
-																												if(!empty($_GET["error"]) && isset($_GET["error"])){
-																													if($_SESSION["error"]["date_error"] == false){
-																														echo $_SESSION["event"]["month"];
-																													}
+																												if(!empty($news_error) && isset($news_error) || $rewrite == true){
+																													echo $_SESSION["event"]["month"];
 																												}
 																												else{
 																													echo (int)date("m"); 
 																												}
 																											?>'>月
 													<input type='number' name='day' min='1' max='31' value='<?php
-																												if(!empty($_GET["error"]) && isset($_GET["error"])){
-																													if($_SESSION["error"]["date_error"] == false){
-																														echo $_SESSION["event"]["day"];
-																													}
+																												if(!empty($news_error) && isset($news_error) || $rewrite == true){
+																													echo $_SESSION["event"]["day"];
 																												}
 																												else{
 																													echo (int)date("d");
 																												} 
-																											?>'>日	
+																											?>'>日													
 												</dd>
 												<dt>詳細な時間など</dt>
 												<dd>
-													<input type='text' name='time_detail' value='<?php
-																									if(!empty($_GET["error"]) && isset($_GET["error"])){
-																										if($_SESSION["error"]["detail_error"] == false){
-																											echo $_SESSION["event"]["time_detail"];
-																										}
-																									}
-																								?>'>
+													<input 
+														type='text' 
+														name='time_detail' 
+														value='<?php  
+																	if(!empty($news_error) && isset($news_error) || $rewrite == true){
+																		echo $_SESSION["event"]["time_detail"];
+																	}
+																?>'
+													>
 												</dd>
 												<dt>イベント詳細などコメント</dt>
 												<dd>
-													<textarea name='comment' cols='50' rows='5'><?php
-																									if(!empty($_GET['error']) && isset($_GET['error'])){
-																										echo $_SESSION['event']['comment'];
-																									}
-																								?></textarea>
+													<textarea name='comment' cols='50' rows='5'><?php  
+																if(!empty($news_error) && isset($news_error) || $rewrite == true){
+																	echo $_SESSION["event"]["comment"];
+																}
+															  ?></textarea>
 												</dd>
 												<dt>イベント区分</dt>
 												<dd>
@@ -574,6 +634,7 @@
 										</div>
 									</div>
 								</th>
+								<!-- 以下最新の情報表示部 -->
 								<th>
 									<div class='recent_update'>
 										<h2>最近の更新</h2>
@@ -585,12 +646,13 @@
 											<dt>詳細な時間：</dt>
 											<dd><?php echo $recent_news['time_detail']; ?></dd>
 											<dt>コメント：</dt>
-											<dd><?php echo $recent_news['text']; ?></dd>
+											<dd><?php echo $recent_news['comment']; ?></dd>
 											<dt>イベント区分：</dt>
-											<dd><?php echo $recent_news['event_kind']; ?></dd>
+											<dd><?php echo $recent_news['event_type']; ?></dd>
 										</dl>
 									</div>
 								</th>
+								<!-- 以上最新の情報表示部 -->
 							</tr>
 						</table>
 					</div>
@@ -598,10 +660,55 @@
 				<?php endif; ?>
 				<!-- 以上新着情報更新部 -->
 
+				<!-- 以下情報リストページ -->
+				<?php if($_GET['page_type'] == 'lists'): ?>
+					<div style='width:70%' class='manager'>
+						<h2>シルモクデータ</h2>
+						<table>
+							<tr>
+								<th>開催日</th>
+								<th>参加企業</th>
+							</tr>
+							<?php foreach ($sirumoku_lists as $s_l): ?>
+								<tr onclick='change_page_type("sirumoku", <?php echo $s_l['id']; ?>)'>
+									<td><?php echo $s_l['date']; ?></td>
+									<td><?php echo $s_l['name_company']; ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+					</div>
+					<div style='width:70%' class='manager'>
+						<h2>新着情報データ</h2>
+						<table>
+							<tr>
+								<th>開催日</th>
+								<th>イベント名</th>
+							</tr>
+							<?php foreach ($news_lists as $n_l): ?>
+								<tr onclick='change_page_type("news", <?php echo $n_l['id']; ?>)'>
+									<td><?php echo $n_l['year'] . "-" . $n_l['month'] . "-" . $n_l['day']; ?></td>
+									<td><?php echo $n_l['title']; ?></td>
+								</tr>
+							<?php endforeach ?>
+						</table>
+					</div>
+					<script type="text/javascript">
+						function change_page_type(type, id){
+							if(type = "sirumoku"){
+								document.location = "manager.php?page_type=sirumoku&rewrite=" + id;
+							}
+							if(type = "news"){
+								document.location = "manager.php?page_type=new_event&rewrite=" + id;
+							}
+						}
+					</script>
+				<?php endif; ?>
+				<!-- 以上情報リストページ -->
+
 				<!-- 以下ログイン部 -->
 				<?php if($_GET['page_type'] == "log_in"): ?>
 					<div style='width:70%' class='manager'>
-						<h1>ユーザログインページ</h1>
+						<span style='font-size:200%;'>ユーザログインページ</span>
 						<p>以下の項目を入力の上、ログインボタンを押してください</p>
 						<form method='post' action='manager.php'>
 							<dl>
@@ -627,21 +734,40 @@
 				<?php endif; ?>
 				<!-- 以上ログアウト部 -->
 
-				<!-- 以下情報登録部 -->
-				<?php if($_GET['page_type'] == "regestration"): ?>
+				<!-- 以下新着情報情報登録部 -->
+				<?php if($_GET['page_type'] == "registration"): ?>
 					<?php 
-						$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`text`,`event_kind`,`target`,`created`)
+						$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`comment`,`event_type`,`target`,`created`)
 														VALUES('%s','%s','%s','%s','%s','%s','%s','%s',NOW())",
-																		$_SESSION['regest_event']['year'],$_SESSION['regest_event']['month'],$_SESSION['regest_event']['day'],
-																		$_SESSION['regest_event']['event_title'],$_SESSION['regest_event']['time_detail'],$_SESSION['regest_event']['comment'],
-																		$_SESSION['regest_event']['event_type'],$_SESSION['regest_event']['target']);
+																		$_SESSION['event']['year'],$_SESSION['event']['month'],$_SESSION['event']['day'],
+																		$_SESSION['event']['title'],$_SESSION['event']['time_detail'],$_SESSION['event']['comment'],
+																		$_SESSION['event']['event_type'],$_SESSION['event']['target']);
 						mysqli_query($db, $sql) or die(mysqli_error($db));
-						$_SESSION['regest_event'] = array();
+						$_SESSION['event'] = array();
 						header('location: manager.php?page_type=new_event');
 						exit();
 					?>
 				<?php endif; ?>
-				<!-- 以上情報登録部 -->
+				<!-- 以上新着情報登録部 -->
+
+				<!-- 以下新着情報更新部 -->
+				<?php if($_GET['page_type'] == "update_news"): ?>
+					<?php 
+						$sql = sprintf("UPDATE `news` SET title='%s',year='%s',month='%s',day='%s',time_detail='%s',comment='%s',event_type='%s',target='%s' WHERE id='%s'",
+							$_SESSION['event']['title'],
+							$_SESSION['event']['year'],
+							$_SESSION['event']['month'],
+							$_SESSION['event']['day'],
+							$_SESSION['event']['time_detail'],
+							$_SESSION['event']['comment'],
+							$_SESSION['event']['event_type'],
+							$_SESSION['event']['target'],
+							$_SESSION['event']['id']
+							);
+						mysqli_query($db,$sql) or die(mysqli_error($db));
+					?>
+				<?php endif; ?>
+				<!-- 以上新着情報更新部 -->
 			<?php endif; ?>
 			<!-- 学内専用ページ部 -->
 		<?php else: ?>
