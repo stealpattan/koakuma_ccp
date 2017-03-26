@@ -216,13 +216,13 @@
 			}
 		}
 		else if($_GET['page_type'] == 'lists'){
-			$sql = 'SELECT `id`,`year`,`month`,`day`,`title` FROM `news` WHERE 1 ORDER BY `year`,`month`,`day` DESC';
+			$sql = 'SELECT `id`,`year`,`month`,`day`,`title` FROM `news` WHERE 1 ORDER BY `year`,`month`,`day`';
 			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
 			$news_lists = array();
 			while($rec = mysqli_fetch_assoc($record)){
 				$news_lists[] = $rec;
 			}
-			$sql = 'SELECT `id`,`date`,`name_company` FROM `sirumoku_data` WHERE 1 ORDER BY `date` DESC';
+			$sql = 'SELECT `id`,`date`,`name_company` FROM `sirumoku_data` WHERE 1 ORDER BY `date`';
 			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
 			$sirumoku_lists = array();
 			while($rec = mysqli_fetch_assoc($record)){
@@ -629,6 +629,20 @@
 												</dd>
 											</dl>
 										</form>
+										<?php if($rewrite == true): ?>
+											<h3>新着情報の削除はこちら</h3>
+											<button onclick='delete_news()'>削除</button>
+											<script type="text/javascript">
+												function delete_news(){
+													if(window.confirm("イベントを削除します。よろしいですか？\n削除してしまった場合、復旧することができません\nカレンダーへの表示を止める場合は、イベント区分を報告書とすることで非表示にできます")){
+														location.href = 'manager.php?page_type=delete_news&id=<?php echo $_GET['rewrite']; ?>';
+													}
+													else{
+														history.back();
+													}
+												}
+											</script>
+										<?php endif; ?>
 										<div style='width:30%;' class='manager'>
 											<a href="manager.php"> <-管理者画面へ </a>
 										</div>
@@ -654,7 +668,7 @@
 								</th>
 								<!-- 以上最新の情報表示部 -->
 							</tr>
-						</table>
+						</table>						
 					</div>
 					<!-- 以上新着情報コンテンツ部 -->
 				<?php endif; ?>
@@ -665,12 +679,12 @@
 					<div style='width:70%' class='manager'>
 						<h2>シルモクデータ</h2>
 						<table>
-							<tr>
+							<tr class='manager_contents'>
 								<th>開催日</th>
 								<th>参加企業</th>
 							</tr>
 							<?php foreach ($sirumoku_lists as $s_l): ?>
-								<tr onclick='change_page_type("sirumoku", <?php echo $s_l['id']; ?>)'>
+								<tr class='manager_contents' onclick='change_page_type("sirumoku", <?php echo $s_l['id']; ?>)'>
 									<td><?php echo $s_l['date']; ?></td>
 									<td><?php echo $s_l['name_company']; ?></td>
 								</tr>
@@ -680,12 +694,12 @@
 					<div style='width:70%' class='manager'>
 						<h2>新着情報データ</h2>
 						<table>
-							<tr>
+							<tr class='manager_contents'>
 								<th>開催日</th>
 								<th>イベント名</th>
 							</tr>
 							<?php foreach ($news_lists as $n_l): ?>
-								<tr onclick='change_page_type("news", <?php echo $n_l['id']; ?>)'>
+								<tr class='manager_contents' onclick='change_page_type("news", <?php echo $n_l['id']; ?>)'>
 									<td><?php echo $n_l['year'] . "-" . $n_l['month'] . "-" . $n_l['day']; ?></td>
 									<td><?php echo $n_l['title']; ?></td>
 								</tr>
@@ -765,9 +779,22 @@
 							$_SESSION['event']['id']
 							);
 						mysqli_query($db,$sql) or die(mysqli_error($db));
+						header("location:manager.php?page_type=lists");
+						exit();
 					?>
 				<?php endif; ?>
 				<!-- 以上新着情報更新部 -->
+
+				<!-- 以下新着情報削除処理部 -->
+				<?php if($_GET['page_type'] == "delete_news"): ?>
+					<?php 
+						$sql = sprintf("DELETE FROM `news` WHERE id=%s",$_GET['id']);
+						mysqli_query($db,$sql) or die(mysqli_error($db));
+						header('location:manager.php?page_type=lists');
+						exit();
+					?>
+				<?php endif; ?>
+				<!-- 以上新着情報削除処理部 -->
 			<?php endif; ?>
 			<!-- 学内専用ページ部 -->
 		<?php else: ?>
