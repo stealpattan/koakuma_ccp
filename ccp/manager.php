@@ -716,6 +716,9 @@
 							}
 						}
 					</script>
+					<div style='width:30%;' class='manager'>
+						<a href="manager.php"> <-管理者画面へ </a>
+					</div>
 				<?php endif; ?>
 				<!-- 以上情報リストページ -->
 
