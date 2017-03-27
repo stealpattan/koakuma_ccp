@@ -157,7 +157,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
-                        echo "<a style='text-decoration:none;' href=''>";
+                        echo "<a style='text-decoration:none;' href='allnews.php'>";
                         echo $cal_event['title'];
                         echo "</a>";
                       }
