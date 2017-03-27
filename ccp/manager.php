@@ -631,7 +631,7 @@
 										</form>
 										<?php if($rewrite == true): ?>
 											<h3>新着情報の削除はこちら</h3>
-											<button onclick='delete_news()'>削除</button>
+											<button onclick='delete_news()' style='color:red;'>削除</button>
 											<script type="text/javascript">
 												function delete_news(){
 													if(window.confirm("イベントを削除します。よろしいですか？\n削除してしまった場合、復旧することができません\nカレンダーへの表示を止める場合は、イベント区分を報告書とすることで非表示にできます")){
@@ -684,7 +684,7 @@
 								<th>参加企業</th>
 							</tr>
 							<?php foreach ($sirumoku_lists as $s_l): ?>
-								<tr class='manager_contents' onclick='change_page_type("sirumoku", <?php echo $s_l['id']; ?>)'>
+								<tr class='manager_contents' onclick='go_sirumoku(<?php echo $s_l["id"]; ?>)'>
 									<td><?php echo $s_l['date']; ?></td>
 									<td><?php echo $s_l['name_company']; ?></td>
 								</tr>
@@ -699,7 +699,7 @@
 								<th>イベント名</th>
 							</tr>
 							<?php foreach ($news_lists as $n_l): ?>
-								<tr class='manager_contents' onclick='change_page_type("news", <?php echo $n_l['id']; ?>)'>
+								<tr class='manager_contents' onclick='go_news(<?php echo $n_l["id"]; ?>)'>
 									<td><?php echo $n_l['year'] . "-" . $n_l['month'] . "-" . $n_l['day']; ?></td>
 									<td><?php echo $n_l['title']; ?></td>
 								</tr>
@@ -707,13 +707,11 @@
 						</table>
 					</div>
 					<script type="text/javascript">
-						function change_page_type(type, id){
-							if(type = "sirumoku"){
-								document.location = "manager.php?page_type=sirumoku&rewrite=" + id;
-							}
-							if(type = "news"){
-								document.location = "manager.php?page_type=new_event&rewrite=" + id;
-							}
+						function go_sirumoku(id){
+							document.location = "manager.php?page_type=sirumoku&rewrite=" + id;
+						}
+						function go_news(id){
+							document.location = "manager.php?page_type=new_event&rewrite=" + id;
 						}
 					</script>
 					<div style='width:30%;' class='manager'>
