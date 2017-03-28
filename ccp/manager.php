@@ -62,6 +62,7 @@
 				else{
 					$_SESSION['event'] = array();
 					$_SESSION['event'] = $_POST;
+					$line = str_replace(array("\r\n","\r","\n"),"",$_POST['comment']);
 					if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
 						$location = 'update_news';
 						$_SESSION['event']['id'] = $_GET['rewrite'];
@@ -77,9 +78,11 @@
 												history.back();
 											}
 										</script>',
-										$_POST['title'],$_POST['month'],
+										$_POST['title'],
+										$_POST['month'],
 										$_POST['day'],$_POST['time_detail'],
-										$_POST['comment'],$_POST['event_type'],
+										$line,
+										$_POST['event_type'],
 										$_POST['target'],
 										$location
 									);
@@ -594,7 +597,7 @@
 												<dd>
 													<textarea name='comment' cols='50' rows='5'><?php  
 																if(!empty($news_error) && isset($news_error) || $rewrite == true){
-																	echo $_SESSION["event"]["comment"];
+																	echo str_replace("<br />","",$_SESSION["event"]["comment"]);
 																}
 															  ?></textarea>
 												</dd>
@@ -755,11 +758,14 @@
 						$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`comment`,`event_type`,`target`,`created`)
 														VALUES('%s','%s','%s','%s','%s','%s','%s','%s',NOW())",
 																		$_SESSION['event']['year'],$_SESSION['event']['month'],$_SESSION['event']['day'],
-																		$_SESSION['event']['title'],$_SESSION['event']['time_detail'],$_SESSION['event']['comment'],
-																		$_SESSION['event']['event_type'],$_SESSION['event']['target']);
+																		$_SESSION['event']['title'],
+																		$_SESSION['event']['time_detail'],
+																		nl2br($_SESSION['event']['comment']),
+																		$_SESSION['event']['event_type'],
+																		$_SESSION['event']['target']);
 						mysqli_query($db, $sql) or die(mysqli_error($db));
 						$_SESSION['event'] = array();
-						header('location: manager.php?page_type=new_event');
+						header('location: manager.php?page_type=new_event&saikooooooo');
 						exit();
 					?>
 				<?php endif; ?>
@@ -774,7 +780,7 @@
 							$_SESSION['event']['month'],
 							$_SESSION['event']['day'],
 							$_SESSION['event']['time_detail'],
-							$_SESSION['event']['comment'],
+							nl2br($_SESSION['event']['comment']),
 							$_SESSION['event']['event_type'],
 							$_SESSION['event']['target'],
 							$_SESSION['event']['id']
