@@ -30,6 +30,18 @@ while($rec = mysqli_fetch_assoc($record2)){
   $table[] = $rec;
 }
 $_SESSION['cal_event'] = $table;
+$sql = "SELECT * FROM `sirumoku_data` WHERE date > NOW()";
+$record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
+$table = array();
+while($rec = mysqli_fetch_assoc($record2)){
+  $dd = explode("-",$rec['date']);
+  if($dd[0] == $year){
+    if($dd[1] == $month){
+      $table[] = $rec;
+    }
+  }
+}
+$_SESSION['siru_event'] = $table;
 //以上
 
 $date_y = date('Y');
@@ -154,9 +166,16 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
-                        $str = sprintf("<a href='event_detail.php?id=%s'><div style='padding-bottom:3px;'></div>%s</a>",
+                        $str = sprintf("<a href='event_detail.php?id=%s'><div style='padding-bottom:3px;color:blue;'>%s</div></a>",
                                   $cal_event['id'],
                                   $cal_event['title']);
+                        echo $str;
+                      }
+                    }
+                    foreach($_SESSION['siru_event'] as $siru_event){
+                      $dd = explode('-',$siru_event['date']);
+                      if($dd[2] == $calendar[$i]['day']){
+                        $str = sprintf("<a href='#sirumoku'><div style='padding-bottom:3px;color:blue;'>シルモク開催日</div></a>");
                         echo $str;
                       }
                     }
