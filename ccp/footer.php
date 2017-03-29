@@ -42,13 +42,29 @@
             <ul class="foot_list">
               <li><a href="#"><span>リクナビ</span></a></li>
               <li><a href="#"><span>マイナビ</span></a></li>
-              <li><a href="https://www.s-walker.net/"><span>就職ウォーカー</span></a></li>
-              <li><a href="https://www.gakujo.ne.jp/2018/"><span>あさがくナビ</span></a></li>
+              <li><a href="https://www.s-walker.net/"><span>就職ウォーカーNet</span></a></li>
+              <li><a href="https://www.gakujo.ne.jp/"><span>あさがくナビ</span></a></li>
               <li><a href="https://www.wdb.com/office/"><span>WDB.com</span></a></li>
+              <li><a href="http://www.meidaisha.co.jp">名大社</a></li>
             </ul>
           </li>
         </ul>
       </li>
+      <?php require('function.php'); ?>
+      <?php if(ip_tracer() == true): ?>
+        <li>
+          <h2>JSコーポレーション</h2>
+          <ul class='foot_list'>
+            <li><a href="http://shushoku.js88.com/hp/pg/index.html">就職プレイスメントガイド</a></li>
+            <li><a href="http://shushoku.js88.com/hp/es/index.html">エントリーシート徹底研究</a></li>
+            <li><a href="http://shushoku.js88.com/hp/map/index.html">業界研究特集</a></li>
+            <li><a href="http://shushoku.js88.com/hp/movie/index.html">面接実践ガイド</a></li>
+            <li><a href="http://shushoku.js88.com/hp/qa/index.html">就活Q&A</a></li>
+            <li><a href="http://shushoku.js88.com/hp/fs/index.html">外国人留学生のための就活ガイド</a></li>
+            <li><a href="http://shushoku.js88.com/hp/u/index.html">富山県立大学生を積極的に採用する企業様情報</a></li>
+          </ul>
+        </li>
+      <?php endif; ?>
     </ul>
   </div>
   <div class="copyright">
