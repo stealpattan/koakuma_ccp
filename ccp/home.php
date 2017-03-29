@@ -76,10 +76,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
   <body>
     <?php require("header.php"); ?>
     <div class="contents">
-      <div class="top">
-        <img src="img/pic/tpu-image.jpg" alt="">
-      </div>
-      <?php require('top_of_career_center.php'); ?>
+      
       <div class='jump_tab'>
         <ul>
           <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
@@ -157,7 +154,9 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
-                        $str = sprintf("<a href='event_detail.php?id=%s'>%s</a>",$cal_event['id'],$cal_event['title']);
+                        $str = sprintf("<a href='event_detail.php?id=%s'><div style='padding-bottom:3px;'></div>%s</a>",
+                                  $cal_event['id'],
+                                  $cal_event['title']);
                         echo $str;
                       }
                     }
@@ -277,6 +276,7 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
         </div>
       </div>
     </div>
+    <?php require('top_of_career_center.php'); ?>
     <?php include('footer.php'); ?>
   </body>
 </html>
