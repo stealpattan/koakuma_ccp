@@ -181,23 +181,24 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
           document.location = str;
         }
       </script>
-      <script src="js/calendar-slide.js"></script>
+      <!-- 以下シルモク -->
+      <?php $day_what = array('Sun','Mon','Tue','Wed','Thr','Fri','Sut'); ?>
       <div id="sirumoku">
         <div class="center">
           <p class="contentsTitle">シルモク</p>
           <p class="b_contentsTitle">企業を知る木曜日</p>
         </div>
-        <div class="image">
-          <div class="sirumoku-image">
-            <img src="img/pic/sirumoku.jpg" alt="" />
+        <div class='sirumoku_introduction' style='width:70%;margin:0 auto;padding-bottom:20px;'>
+          <div class="sirumoku-image" style='width:50%;float:left;margin-right:10px;margin-bottom:10px'>
+            <img src="img/pic/sirumoku.jpg" alt=""/>
           </div>
-        </div>
-        <div class="intro">
-          <p>県内企業が自社の魅力・実力を学生に紹介する</p>
-          <p>学内企業説明会</p>
-          <p>富山県に関係のある企業の方にお越しいただき</p>
-          <p>業務内容や自社製品について紹介していただきます。</p>
-          <p class="sub">シルモクの受付はキャリアカフェで行なっています。</p>
+          <div class="" style='text-align:left;'>
+            <p>県内企業が自社の魅力・実力を学生に紹介する</p>
+            <p>学内企業説明会</p>
+            <p>富山県に関係のある企業の方にお越しいただき</p>
+            <p>業務内容や自社製品について紹介していただきます。</p>
+            <p class="sub">シルモクの受付はキャリアカフェで行なっています。</p>
+          </div>
         </div>
         <div class="sirumoku_datas">
           <table class="table table-bordered table-striped trhover">
@@ -221,7 +222,8 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
               }
               $str1=$str1[0].$str1[1];
               $str2=$str2[0].$str2[1];
-              $date_time=$array[0]."/".$str1."/".$str2;
+              $day_kind = date('l',mktime(0,0,0,(int)$array[1],(int)$array[2],(int)$array[0]));
+              $date_time=$array[0]."/".$str1."/".$str2.'('.$day_kind.')';
               //開始時間
               $table_st_data=$data['start-time'];
               $array = explode(":", $table_st_data);
