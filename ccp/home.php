@@ -202,10 +202,10 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
         <div class="sirumoku_datas">
           <table class="table table-bordered table-striped trhover">
             <tr class="s_data_list">
-              <th class="s_data_day">開催日</th>
-              <th class="s_data_time">時間帯</th>
-              <th class="s_data_place">開催場所</th>
-              <th class="s_data_name">企業名</th>
+              <th class="s_data_day" style='color:white;'>開催日</th>
+              <th class="s_data_time" style='color:white;'>時間帯</th>
+              <th class="s_data_place" style='color:white;'>開催場所</th>
+              <th class="s_data_name" style='color:white;'>企業名</th>
             </tr>
             <?php
             foreach($datas as $data):
