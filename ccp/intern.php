@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	require('dbconnect.php');
+	require('function.php');
 	date_default_timezone_set('Asia/Tokyo');
 	//職種で呼ばれた場合は、A,B,...がくる
 	//学科で呼ばれた場合は、機械だとか知能だとかがくる
@@ -79,18 +80,8 @@
 		<link rel="stylesheet" href="./css/intern.css">
 	</head>
 	<body>
-		<header>
-      <img class="logo" src="img/logo/tpu_logo_set.svg" alt="TPUのロゴ"/>
-      <!-- ナビメニュー -->
-      <div class="nav-menu">
-        <ul id="menu">
-          <li id="home"><a class="unselected_tab" href="home.php">ホーム</a></li>
-          <li id="info-career"><a class="selected_tab" href="info_career.php">就職情報</a></li>
-          <li id="intern"><a class="unselected_tab" href="recruitment.php">求人情報</a></li>
-        </ul>
-      </div>
-      <div class="clear"></div>
-    </header>
+		<?php require('header.php'); ?>
+		<?php if(ip_tracer() == true): ?>
 		<!-- コンテンツ部分 -->
 		<div class="contents">
 			<div class="past-info">
@@ -178,6 +169,11 @@
 				</table>
 			</div>
 		</div>
+		<?php else: ?>
+		<div style='width:70%;margin:0 auto;'>
+			<h1>学外からのアクセスを制限しています。申し訳有りません</h1>
+		</div>
+		<?php endif; ?>
 		<?php include('footer.php'); ?>
 	</body>
 </html>
