@@ -2,6 +2,7 @@
 session_start();
 date_default_timezone_set("Asia/Tokyo");
 require('dbconnect.php');
+require('function.php');
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
 require('calendar.php');
 if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
