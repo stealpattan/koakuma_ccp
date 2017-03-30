@@ -88,7 +88,9 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
   <body>
     <?php require("header.php"); ?>
     <div class="contents">
-      
+      <div class="top" style='width:70%;margin:0 auto;margin-bottom:20px;'>
+        <img src="img/pic/tpu-image.jpg" alt="">
+      </div>
       <div class='jump_tab'>
         <ul>
           <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
