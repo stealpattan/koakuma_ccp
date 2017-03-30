@@ -637,7 +637,7 @@
 												<dd>
 													<select name='event_type' class='manager_contents'>
 														<?php if($rewrite == true): ?>
-															<option><?php if() ?></option>
+															<option><?php echo $_SESSION['event']['event_type']; ?></option>
 														<?php endif; ?>
 														<option>指定なし</option>
 														<option>インターンシップ</option>
@@ -650,6 +650,9 @@
 												<dt>対象学年</dt>
 												<dd>
 													<select name='target' class='manager_contents'>
+														<?php if($rewrite == true): ?>
+															<option><?php echo $_SESSION['event']['target']; ?></option>
+														<?php endif; ?>
 														<option>全学年</option>
 														<option>学部1年生(B1)</option>
 														<option>学部2年生(B2)</option>
