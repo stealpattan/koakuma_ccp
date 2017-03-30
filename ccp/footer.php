@@ -53,7 +53,6 @@
           </li>
         </ul>
       </li>
-      <?php require('function.php'); ?>
       <?php if(ip_tracer() == true): ?>
         <li>
           <h2>JSコーポレーション</h2>
