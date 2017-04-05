@@ -86,7 +86,7 @@ function check_limit($str){
   <body>
     <?php require("header.php"); ?>
     <div class="contents">
-      <div class="top" style='width:70%;margin:0 auto;margin-bottom:20px;'>
+      <div class="top" style='width:50%;margin:0 auto;margin-bottom:20px;'>
         <img src="img/pic/tpu-image.jpg" alt="">
       </div>
       <div class='jump_tab'>
