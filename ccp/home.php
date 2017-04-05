@@ -242,7 +242,11 @@ function check_limit($str){
                     }
                   ?>
                 </td>
-                <td><?php echo $st['start-time'] . "〜" . $st['finish-time']; ?></td>
+                <?php 
+                  $starttime = date('g:i',strtotime($st['start-time']));
+                  $finishtime = date('g:i', strtotime($st['finish-time']));
+                ?>
+                <td><?php echo $starttime . "〜" . $finishtime; ?></td>
                 <td><?php echo $st['place']; ?></td>
                 <?php  
                   $nc = str_replace(",", "<br>", $st['name_company']);
