@@ -244,7 +244,10 @@ function check_limit($str){
                 </td>
                 <td><?php echo $st['start-time'] . "〜" . $st['finish-time']; ?></td>
                 <td><?php echo $st['place']; ?></td>
-                <td><?php echo $st['name_company']; ?></td>
+                <?php  
+                  $nc = str_replace(",", "<br>", $st['name_company']);
+                ?>
+                <td><?php echo $nc; ?></td>
                 <td><?php echo $st['recommend']; ?></td>
               </tr>
             <?php endforeach; ?>
