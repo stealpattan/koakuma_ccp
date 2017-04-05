@@ -12,7 +12,7 @@
         <li><span>電子・情報システム工学科<br>情報システム工学専攻　教授　唐山　英明（touyama@pu-toyama.ac.jp）</span></li>
         <li><span>生物工学科<br>生物工学専攻　　　　　教授　伊藤　伸哉（nbito@pu-toyama.ac.jp）</span></li>
         <li><span>環境・社会基盤工学科<br>環境工学専攻　　　　　教授　楠井　隆史（kusui@pu-toyama.ac.jp）</span></li>
-        <li><span>キャリアセンター<br>　　　　　　　　　　　参与　中島　節春（careers@pu-toyama.ac.jp）</span></li>
+        <li><span>キャリアセンター<br>　　　　　　　　　　　参与　中島　節治（careers@pu-toyama.ac.jp）</span></li>
       </ul>
     </div>
   </div>
