@@ -237,7 +237,7 @@ function check_limit($str){
                 ?>
                 <td>
                   <?php 
-                    echo $d;  
+                    echo $d; 
                     if(check_limit($st['apply_limit']) == true){
                       echo "<br>" . "<span style='color:red;font-size:10px;'>" . "受付は終了しました" . "</span>";
                     }
@@ -256,8 +256,6 @@ function check_limit($str){
                 <td><?php echo $st['recommend']; ?></td>
               </tr>
             <?php endforeach; ?>
-
-
           </table>
         </div>
       </div>
