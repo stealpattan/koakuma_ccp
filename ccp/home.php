@@ -230,9 +230,10 @@ function check_limit($str){
             </tr>
             <?php foreach($sirumoku_table as $st): ?>
               <tr style='text-align:center;'>
-                <?php 
+                <?php
+                  $jp_day = array("Monday" => '月', "Tuesday" => "火", "Wednesday" => "水", "Thirsday" => "木", "Friday" => "金");
                   $d = explode("-" , $st['date']);
-                  $d = (int)$d[0] . "年" . (int)$d[1] . "月" . (int)$d[2] . "日" . "(" .date('l', mktime(0,0,0,(int)$d[0],(int)$d[1],(int)$d[2])) . ")";
+                  $d = (int)$d[0] . "年" . (int)$d[1] . "月" . (int)$d[2] . "日" . "(" . $jp_day[date('l', mktime(0,0,0,(int)$d[0],(int)$d[1],(int)$d[2]))] . ")";
                 ?>
                 <td>
                   <?php 
