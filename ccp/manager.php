@@ -62,6 +62,7 @@
 				else{
 					$_SESSION['event'] = array();
 					$_SESSION['event'] = $_POST;
+					$line = str_replace(array("\r\n","\r","\n"),"",$_POST['comment']);
 					if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
 						$location = 'update_news';
 						$_SESSION['event']['id'] = $_GET['rewrite'];
@@ -77,9 +78,11 @@
 												history.back();
 											}
 										</script>',
-										$_POST['title'],$_POST['month'],
+										$_POST['title'],
+										$_POST['month'],
 										$_POST['day'],$_POST['time_detail'],
-										$_POST['comment'],$_POST['event_type'],
+										$line,
+										$_POST['event_type'],
 										$_POST['target'],
 										$location
 									);
@@ -90,17 +93,20 @@
 		// シルモクページ部分
 		else if($_GET['page_type'] == 'sirumoku'){
 			if(!empty($_GET['delete']) && isset($_GET['delete'])){
+				login_checker();
 				$sql = sprintf("DELETE FROM `sirumoku_data` WHERE id='%s'",$_GET['delete']);
 				mysqli_query($db,$sql) or die(mysqli_error($db));
 				header('location:manager.php?page_type=sirumoku');
 				exit();
 			}
+			// シルモク全データの取得
 			$sirumoku_data = array();
 			$sql = sprintf('SELECT * FROM `sirumoku_data` WHERE 1');
 			$record = mysqli_query($db,$sql) or die(mysqli_error($db));
 			while($rec = mysqli_fetch_assoc($record)){
 				$sirumoku_data[] = $rec;
 			}
+			//申し込み総数の取得
 			$sql = sprintf('SELECT event_date,COUNT(student_number) FROM `sirumoku_entry` GROUP BY event_date');
 			$record = mysqli_query($db,$sql) or die(mysqli_error($db));
 			$total = array();
@@ -110,26 +116,45 @@
 			$sql = sprintf('SELECT COUNT(id) FROM `sirumoku_entry`');
 			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
 			$sum = mysqli_fetch_assoc($record);
+			// 以上申し込み総数の取得部分
+
 			// シルモクページからのフォーム検出
 			if(!empty($_POST) && isset($_POST)){
-				// 未入力項目検出部分
-				if($_POST['year'] == '' || $_POST['year'] == null ||
+				// 未入力項目のエラー検出部分
+				if($_POST['year'] == '' || $_POST['year'] == null || $_POST['year2'] == '' || $_POST['year2'] == null ||
 					$_POST['month'] == '' || $_POST['month'] == null || $_POST['month'] > 12 || $_POST['month'] < 1 ||
-					$_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] > 31 || $_POST['day'] < 1)
+					$_POST['month2'] == '' || $_POST['month2'] == null || $_POST['month2'] > 12 || $_POST['month2'] < 1 ||
+					$_POST['day'] == '' || $_POST['day'] == null || $_POST['day'] > 31 || $_POST['day'] < 1 ||
+					$_POST['day2'] == '' || $_POST['day2'] == null || $_POST['day2'] > 31 || $_POST['day2'] < 1)
 				{
 					$error_content['date_error'] = true;
+				}
+				else{
+					$error_content['date_error'] = false;
 				}
 				if($_POST['place'] == '' || $_POST['place'] == null){
 					$error_content['place_error'] = true;
 				}
+				else{
+					$error_content['place_error'] = false;
+				}
 				if($_POST['com_1'] == '' || $_POST['com_1'] == null || $_POST['com_2'] == '' || $_POST['com_2'] == null){
 					$error_content['com_error'] = true;
+				}
+				else{
+					$error_content['com_error'] = false;
 				}
 				if($_POST['number_people'] == '' || $_POST['number_people'] == null){
 					$error_content['number_people_error'] = true;
 				}
-				if($_POST['department_1'] == $_POST['department_2']){
-					$errot_content['department_error'] = true;
+				else{
+					$error_content['number_people_error'] = false;
+				}
+				if($_POST['dep'] == '' || $_POST['dep'] == null || empty($_POST['dep']) || !isset($_POST['dep'])){
+					$error_content['department_error'] = true;
+				}
+				else{
+					$error_content['department_error'] = false;
 				}
 				// エラーによる再入力要求をします
 				if($error_content['date_error'] == true || 
@@ -143,8 +168,12 @@
 				// エラーがなければ確認用のポップアップを起動します
 				else{
 					$_SESSION['regist_sirumoku'] = $_POST;
+					$dep_all = '';
+					for($i=0;$i<count($_POST['dep']);$i++){
+						$dep_all = $dep_all . $_POST['dep'][$i] . " ";
+					}
 					$alert = sprintf('  <script type="text/javascript">
-											if(window.confirm("登録内容をご確認ください\n\n日付: %s 年 %s 月 %s 日\n開催時間: %s \n開催場所: %s \n参加企業様: %s,%s \n定員: %s \n対象学科: %s,%s")){
+											if(window.confirm("登録内容をご確認ください\n\n日付: %s 年 %s 月 %s 日\n開催時間: %s \n開催場所: %s \n参加企業様: %s,%s \n定員: %s \n対象学科: %s")){
 												location.href = "manager.php?page_type=sirumoku";
 											}
 											else{
@@ -156,7 +185,7 @@
 										$_POST['place'],
 										$_POST['com_1'],$_POST['com_2'],
 										$_POST['number_people'],
-										$_POST['department_1'],$_POST['department_2']
+										$dep_all
 									);
 					echo $alert;
 				}
@@ -181,11 +210,16 @@
 				$place = $_SESSION['regist_sirumoku']['place'];
 				$number_people = $_SESSION['regist_sirumoku']['number_people'];
 				$name_company = sprintf('%s,%s',$_SESSION['regist_sirumoku']['com_1'],$_SESSION['regist_sirumoku']['com_2']);
-				$recommend = sprintf('[%s、%s]',$_SESSION['regist_sirumoku']['department_1'],$_SESSION['regist_sirumoku']['department_2']);
+				$dep_all = '';
+				$apply_limit = sprintf('%s-%s-%s',$_SESSION['regist_sirumoku']['year2'],$_SESSION['regist_sirumoku']['month2'],$_SESSION['regist_sirumoku']['day2']);
+				for($i=0;$i<count($_SESSION['regist_sirumoku']['dep']);$i++){
+					$dep_all = $dep_all . $_SESSION['regist_sirumoku']['dep'][$i] . " ";
+				}
+				$recommend = sprintf('[%s]',$dep_all);
 				
 				if(!empty($_SESSION['update_id']) && isset($_SESSION['update_id'])){
 					if($_SESSION['update_data'] == true){
-						$sql = sprintf('UPDATE `sirumoku_data` SET `date`="%s", `start-time`="%s", `finish-time`="%s",`place`="%s",`number_people`="%s",`name_company`="%s",`recommend`="%s"
+						$sql = sprintf('UPDATE `sirumoku_data` SET `date`="%s", `start-time`="%s", `finish-time`="%s",`place`="%s",`number_people`="%s",`name_company`="%s",`recommend`="%s",`apply_limit`="%s"
 										WHERE id=%s',
 										$date,
 										$t[0],$t[1],
@@ -193,18 +227,20 @@
 										$number_people,
 										$name_company,
 										$recommend,
+										$apply_limit,
 										$_SESSION['update_id']);
 					}
 				}
 				else{
-					$sql = sprintf('INSERT INTO `sirumoku_data`(`date`, `start-time`, `finish-time`, `place`, `number_people`, `name_company`, `recommend`)
-									VALUES("%s","%s","%s","%s","%s","%s","%s")', 
+					$sql = sprintf('INSERT INTO `sirumoku_data`(`date`, `start-time`, `finish-time`, `place`, `number_people`, `name_company`, `recommend`,`apply_limit`,`created`)
+									VALUES("%s","%s","%s","%s","%s","%s","%s","%s",NOW())', 
 									$date, 
 									$t[0], $t[1], 
 									$place, 
 									$number_people, 
 									$name_company, 
-									$recommend);
+									$recommend,
+									$apply_limit);
 				}
 				echo $sql;
 				mysqli_query($db,$sql) or die(mysqli_error($db));
@@ -215,6 +251,7 @@
 				exit();
 			}
 		}
+		//リストページ部分
 		else if($_GET['page_type'] == 'lists'){
 			$sql = 'SELECT `id`,`year`,`month`,`day`,`title` FROM `news` WHERE 1 ORDER BY `year`,`month`,`day`';
 			$record = mysqli_query($db, $sql) or die(mysqli_error($db));
@@ -334,7 +371,6 @@
 								$rewrite_data['place'] = $_SESSION['sirumoku']['place'];
 								$rewrite_data['name_company'] = $_SESSION['sirumoku']['com_1'] . "," . $_SESSION['sirumoku']['com_2'];
 								$rewrite_data['number_people'] = $_SESSION['sirumoku']['number_people'];
-								$rewrite_data['recommend'] = "[" . $_SESSION['sirumoku']['department_1'] . "、" . $_SESSION['sirumoku']['department_2'] . "]";
 							}
 						}
 						else{
@@ -356,6 +392,9 @@
 								}
 								if($_SESSION['error']['number_people_error'] == true){
 									error_massage("人数は正しく入力されていますか？");
+								}
+								if($_SESSION['error']['department_error'] == true){
+									error_massage("学科は正しく選択されていますか？");
 								}
 							}
 						}
@@ -420,6 +459,23 @@
 								<input type='number' name='year' value='<?php echo $y; ?>'>年
 								<input type='number' name='month' min='1' max='12' value='<?php echo $m; ?>'>月
 								<input type='number' name='day' min='1' max='31' value='<?php echo $d; ?>'>日
+								<p>申し込み締め切り</p>
+								<?php  
+									if($execute_rewrite == true){
+										$date = explode("-",$rewrite_data['apply_limit']);
+										$y2 = (int)$date[0];
+										$m2 = (int)$date[1];
+										$d2 = (int)$date[2];
+									}
+									else{
+										$y2 = $y;
+										$m2 = $m;
+										$d2 = $d;
+									}
+								?>
+								<input type='number' name='year2' value='<?php echo $y2; ?>'>年
+								<input type='number' name='month2' min='1' max='12' value='<?php echo $m2; ?>'>月
+								<input type='number' name='day2' min='1' max='31' value='<?php echo $d2; ?>'>日
 								<p>開催時間</p>
 								<select class="" name="time">
 									<?php 
@@ -447,41 +503,20 @@
 								<p>定員</p>
 								<input type="number" name="number_people" value="<?php if($execute_rewrite == true){echo $rewrite_data['number_people'];} ?>">
 								<p>オススメの学科</p>
-								<?php
+								<?php 
 									if($execute_rewrite == true){
-										$rewrite_data['recommend'] = str_replace("[","",$rewrite_data['recommend']);
-										$rewrite_data['recommend'] = str_replace("]","",$rewrite_data['recommend']);
-										$d = explode("、" , $rewrite_data['recommend']);
+										$checked = str_replace('[','',$rewrite_data["recommend"]);
+										$checked = str_replace(']','',$checked);
+										$checked = explode(" ",$checked);
 									}
 								?>
-								<select class="" name="department_1">
-									<?php
-										if($execute_rewrite == true){
-											$str = sprintf("<option value='%s'>%s</option>",$d[0],$d[0]);
-											echo $str;
-										}
-									?>
-									<option value="機械" >機械システム工学科</option>
-									<option value="知能" >知能デザイン工学科</option>
-									<option value="情報" >電子・情報工学科</option>
-									<option value="生物" >生物工学科</option>
-									<option value="環境" >環境工学科</option>
-									<option value="医薬品" >医薬品工学科</option>
-								</select>
-								<select class="" name="department_2">
-									<?php  
-										if($execute_rewrite == true){
-											$str = sprintf("<option value='%s'>%s</option>",$d[1],$d[1]);
-											echo $str;
-										}
-									?>
-									<option value="機械" >機械システム工学科</option>
-									<option value="知能" >知能デザイン工学科</option>
-									<option value="情報" >電子・情報工学科</option>
-									<option value="生物" >生物工学科</option>
-									<option value="環境" >環境工学科</option>
-									<option value="医薬品" >医薬品工学科</option>
-								</select>
+								<label><input type='checkbox' name='dep[]' value='機械' <?php if($execute_rewrite == true){for($i=0;$i<count($checked);$i++){if($checked[$i] == "機械"){echo "checked";}}} ?>>機械システム工学科</label>
+								<label><input type='checkbox' name='dep[]' value='知能' <?php if($execute_rewrite == true){for($i=0;$i<count($checked);$i++){if($checked[$i] == "知能"){echo "checked";}}} ?>>知能デザイン工学科</label>
+								<label><input type='checkbox' name='dep[]' value='情報' <?php if($execute_rewrite == true){for($i=0;$i<count($checked);$i++){if($checked[$i] == "情報"){echo "checked";}}} ?>>電子情報工学科</label>
+								<label><input type='checkbox' name='dep[]' value='環境' <?php if($execute_rewrite == true){for($i=0;$i<count($checked);$i++){if($checked[$i] == "環境"){echo "checked";}}} ?>>環境社会基盤工学科</label>
+								<label><input type='checkbox' name='dep[]' value='生物' <?php if($execute_rewrite == true){for($i=0;$i<count($checked);$i++){if($checked[$i] == "生物"){echo "checked";}}} ?>>生物工学科</label>
+								<label><input type='checkbox' name='dep[]' value='医薬' <?php if($execute_rewrite == true){for($i=0;$i<count($checked);$i++){if($checked[$i] == "医薬"){echo "checked";}}} ?>>医薬品工学科</label>
+								<br>
 								<br>
                 				<input type="submit" class="manager_contents" value="編集">
               				</form>
@@ -594,13 +629,16 @@
 												<dd>
 													<textarea name='comment' cols='50' rows='5'><?php  
 																if(!empty($news_error) && isset($news_error) || $rewrite == true){
-																	echo $_SESSION["event"]["comment"];
+																	echo str_replace("<br />","",$_SESSION["event"]["comment"]);
 																}
 															  ?></textarea>
 												</dd>
 												<dt>イベント区分</dt>
 												<dd>
 													<select name='event_type' class='manager_contents'>
+														<?php if($rewrite == true): ?>
+															<option><?php echo $_SESSION['event']['event_type']; ?></option>
+														<?php endif; ?>
 														<option>指定なし</option>
 														<option>インターンシップ</option>
 														<option>キャリア形成論</option>
@@ -612,6 +650,9 @@
 												<dt>対象学年</dt>
 												<dd>
 													<select name='target' class='manager_contents'>
+														<?php if($rewrite == true): ?>
+															<option><?php echo $_SESSION['event']['target']; ?></option>
+														<?php endif; ?>
 														<option>全学年</option>
 														<option>学部1年生(B1)</option>
 														<option>学部2年生(B2)</option>
@@ -631,7 +672,7 @@
 										</form>
 										<?php if($rewrite == true): ?>
 											<h3>新着情報の削除はこちら</h3>
-											<button onclick='delete_news()'>削除</button>
+											<button onclick='delete_news()' style='color:red;'>削除</button>
 											<script type="text/javascript">
 												function delete_news(){
 													if(window.confirm("イベントを削除します。よろしいですか？\n削除してしまった場合、復旧することができません\nカレンダーへの表示を止める場合は、イベント区分を報告書とすることで非表示にできます")){
@@ -684,7 +725,7 @@
 								<th>参加企業</th>
 							</tr>
 							<?php foreach ($sirumoku_lists as $s_l): ?>
-								<tr class='manager_contents' onclick='change_page_type("sirumoku", <?php echo $s_l['id']; ?>)'>
+								<tr class='manager_contents' onclick='go_sirumoku(<?php echo $s_l["id"]; ?>)'>
 									<td><?php echo $s_l['date']; ?></td>
 									<td><?php echo $s_l['name_company']; ?></td>
 								</tr>
@@ -699,7 +740,7 @@
 								<th>イベント名</th>
 							</tr>
 							<?php foreach ($news_lists as $n_l): ?>
-								<tr class='manager_contents' onclick='change_page_type("news", <?php echo $n_l['id']; ?>)'>
+								<tr class='manager_contents' onclick='go_news(<?php echo $n_l["id"]; ?>)'>
 									<td><?php echo $n_l['year'] . "-" . $n_l['month'] . "-" . $n_l['day']; ?></td>
 									<td><?php echo $n_l['title']; ?></td>
 								</tr>
@@ -707,13 +748,11 @@
 						</table>
 					</div>
 					<script type="text/javascript">
-						function change_page_type(type, id){
-							if(type = "sirumoku"){
-								document.location = "manager.php?page_type=sirumoku&rewrite=" + id;
-							}
-							if(type = "news"){
-								document.location = "manager.php?page_type=new_event&rewrite=" + id;
-							}
+						function go_sirumoku(id){
+							document.location = "manager.php?page_type=sirumoku&rewrite=" + id;
+						}
+						function go_news(id){
+							document.location = "manager.php?page_type=new_event&rewrite=" + id;
 						}
 					</script>
 					<div style='width:30%;' class='manager'>
@@ -757,11 +796,14 @@
 						$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`comment`,`event_type`,`target`,`created`)
 														VALUES('%s','%s','%s','%s','%s','%s','%s','%s',NOW())",
 																		$_SESSION['event']['year'],$_SESSION['event']['month'],$_SESSION['event']['day'],
-																		$_SESSION['event']['title'],$_SESSION['event']['time_detail'],$_SESSION['event']['comment'],
-																		$_SESSION['event']['event_type'],$_SESSION['event']['target']);
+																		$_SESSION['event']['title'],
+																		$_SESSION['event']['time_detail'],
+																		nl2br($_SESSION['event']['comment']),
+																		$_SESSION['event']['event_type'],
+																		$_SESSION['event']['target']);
 						mysqli_query($db, $sql) or die(mysqli_error($db));
 						$_SESSION['event'] = array();
-						header('location: manager.php?page_type=new_event');
+						header('location: manager.php?page_type=new_event&saikooooooo');
 						exit();
 					?>
 				<?php endif; ?>
@@ -776,7 +818,7 @@
 							$_SESSION['event']['month'],
 							$_SESSION['event']['day'],
 							$_SESSION['event']['time_detail'],
-							$_SESSION['event']['comment'],
+							nl2br($_SESSION['event']['comment']),
 							$_SESSION['event']['event_type'],
 							$_SESSION['event']['target'],
 							$_SESSION['event']['id']

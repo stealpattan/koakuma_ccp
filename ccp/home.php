@@ -2,6 +2,7 @@
 session_start();
 date_default_timezone_set("Asia/Tokyo");
 require('dbconnect.php');
+require('function.php');
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
 require('calendar.php');
 if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
@@ -23,42 +24,51 @@ if(!empty($_GET['calendar']) && isset($_GET['calendar'])){
   }
 }
 $calendar =  calendar($year, $month);
-$sql = sprintf('SELECT id,day,title,event_type FROM news WHERE year="%s" AND month="%s"',$year,$month);
+$sql = sprintf('SELECT id,day,title,event_type FROM news WHERE year="%s" AND month="%s" AND event_type != "報告書"',$year,$month);
 $record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
 $table = array();
 while($rec = mysqli_fetch_assoc($record2)){
   $table[] = $rec;
 }
 $_SESSION['cal_event'] = $table;
-//以上
-
-$date_y = date('Y');
-$date_m = date('m');
-
-if($date_m >= '03' && $date_m < '09'){
-  $sql_date = sprintf('SELECT * FROM `sirumoku_data` WHERE sirumoku_data.date >= "%d-03-01" AND sirumoku_data.date < "%d-09-01"', $date_y, $date_y);
-  $record_date = mysqli_query($db, $sql_date);
-  while($table = mysqli_fetch_assoc($record_date)){
-    $datas[] = $table;
-    foreach ($datas as $key => $value) {
-      $date[$key] = $value['date'];
+$sql = "SELECT * FROM `sirumoku_data` WHERE date > NOW()";
+$record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
+$table = array();
+while($rec = mysqli_fetch_assoc($record2)){
+  $dd = explode("-",$rec['date']);
+  if($dd[0] == $year){
+    if($dd[1] == $month){
+      $table[] = $rec;
     }
-    // array_multisortで'id'の列を昇順に並び替える
-    array_multisort($date, SORT_ASC, $datas);
-  }
-}else{
-  $sql_date = sprintf('SELECT * FROM `sirumoku_data` WHERE sirumoku_data.date >= "%d-09-01" AND sirumoku_data.date < "%d-03-01"', $date_y, $date_y+1);
-  $record_date = mysqli_query($db, $sql_date);
-  while($table = mysqli_fetch_assoc($record_date)){
-    $datas[] = $table;
-    foreach ($datas as $key => $value) {
-      $date[$key] = $value['date'];
-    }
-    // array_multisortで'id'の列を昇順に並び替える
-    array_multisort($date, SORT_ASC, $datas);
   }
 }
-$deadline=date('Y-m-d', strtotime("+3 day"));
+$_SESSION['siru_event'] = $table;
+//以上
+
+//シルモクのデータを取得する部分
+$sql = sprintf('SELECT * FROM `sirumoku_data` WHERE date>=NOW()');
+$record2 = mysqli_query($db,$sql) or die(mysqli_error($db));
+$sirumoku_table = array();
+while($rec = mysqli_fetch_assoc($record2)){
+  $sirumoku_table[] = $rec;
+}
+
+//シルモクの締め切り日を超えていないか確認するメソッド
+function check_limit($str){
+  $ex_str = explode("-",$str);
+  if((int)$ex_str[0] < (int)date('Y')){
+    return true;
+  }
+  else if((int)$ex_str[1] < (int)date('m')){
+    return true;
+  }
+  else if((int)$ex_str[2] < (int)date("d")){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,10 +86,9 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
   <body>
     <?php require("header.php"); ?>
     <div class="contents">
-      <div class="top">
+      <div class="top" style='width:50%;margin:0 auto;margin-bottom:20px;'>
         <img src="img/pic/tpu-image.jpg" alt="">
       </div>
-      <?php require('top_of_career_center.php'); ?>
       <div class='jump_tab'>
         <ul>
           <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
@@ -157,9 +166,17 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
-                        echo "<a style='text-decoration:none;' href=''>";
-                        echo $cal_event['title'];
-                        echo "</a>";
+                        $str = sprintf("<a href='event_detail.php?id=%s'><div style='padding-bottom:3px;color:blue;'>%s</div></a>",
+                                  $cal_event['id'],
+                                  $cal_event['title']);
+                        echo $str;
+                      }
+                    }
+                    foreach($_SESSION['siru_event'] as $siru_event){
+                      $dd = explode('-',$siru_event['date']);
+                      if($dd[2] == $calendar[$i]['day']){
+                        $str = sprintf("<a href='#sirumoku'><div style='padding-bottom:3px;color:blue;'>シルモク開催日</div></a>");
+                        echo $str;
                       }
                     }
                     if($j < 6){
@@ -183,101 +200,67 @@ $deadline=date('Y-m-d', strtotime("+3 day"));
           document.location = str;
         }
       </script>
-      <script src="js/calendar-slide.js"></script>
+      <!-- 以下シルモク -->
+      <?php $day_what = array('Sun','Mon','Tue','Wed','Thr','Fri','Sut'); ?>
       <div id="sirumoku">
         <div class="center">
           <p class="contentsTitle">シルモク</p>
           <p class="b_contentsTitle">企業を知る木曜日</p>
         </div>
-        <div class="image">
-          <div class="sirumoku-image">
-            <img src="img/pic/sirumoku.jpg" alt="" />
+        <div class='sirumoku_introduction' style='width:70%;margin:0 auto;padding-bottom:20px;'>
+          <div class="sirumoku-image" style='width:50%;float:left;margin-right:10px;margin-bottom:10px'>
+            <img src="img/pic/sirumoku.jpg" alt=""/>
           </div>
-        </div>
-        <div class="intro">
-          <p>県内企業が自社の魅力・実力を学生に紹介する</p>
-          <p>学内企業説明会</p>
-          <p>富山県に関係のある企業の方にお越しいただき</p>
-          <p>業務内容や自社製品について紹介していただきます。</p>
-          <p class="sub">シルモクの受付はキャリアカフェで行なっています。</p>
+          <div class="" style='text-align:left;'>
+            <p>県内企業が自社の魅力・実力を学生に紹介する</p>
+            <p>学内企業説明会</p>
+            <p>富山県に関係のある企業の方にお越しいただき</p>
+            <p>業務内容や自社製品について紹介していただきます。</p>
+            <p class="sub">シルモクの受付はキャリアカフェで行なっています。</p>
+          </div>
         </div>
         <div class="sirumoku_datas">
           <table class="table table-bordered table-striped trhover">
             <tr class="s_data_list">
-              <th class="s_data_day">開催日</th>
-              <th class="s_data_time">時間帯</th>
-              <th class="s_data_place">開催場所</th>
-              <th class="s_data_name">企業名</th>
+              <th class="s_data_day" style='color:white;'>開催日</th>
+              <th class="s_data_time" style='color:white;'>時間帯</th>
+              <th class="s_data_place" style='color:white;'>開催場所</th>
+              <th class="s_data_name" style='color:white;'>企業名</th>
+              <th class="s_data_name" style='color:white;'>推薦学科</th>
             </tr>
-            <?php
-            foreach($datas as $data):
-              //開催日
-              $array = explode("-", $data['date']);
-              $str1 = str_split($array[1]);
-              $str2 = str_split($array[2]);
-              if($str1[0] == 0){
-                $str1[0] = '';
-              }
-              if($str2[0] == 0){
-                $str2[0] = '';
-              }
-              $str1=$str1[0].$str1[1];
-              $str2=$str2[0].$str2[1];
-              $date_time=$array[0]."/".$str1."/".$str2;
-              //開始時間
-              $table_st_data=$data['start-time'];
-              $array = explode(":", $table_st_data);
-              $data_start=$array[0].":".$array[1];
-              //終了時間
-              $table_ft_data=$data['finish-time'];
-              $array = explode(":", $table_ft_data);
-              $data_finish=$array[0].":".$array[1];
-              //会社名
-              $table_company_data=$data['name_company'];
-              $array = explode(",", $table_company_data);
-              //sirumoku_entryの各受付数を取得
-              // $sql_entry=sprintf('SELECT COUNT(`event_date`) AS cnt FROM `sirumoku_entry` WHERE event_date = "%s"', $data['date']);
-              // $record_entry=mysqli_query($db,$sql_entry);
-              // $entry_number = mysqli_fetch_assoc($record_entry);
-              // $cnt = $entry_number["cnt"];
-              // $remain = $data['number_people'] - $cnt;
-              $errors['entry'] = '';
-              if($data['date'] < $deadline){
-                $errors['entry'] = 'deadline';
-              }
-              // elseif($cnt == $data['number_people']){
-              //   $errors['entry'] = 'over';
-              // }elseif($remain <= 5){
-              //   $errors['entry'] = 'warning';
-              // }
-              ?>
-              <tr>
-                <?php if(!empty($errors['entry'])): ?>
-                  <th class="table_data_date"><p style="padding-top:8px;"><?php echo htmlspecialchars($date_time); ?></p></th>
-                  <th class="table_data_time"><p style="padding-top:8px;"><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></p></th>
-                  <th class="table_data_place"><p style="padding-top:8px;"><?php echo htmlspecialchars($data['place']) ?></p></th>
-                <?php else: ?>
-                  <th class="table_data_date"><p><?php echo htmlspecialchars($date_time); ?></p></th>
-                  <th class="table_data_time"><p><?php echo htmlspecialchars($data_start.' ~ '.$data_finish); ?></p></th>
-                  <th class="table_data_place"><p><?php echo htmlspecialchars($data['place']) ?></p></th>
-                <?php endif; ?>
-                <th>
-                  <p style="margin:0; font-size:10px;"><?php echo  htmlspecialchars($data['recommend']); ?></p>
-                  <?php echo htmlspecialchars($array[0])."<br>".htmlspecialchars($array[1]); ?>
-                  <?php if (isset($errors['entry']) && $errors['entry'] == 'deadline' ) : ?>
-                    <p class="error" style="color: red; font-size: 10px; margin: 0;">受付を終了しました</p>
-                  <!-- <?php //elseif (isset($errors['entry']) && $errors['entry'] == 'over' ) : ?>
-                    <p class="error" style="color: red; font-size: 10px; margin: 0;">定員に達しました</p>
-                  <?php //elseif (isset($errors['entry']) && $errors['entry'] == 'warning') : ?>
-                    <p class="error" style="color: red; font-size: 10px; margin: 0;">残り<?php echo $remain; ?>名で定員に達します</p> -->
-                  <?php endif; ?>
-                </th>
+            <?php foreach($sirumoku_table as $st): ?>
+              <tr style='text-align:center;'>
+                <?php
+                  $jp_day = array("Monday" => '月', "Tuesday" => "火", "Wednesday" => "水", "Thursday" => "木", "Friday" => "金");
+                  $d = explode("-" , $st['date']);
+                  $d = (int)$d[0] . "年" . (int)$d[1] . "月" . (int)$d[2] . "日" . "(" . $jp_day[date('l', mktime(0,0,0,(int)$d[0],(int)$d[1],(int)$d[2]))] . ")";
+                ?>
+                <td>
+                  <?php 
+                    echo $d; 
+                    if(check_limit($st['apply_limit']) == true){
+                      echo "<br>" . "<span style='color:red;font-size:10px;'>" . "受付は終了しました" . "</span>";
+                    }
+                  ?>
+                </td>
+                <?php 
+                  $starttime = date('g:i',strtotime($st['start-time']));
+                  $finishtime = date('g:i', strtotime($st['finish-time']));
+                ?>
+                <td><?php echo $starttime . "〜" . $finishtime; ?></td>
+                <td><?php echo $st['place']; ?></td>
+                <?php  
+                  $nc = str_replace(",", "<br>", $st['name_company']);
+                ?>
+                <td><?php echo $nc; ?></td>
+                <td><?php echo $st['recommend']; ?></td>
               </tr>
             <?php endforeach; ?>
           </table>
         </div>
       </div>
     </div>
+    <?php require('top_of_career_center.php'); ?>
     <?php include('footer.php'); ?>
   </body>
 </html>

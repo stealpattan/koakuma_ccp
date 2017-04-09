@@ -42,7 +42,7 @@ $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC');
             </div>
             <div class="info-tags">
               <div class="info-tag"><p><?php echo htmlspecialchars($table['target']); ?></p></div>
-              <div class="info-tag"><p><?php echo htmlspecialchars($table['category']); ?></p></div>
+              <div class="info-tag"><p><?php echo htmlspecialchars($table['event_type']); ?></p></div>
             </div>
           <?php
           }
