@@ -22,6 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="css/intern.css">
 </head>
 <body>
+	<?php include_once("analyticstracking.php") ?>
 	<?php require("header.php"); ?>
 	<div style='width:70%' class='manager'>
 		<h1 style='font-size:200%;border-bottom:3px solid #6eb7db;color:black;'><?php echo $data['title']; ?></h1>

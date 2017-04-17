@@ -80,6 +80,7 @@
 		<link rel="stylesheet" href="./css/intern.css">
 	</head>
 	<body>
+		<?php include_once("analyticstracking.php") ?>
 		<?php require('header.php'); ?>
 		<?php if(ip_tracer() == true): ?>
 		<!-- コンテンツ部分 -->

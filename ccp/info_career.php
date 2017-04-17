@@ -84,6 +84,7 @@ if (isset($_POST['department_id']) && $_POST['department_id'] != 0) {
     <link rel="stylesheet" href="css/info-career.css">
   </head>
   <body>
+    <?php include_once("analyticstracking.php") ?>
     <!-- ヘッダー -->
     <?php require("header.php"); ?>
     <!-- コンテンツ -->

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/common.css">
   </head>
   <body>
+    <?php include_once("analyticstracking.php") ?>
     <header>
       <img class="logo" src="img/logo/tpu_logo_set.svg" alt="TPUのロゴ"/>
       <!-- ナビメニュー -->

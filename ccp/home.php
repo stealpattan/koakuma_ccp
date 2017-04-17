@@ -84,6 +84,7 @@ function check_limit($str){
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
+    <?php include_once("analyticstracking.php") ?>
     <?php require("header.php"); ?>
     <div class="contents">
       <div class="top" style='width:50%;margin:0 auto;margin-bottom:20px;'>

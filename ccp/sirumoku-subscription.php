@@ -118,6 +118,7 @@ if(!empty($_POST)){
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
+    <?php include_once("analyticstracking.php") ?>
     <header>
       <img class="logo" src="img/logo/tpu_logo_set.svg" alt="TPUのロゴ"/>
       <!-- ナビメニュー -->

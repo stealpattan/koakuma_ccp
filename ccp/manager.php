@@ -315,6 +315,7 @@
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
+		<?php include_once("analyticstracking.php") ?>
 		<?php require("header.php"); ?>
 		<!-- 以下学内専用ページ部 -->
 		<?php if(1): ?>
