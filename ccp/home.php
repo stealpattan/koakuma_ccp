@@ -62,7 +62,7 @@ function check_limit($str){
   else if((int)$ex_str[1] < (int)date('m')){
     return true;
   }
-  else if((int)$ex_str[2] < (int)date("d")){
+  else if((int)$ex_str[1] == (int)date('m') && (int)$ex_str[2] < (int)date("d")){
     return true;
   }
   else{
