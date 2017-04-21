@@ -234,7 +234,7 @@ function check_limit($str){
                 <?php
                   $jp_day = array("Monday" => '月', "Tuesday" => "火", "Wednesday" => "水", "Thursday" => "木", "Friday" => "金");
                   $d = explode("-" , $st['date']);
-                  $d = (int)$d[0] . "年" . (int)$d[1] . "月" . (int)$d[2] . "日" . "(" . $jp_day[date('l', mktime(0,0,0,(int)$d[0],(int)$d[1],(int)$d[2]))] . ")";
+                  $d = (int)$d[0] . "年" . (int)$d[1] . "月" . (int)$d[2] . "日" . "(" . $jp_day[date('l', mktime(0,0,0,(int)$d[1],(int)$d[2],(int)$d[0]))] . ")";
                 ?>
                 <td>
                   <?php 
