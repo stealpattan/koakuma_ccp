@@ -1,7 +1,7 @@
 <div style='width:70%;' class="introduce">
   <div class="introduce-image">
     <div class="introduce-image-inner">
-      <img src="img/pic/introduce-image.jpg" alt="">
+      <img src="./assets/img/pic/introduce-image.jpg" alt="">
     </div>
   </div>
   <div class="introduce-introduction-title">
