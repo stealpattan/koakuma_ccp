@@ -1,5 +1,5 @@
 <header>
-  <img class="logo" width='100%' src="img/logo/tpu_logo_set.svg" alt="TPUのロゴ"/>
+  <img class="logo" width='100%' src="./assets/img/logo/tpu_logo_set.svg" alt="TPUのロゴ"/>
   <!-- ナビメニュー -->
   <div class="nav-menu">
     <ul>
