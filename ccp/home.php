@@ -75,20 +75,20 @@ function check_limit($str){
   <head>
     <meta charset="utf-8">
     <title>Top</title>
-    <link rel="shortcut icon" href="img/logo/tpu_logo.png">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/sirumoku.css">
-    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/home.css">
+    <link rel="stylesheet" href="./assets/css/sirumoku.css">
+    <script type="text/javascript" src="./assets/js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
     <?php include_once("analyticstracking.php") ?>
     <?php require("header.php"); ?>
     <div class="contents">
       <div class="top" style='width:50%;margin:0 auto;margin-bottom:20px;'>
-        <img src="img/pic/tpu-image.jpg" alt="">
+        <img src="./assets/img/pic/tpu-image.jpg" alt="">
       </div>
       <div class='jump_tab'>
         <ul>
@@ -210,7 +210,7 @@ function check_limit($str){
         </div>
         <div class='sirumoku_introduction' style='width:70%;margin:0 auto;padding-bottom:20px;'>
           <div class="sirumoku-image" style='width:50%;float:left;margin-right:10px;margin-bottom:10px'>
-            <img src="img/pic/sirumoku.jpg" alt=""/>
+            <img src="./assets/img/pic/sirumoku.jpg" alt=""/>
           </div>
           <div class="" style='text-align:left;'>
             <p>県内企業が自社の魅力・実力を学生に紹介する</p>
@@ -237,20 +237,20 @@ function check_limit($str){
                   $d = (int)$d[0] . "年" . (int)$d[1] . "月" . (int)$d[2] . "日" . "(" . $jp_day[date('l', mktime(0,0,0,(int)$d[1],(int)$d[2],(int)$d[0]))] . ")";
                 ?>
                 <td>
-                  <?php 
-                    echo $d; 
+                  <?php
+                    echo $d;
                     if(check_limit($st['apply_limit']) == true){
                       echo "<br>" . "<span style='color:red;font-size:10px;'>" . "受付は終了しました" . "</span>";
                     }
                   ?>
                 </td>
-                <?php 
+                <?php
                   $starttime = date('g:i',strtotime($st['start-time']));
                   $finishtime = date('g:i', strtotime($st['finish-time']));
                 ?>
                 <td><?php echo $starttime . "〜" . $finishtime; ?></td>
                 <td><?php echo $st['place']; ?></td>
-                <?php  
+                <?php
                   $nc = str_replace(",", "<br>", $st['name_company']);
                 ?>
                 <td><?php echo $nc; ?></td>

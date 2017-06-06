@@ -73,11 +73,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>就職先データ</title>
-		<link rel="shortcut icon" href="img/logo/tpu_logo.png">
-		<link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/common.css">
-		<link rel="stylesheet" href="./css/intern.css">
+		<link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+		<link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+		<link rel="stylesheet" href="./assets/css/intern.css">
 	</head>
 	<body>
 		<?php include_once("analyticstracking.php") ?>

@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 	require('dbconnect.php');
 	require('function.php');
@@ -18,8 +18,8 @@
 <head>
 	<meta charset='utf-8'>
 	<title></title>
-	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<link rel="stylesheet" type="text/css" href="css/intern.css">
+	<link rel="stylesheet" type="text/css" href="./assets/css/common.css">
+	<link rel="stylesheet" type="text/css" href="./assets/css/intern.css">
 </head>
 <body>
 	<?php include_once("analyticstracking.php") ?>

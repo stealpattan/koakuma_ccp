@@ -64,14 +64,14 @@
 	<head>
 		<meta charset='utf8'>
 		<title>管理者ページ</title>
-		<link rel="shortcut icon" href="img/logo/tpu_logo.png">
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/home.css">
-		<link rel="stylesheet" href="css/intern.css">
-		<link rel="stylesheet" href="css/sirumoku.css">
-		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+		<link rel="stylesheet" href="./assets/css/reset.css">
+		<link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="./assets/css/common.css">
+		<link rel="stylesheet" href="./assets/css/home.css">
+		<link rel="stylesheet" href="./assets/css/intern.css">
+		<link rel="stylesheet" href="./assets/css/sirumoku.css">
+		<script type="text/javascript" src="./assets/js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
 		<?php include_once("analyticstracking.php") ?>

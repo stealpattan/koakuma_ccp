@@ -157,10 +157,10 @@
 					$error_content['department_error'] = false;
 				}
 				// エラーによる再入力要求をします
-				if($error_content['date_error'] == true || 
-					$error_content['place_error'] == true || 
-					$error_content['com_error'] == true || 
-					$error_content['number_people_error'] == true || 
+				if($error_content['date_error'] == true ||
+					$error_content['place_error'] == true ||
+					$error_content['com_error'] == true ||
+					$error_content['number_people_error'] == true ||
 					$error_content['department_error'] == true)
 				{
 					sirumoku_registration_error($error_content);
@@ -216,7 +216,7 @@
 					$dep_all = $dep_all . $_SESSION['regist_sirumoku']['dep'][$i] . " ";
 				}
 				$recommend = sprintf('[%s]',$dep_all);
-				
+
 				if(!empty($_SESSION['update_id']) && isset($_SESSION['update_id'])){
 					if($_SESSION['update_data'] == true){
 						$sql = sprintf('UPDATE `sirumoku_data` SET `date`="%s", `start-time`="%s", `finish-time`="%s",`place`="%s",`number_people`="%s",`name_company`="%s",`recommend`="%s",`apply_limit`="%s"
@@ -233,12 +233,12 @@
 				}
 				else{
 					$sql = sprintf('INSERT INTO `sirumoku_data`(`date`, `start-time`, `finish-time`, `place`, `number_people`, `name_company`, `recommend`,`apply_limit`,`created`)
-									VALUES("%s","%s","%s","%s","%s","%s","%s","%s",NOW())', 
-									$date, 
-									$t[0], $t[1], 
-									$place, 
-									$number_people, 
-									$name_company, 
+									VALUES("%s","%s","%s","%s","%s","%s","%s","%s",NOW())',
+									$date,
+									$t[0], $t[1],
+									$place,
+									$number_people,
+									$name_company,
 									$recommend,
 									$apply_limit);
 				}
@@ -306,12 +306,12 @@
 	<head>
 		<meta charset='utf8'>
 		<title>管理者ページ</title>
-		<link rel="shortcut icon" href="img/logo/tpu_logo.png">
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/common.css">
-		<link rel="stylesheet" href="css/home.css">
-		<link rel="stylesheet" href="css/intern.css">		
+		<link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+		<link rel="stylesheet" href="./assets/css/reset.css">
+		<link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="./assets/css/common.css">
+		<link rel="stylesheet" href="./assets/css/home.css">
+		<link rel="stylesheet" href="./assets/css/intern.css">		
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
@@ -339,7 +339,7 @@
 					</a>
 					<a href="manager.php?page_type=new_event" style='text-decoration:none;'>
 						<div class='manager manager_contents'>
-							<h2>新着情報登録ページ</h2>						
+							<h2>新着情報登録ページ</h2>
 							<p>様々な新着情報の登録を行います</p>
 						</div>
 					</a>
@@ -358,11 +358,11 @@
 
 			<!-- 以下ページ切り替え部分 -->
 			<?php if(!empty($_GET['page_type']) && isset($_GET['page_type'])): ?>
-				
+
 				<!-- シルモクデータ表示 -->
 				<?php if($_GET['page_type'] == 'sirumoku'): ?>
 					<?php login_checker(); ?>
-					<?php 
+					<?php
 						if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
 							$execute_rewrite = true;
 							if($_GET['rewrite'] == "exist"){
@@ -379,7 +379,7 @@
 						}
 					?>
 					<h2 style='width:70%' class='manager'>シルモク管理ページ</h2>
-					<?php  
+					<?php
 						if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
 							if(!empty($_SESSION['error']) && isset($_SESSION['error'])){
 								if($_SESSION['error']['date_error'] == true){
@@ -409,7 +409,7 @@
 								<th>申し込み総数</th>
 							</tr>
 							<?php foreach($sirumoku_data as $sirumoku_data): ?>
-								<?php 
+								<?php
 									if(!empty($_GET['rewrite']) && isset($_GET['rewrite'])){
 										if($_GET['rewrite'] == $sirumoku_data['id']){
 											$rewrite_data = $sirumoku_data;
@@ -423,8 +423,8 @@
 									<td><?php echo $sirumoku_data['start-time']; ?>~<?php echo $sirumoku_data['finish-time']; ?></td>
 									<td><?php echo $sirumoku_data['name_company']; ?></td>
 									<td style='color:red;'>
-										<?php 
-											for ($i=0; $i < count($total); $i++) { 
+										<?php
+											for ($i=0; $i < count($total); $i++) {
 												if($total[$i]['event_date'] == $sirumoku_data['date']){
 													echo $total[$i]['COUNT(student_number)'];
 												}
@@ -444,7 +444,7 @@
 						<div style='width:70%;' class="manager">
 							<form class="" action="manager.php?page_type=sirumoku" method="post">
 								<p>開催日</p>
-								<?php  
+								<?php
 									if($execute_rewrite == true){
 										$date = explode("-", $rewrite_data['date']);
 										$y = (int)$date[0];
@@ -461,7 +461,7 @@
 								<input type='number' name='month' min='1' max='12' value='<?php echo $m; ?>'>月
 								<input type='number' name='day' min='1' max='31' value='<?php echo $d; ?>'>日
 								<p>申し込み締め切り</p>
-								<?php  
+								<?php
 									if($execute_rewrite == true){
 										$date = explode("-",$rewrite_data['apply_limit']);
 										$y2 = (int)$date[0];
@@ -479,7 +479,7 @@
 								<input type='number' name='day2' min='1' max='31' value='<?php echo $d2; ?>'>日
 								<p>開催時間</p>
 								<select class="" name="time">
-									<?php 
+									<?php
 										if($execute_rewrite == true){
 											$str = sprintf('<option value="%s~%s">%s ~ %s</option>',$rewrite_data['start-time'],$rewrite_data['finish-time'],$rewrite_data['start-time'],$rewrite_data['finish-time']);
 											echo $str;
@@ -504,7 +504,7 @@
 								<p>定員</p>
 								<input type="number" name="number_people" value="<?php if($execute_rewrite == true){echo $rewrite_data['number_people'];} ?>">
 								<p>オススメの学科</p>
-								<?php 
+								<?php
 									if($execute_rewrite == true){
 										$checked = str_replace('[','',$rewrite_data["recommend"]);
 										$checked = str_replace(']','',$checked);
@@ -585,10 +585,10 @@
 											<dl>
 												<dt>イベント名：</dt>
 												<dd>
-													<input 
-														type='text' 
-														name='title' 
-														value='<?php  
+													<input
+														type='text'
+														name='title'
+														value='<?php
 																	if(!empty($news_error) && isset($news_error) || $rewrite == true) {
 																		echo $_SESSION["event"]["title"];
 																	}
@@ -602,7 +602,7 @@
 																													echo $_SESSION["event"]["month"];
 																												}
 																												else{
-																													echo (int)date("m"); 
+																													echo (int)date("m");
 																												}
 																											?>'>月
 													<input type='number' name='day' min='1' max='31' value='<?php
@@ -611,15 +611,15 @@
 																												}
 																												else{
 																													echo (int)date("d");
-																												} 
-																											?>'>日													
+																												}
+																											?>'>日
 												</dd>
 												<dt>詳細な時間など</dt>
 												<dd>
-													<input 
-														type='text' 
-														name='time_detail' 
-														value='<?php  
+													<input
+														type='text'
+														name='time_detail'
+														value='<?php
 																	if(!empty($news_error) && isset($news_error) || $rewrite == true){
 																		echo $_SESSION["event"]["time_detail"];
 																	}
@@ -628,7 +628,7 @@
 												</dd>
 												<dt>イベント詳細などコメント</dt>
 												<dd>
-													<textarea name='comment' cols='50' rows='5'><?php  
+													<textarea name='comment' cols='50' rows='5'><?php
 																if(!empty($news_error) && isset($news_error) || $rewrite == true){
 																	echo str_replace("<br />","",$_SESSION["event"]["comment"]);
 																}
@@ -710,7 +710,7 @@
 								</th>
 								<!-- 以上最新の情報表示部 -->
 							</tr>
-						</table>						
+						</table>
 					</div>
 					<!-- 以上新着情報コンテンツ部 -->
 				<?php endif; ?>
@@ -782,7 +782,7 @@
 
 				<!-- 以下ログアウト部 -->
 				<?php if($_GET['page_type'] == "log_out"): ?>
-					<?php 
+					<?php
 						login_checker();
 						$_SESSION['manager_login'] = false;
 						header('location:manager.php');
@@ -793,7 +793,7 @@
 
 				<!-- 以下新着情報情報登録部 -->
 				<?php if($_GET['page_type'] == "registration"): ?>
-					<?php 
+					<?php
 						$sql = sprintf("INSERT INTO `news`(`year`,`month`,`day`,`title`,`time_detail`,`comment`,`event_type`,`target`,`created`)
 														VALUES('%s','%s','%s','%s','%s','%s','%s','%s',NOW())",
 																		$_SESSION['event']['year'],$_SESSION['event']['month'],$_SESSION['event']['day'],
@@ -812,7 +812,7 @@
 
 				<!-- 以下新着情報更新部 -->
 				<?php if($_GET['page_type'] == "update_news"): ?>
-					<?php 
+					<?php
 						$sql = sprintf("UPDATE `news` SET title='%s',year='%s',month='%s',day='%s',time_detail='%s',comment='%s',event_type='%s',target='%s' WHERE id='%s'",
 							$_SESSION['event']['title'],
 							$_SESSION['event']['year'],
@@ -833,7 +833,7 @@
 
 				<!-- 以下新着情報削除処理部 -->
 				<?php if($_GET['page_type'] == "delete_news"): ?>
-					<?php 
+					<?php
 						$sql = sprintf("DELETE FROM `news` WHERE id=%s",$_GET['id']);
 						mysqli_query($db,$sql) or die(mysqli_error($db));
 						header('location:manager.php?page_type=lists');

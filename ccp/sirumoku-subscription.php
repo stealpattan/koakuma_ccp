@@ -108,14 +108,14 @@ if(!empty($_POST)){
   <head>
     <meta charset="utf-8">
     <title>シルモク参加申込</title>
-    <link rel="shortcut icon" href="img/logo/tpu_logo.png">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/progress_bar.css">
-    <link rel="stylesheet" href="css/sirumoku.css">
-    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/home.css">
+    <link rel="stylesheet" href="./assets/css/progress_bar.css">
+    <link rel="stylesheet" href="./assets/css/sirumoku.css">
+    <script type="text/javascript" src="./assets/js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
     <?php include_once("analyticstracking.php") ?>

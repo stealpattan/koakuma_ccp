@@ -77,11 +77,11 @@ if (isset($_POST['department_id']) && $_POST['department_id'] != 0) {
   <head>
     <meta charset="utf-8">
     <title>就職情報</title>
-    <link rel="shortcut icon" href="img/logo/tpu_logo.png">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/info-career.css">
+    <link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/info-career.css">
   </head>
   <body>
     <?php include_once("analyticstracking.php") ?>
