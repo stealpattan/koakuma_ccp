@@ -87,7 +87,7 @@ function check_limit($str){
     <?php include_once("analyticstracking.php") ?>
     <?php require("header.php"); ?>
     <div class="contents">
-      <div class="top" style='width:100%;margin:0 auto;margin-bottom:60px;'>
+      <div class="top">
         <img src="./assets/img/pic/tpu-image.jpg" alt="">
       </div>
       <div class='jump_tab'>
