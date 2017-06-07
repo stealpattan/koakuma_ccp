@@ -19,30 +19,8 @@ header{
 	overflow: auto;
 	margin-top: 40px;
 }
-.nav-menu #menu li{
-	box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	-ms-box-sizing:border-box;
-	-o-box-sizing:border-box;
-}
 .clear{
 	clear: both;
-}
-ul li#home,ul li#info-career,ul li#intern {
-	float:left;
-	display:block;
-	list-style-type:none;
-	background-repeat:no-repeat;
-	width:32%;
-	padding:1% 0;
-	text-align:center;
-}
-li#home {
-	margin-right: 1%;
-}
-li#info-career {
-	margin-right: 1%;
 }
 .selected_tab {
 	padding: 10px 0;
