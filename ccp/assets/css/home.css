@@ -1,9 +1,9 @@
 /*home.php*/
-.top{
+.top_image{
   width: 100%;
   margin-bottom:60px;
 }
-.top img{
+.top_image img{
   width: 100%;
   height: auto;
 }
