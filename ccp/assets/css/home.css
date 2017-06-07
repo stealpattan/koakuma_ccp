@@ -7,30 +7,6 @@
   width: 100%;
   height: auto;
 }
-.introduce{
-  width: 80%;
-  overflow: auto;
-  margin: 5% auto;
-}
-.introduce-image{
-  float: left;
-  width: 20%;
-  margin: 2rem;
-}
-.introduce-image-inner{
-  width: 90%;
-  margin: 0 auto;
-}
-.introduce-introduction-title h1{
-  margin-top: 5rem;
-  margin-bottom: 15px;
-  font-size: 2rem;
-}
-.introduce-introduction-title h4{
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
 .jump_tab{
   width:100%;
   text-align: center;
@@ -311,4 +287,29 @@ tr.days td{
 .s_past a{
   text-decoration: none;
   color: #333;
+}
+/*キャリアセンター所長からの挨拶*/
+.introduce{
+  width: 80%;
+  overflow: auto;
+  margin: 5% auto;
+}
+.introduce-image{
+  float: left;
+  width: 20%;
+  margin: 2rem;
+}
+.introduce-image-inner{
+  width: 90%;
+  margin: 0 auto;
+}
+.introduce-introduction-title h1{
+  margin-top: 5rem;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+.introduce-introduction-title h4{
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
