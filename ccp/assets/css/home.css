@@ -1,4 +1,5 @@
-/*home.php*/
+/*home.phpのcss*/
+/*top_image部分*/
 .top_image{
   width: 100%;
   margin-bottom:60px;
@@ -7,6 +8,7 @@
   width: 100%;
   height: auto;
 }
+/*tab_button部分*/
 .jump_tab{
   width:100%;
   text-align: center;
@@ -122,6 +124,7 @@ p.contentsTitle{
   text-decoration: none;
   color: #333;
 }
+/*カレンダー部分*/
 #calendar{
   width: 80%;
   margin: 0 auto;
@@ -205,6 +208,7 @@ tr.days td{
 .cal_button:hover{
 	background-color: #cbe6f3;
 }
+/*シルモク部分*/
 .image{
   display: block;
 }
