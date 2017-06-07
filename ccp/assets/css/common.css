@@ -11,6 +11,10 @@ body{
 .clear{
 	clear: both;
 }
+.center{
+  text-align: center;
+  margin-bottom: 10px;
+}
 /*ここからheader部分*/
 header{
 	width: 80%;
