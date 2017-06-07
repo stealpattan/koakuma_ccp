@@ -71,6 +71,7 @@ li#info-career {
 	margin-right: 1%;
 }
 .selected_tab {
+	padding: 10px 0;
 	border-bottom: 6px solid #0082df;
 }
 /* ここまでheader */
