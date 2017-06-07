@@ -92,9 +92,9 @@ function check_limit($str){
       </div>
       <div class='jump_tab'>
         <ul>
-          <a href="#information"><div class='jump_button'style='font-size:100%;'>新着情報</div></a>
-          <a href="#calendar"><div class='jump_button'style='font-size:100%;'>スケジュール</div></a>
-          <a href="#sirumoku"><div class='jump_button'style='font-size:100%;'>シルモク</div></a>
+          <li><a class="jump_button" href="#information">新着情報</a></li>
+          <li><a class="jump_button" href="#calendar">スケジュール</a></li>
+          <li><a class="jump_button" href="#sirumoku">シルモク</a></li>
         </ul>
       </div>
       <div id="information">
