@@ -16,7 +16,7 @@ header{
 	width: 80%;
 	margin: 40px auto 20px;
 }
-.logo{
+.nav-logo{
 	margin: 0;
 	padding: 0;
 	height: 70px;
@@ -28,12 +28,17 @@ header{
 	margin-top: 40px;
 	text-align: center;
 }
-.header_style{
+li.selected_tab,
+li.unselected_tab{
 	display: inline-block;
 	width: 30%;
 	text-align: center;
+}
+li.selected_tab a,
+li.unselected_tab a{
+	color: #337ab7;
+	text-decoration: none;
 	font-size: 150%;
-	padding-bottom: 3px
 }
 .selected_tab {
 	padding: 10px 0;
