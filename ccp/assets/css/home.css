@@ -237,6 +237,20 @@ tr.days td{
 }
 /* 1列目 */ #calendar table tbody tr :nth-child(1) {color:red;}
 /* 7列目 */ #calendar table tbody tr :nth-child(7) {color:blue;}
+.calendar_content{
+	height: 100px;
+}
+
+.cal_button{
+	width: 10%;
+	background-color: white;
+	color: black;
+	text-decoration: none;
+	border-radius: 20px;
+}
+.cal_button:hover{
+	background-color: #cbe6f3;
+}
 .image{
   display: block;
 }
