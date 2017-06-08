@@ -13,22 +13,27 @@
 	}
 ?>
 
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 	<meta charset='utf-8'>
 	<title></title>
+	<link rel="shortcut icon" href="./assets/img/logo/tpu_logo.png">
+	<link rel="stylesheet" href="./assets/css/reset.css">
+	<link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./assets/css/common.css">
 	<link rel="stylesheet" type="text/css" href="./assets/css/intern.css">
 </head>
 <body>
 	<?php include_once("analyticstracking.php") ?>
 	<?php require("header.php"); ?>
-	<div class="breadcrumbs">
-		<ul>
-			<li><a href="home.php">Home</a></li>
-			<li class="here">イベント詳細</li>
-		</ul>
+	<div class="event_detail" style="width: 70%; margin: 0 auto;">
+		<div class="breadcrumbs">
+			<ul>
+				<li><a href="home.php">Home</a></li>
+				<li class="here">イベント詳細</li>
+			</ul>
+		</div>
 	</div>
 	<div style='width:70%' class='manager'>
 		<h1 style='font-size:200%;border-bottom:3px solid #6eb7db;color:black;'><?php echo $data['title']; ?></h1>
