@@ -207,13 +207,19 @@ tr.days td{
 .calendar_content{
 	height: 100px;
 }
-
+#calendar .center p{
+  display: inline;
+  padding: 0 20px;
+  font-size: 24px;
+}
 .cal_button{
 	width: 10%;
 	background-color: white;
 	color: black;
 	text-decoration: none;
 	border-radius: 20px;
+  position: relative;
+  bottom: 5px;
 }
 .cal_button:hover{
 	background-color: #cbe6f3;
