@@ -311,8 +311,8 @@
 		<link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="./assets/css/common.css">
 		<link rel="stylesheet" href="./assets/css/home.css">
-		<link rel="stylesheet" href="./assets/css/intern.css">		
-		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<link rel="stylesheet" href="./assets/css/intern.css">
+		<script type="text/javascript" src="./assets/js/jquery-3.1.1.min.js"></script>
 	</head>
 	<body>
 		<?php include_once("analyticstracking.php") ?>
