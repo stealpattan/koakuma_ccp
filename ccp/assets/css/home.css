@@ -270,3 +270,20 @@ tr.days td{
   font-size: 1.2rem;
   font-weight: bold;
 }
+/*allnews.php部分*/
+#information .title p{
+  font-size: 28px;
+  display: inline-block;
+  font-weight: 300;
+}
+#information .title p::after{
+  width: 48%;
+  content: ' ';
+  border-bottom: solid 1px #222;
+  display: block;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+}

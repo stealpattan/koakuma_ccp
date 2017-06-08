@@ -24,6 +24,12 @@
 <body>
 	<?php include_once("analyticstracking.php") ?>
 	<?php require("header.php"); ?>
+	<div class="breadcrumbs">
+		<ul>
+			<li><a href="home.php">Home</a></li>
+			<li class="here">イベント詳細</li>
+		</ul>
+	</div>
 	<div style='width:70%' class='manager'>
 		<h1 style='font-size:200%;border-bottom:3px solid #6eb7db;color:black;'><?php echo $data['title']; ?></h1>
 		<dl>

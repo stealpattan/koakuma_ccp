@@ -87,6 +87,14 @@ if (isset($_POST['department_id']) && $_POST['department_id'] != 0) {
     <?php include_once("analyticstracking.php") ?>
     <!-- ヘッダー -->
     <?php require("header.php"); ?>
+    <div class="info-career" style="width: 70%; margin: 0 auto;">
+      <div class="breadcrumbs">
+        <ul>
+          <li><a href="home.php">Home</a></li>
+          <li class="here">就職情報</li>
+        </ul>
+      </div>
+    </div>
     <!-- コンテンツ -->
     <?php if(ip_tracer() == true): ?>
       <script type="text/javascript">

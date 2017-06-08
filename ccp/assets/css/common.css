@@ -15,6 +15,39 @@ body{
   text-align: center;
   margin-bottom: 10px;
 }
+/*パンくずリスト*/
+.breadcrumbs ul{
+	padding: 0;
+	margin: 20px 0 40px;
+	overflow: auto;
+}
+.breadcrumbs ul li{
+	float: left;
+	font-weight: 200;
+	padding-left: 24px;
+}
+.breadcrumbs ul li:first-child{
+	padding: 0;
+}
+.breadcrumbs ul li:not(:first-child)::after{
+	content: ' ';
+	background-image: url('../img/material/ic_next.png');
+	background-size: 8px auto;
+	background-repeat: no-repeat;
+	margin: auto 0;
+	display: block;
+  width: 8px;
+  height: 14px;
+	position: relative;
+	bottom: 16px;
+	right: 16px;
+}
+.breadcrumbs ul li.here{
+	font-weight: normal;
+}
+.breadcrumbs ul li a{
+	color: #333;
+}
 /*ここからheader部分*/
 header{
 	width: 80%;

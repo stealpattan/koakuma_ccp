@@ -144,6 +144,14 @@ while($table = mysqli_fetch_assoc($recordSet)){
   <body>
     <?php include_once("analyticstracking.php") ?>
     <?php require('header.php'); ?>
+    <div class="recruitment" style="width: 70%; margin: 0 auto;">
+      <div class="breadcrumbs">
+        <ul>
+          <li><a href="home.php">Home</a></li>
+          <li class="here">求人情報</li>
+        </ul>
+      </div>
+    </div>
     <?php if(ip_tracer() == true): ?>
       <div class="searchform">
         <form class="searchform_re" action="recruitment.php#result" method="post">

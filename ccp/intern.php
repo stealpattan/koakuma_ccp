@@ -82,6 +82,15 @@
 	<body>
 		<?php include_once("analyticstracking.php") ?>
 		<?php require('header.php'); ?>
+		<div class="info-career" style="width: 70%; margin: 0 auto;">
+      <div class="breadcrumbs">
+        <ul>
+          <li><a href="home.php">Home</a></li>
+          <li><a href="info-career.php">就職情報</a></li>
+					<li class="here">就職者情報</li>
+        </ul>
+      </div>
+    </div>
 		<?php if(ip_tracer() == true): ?>
 		<!-- コンテンツ部分 -->
 		<div class="contents">
