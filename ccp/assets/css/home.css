@@ -8,6 +8,26 @@
   width: 100%;
   height: auto;
 }
+/*コンテンツのタイトル部分*/
+.title{
+  margin-top: 80px;
+}
+.title p{
+  font-size: 28px;
+  display: inline-block;
+  font-weight: 300;
+}
+.title p::after{
+  width: 48%;
+  content: ' ';
+  border-bottom: solid 1px #222;
+  display: block;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+}
 /*tab_button部分*/
 .jump_tab{
   width:100%;
@@ -37,16 +57,6 @@ a.jump_button:hover{
   background-color: #333;
 }
 /*新着情報*/
-p.contentsTitle{
-  display: inline;
-  font-size: 30px;
-  color: #333;
-  padding-bottom: 10px;
-  margin: 0;
-}
-.b_contentsTitle{
-  color: #b3b3b3;
-}
 #information{
 	width: 80%;
   margin: 0 auto;
@@ -209,8 +219,13 @@ tr.days td{
 	background-color: #cbe6f3;
 }
 /*シルモク部分*/
-.sirumoku_introduction{
+#sirumoku{
   width: 80%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.sirumoku_introduction{
+  width: 100%;
   margin: 0 auto;
   padding-bottom: 20px;
   overflow: auto;
@@ -233,7 +248,7 @@ tr.days td{
   margin-bottom: 5rem;
 }
 .sirumoku_datas table{
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   margin-top: 20px;
 }
@@ -269,21 +284,4 @@ tr.days td{
   margin-bottom: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-}
-/*allnews.php部分*/
-#information .title p{
-  font-size: 28px;
-  display: inline-block;
-  font-weight: 300;
-}
-#information .title p::after{
-  width: 48%;
-  content: ' ';
-  border-bottom: solid 1px #222;
-  display: block;
-  position: relative;
-  bottom: 0;
-  left: 0;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
 }

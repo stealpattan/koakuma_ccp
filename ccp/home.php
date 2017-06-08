@@ -98,9 +98,8 @@ function check_limit($str){
         </ul>
       </div>
       <div id="information">
-        <div class="center">
-          <p class="contentsTitle">新着情報</p>
-          <p class="b_contentsTitle">News</p>
+        <div class="title">
+          <p>新着情報</p>
         </div>
         <div class="info-content">
           <?php
@@ -123,6 +122,9 @@ function check_limit($str){
         </div>
       </div>
       <div id="calendar">
+        <div class="title">
+          <p>スケジュール</p>
+        </div>
         <div class="center">
           <button class='cal_button' onclick='calendar_change(<?php
                                               if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
@@ -132,7 +134,7 @@ function check_limit($str){
                                                 echo 1;
                                               }
                                           ?>)'><</button>
-          <p class="contentsTitle">スケジュール</p>
+          <p><?php echo $year; ?>年<?php echo $month; ?>月</p>
           <button class='cal_button' onclick='calendar_change(<?php
                                               if(!empty($_GET["calendar"]) && isset($_GET["calendar"])){
                                                 echo $_GET["calendar"] - 1;
@@ -141,8 +143,6 @@ function check_limit($str){
                                                 echo -1;
                                               }
                                           ?>)'>></button>
-          <p><?php echo $year; ?>年<?php echo $month; ?>月</p>
-          <p class="b_contentsTitle">Schedule</p>
         </div>
         <table>
           <tr>
@@ -203,9 +203,8 @@ function check_limit($str){
       </script>
       <!-- 以下シルモク -->
       <div id="sirumoku">
-        <div class="center">
-          <p class="contentsTitle">シルモク</p>
-          <p class="b_contentsTitle">企業を知る木曜日</p>
+        <div class="title">
+          <p>シルモク</p>
         </div>
         <div class="sirumoku_introduction">
           <div class="sirumoku-image">
