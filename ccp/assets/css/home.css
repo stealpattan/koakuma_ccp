@@ -209,53 +209,25 @@ tr.days td{
 	background-color: #cbe6f3;
 }
 /*シルモク部分*/
-.image{
-  display: block;
-}
-.image img{
-  width: 100%;
-  height: auto;
-}
-.image a{
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-  color: #333;
+.sirumoku_introduction{
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  overflow: auto;
 }
 .sirumoku-image{
-  width: 70%;
-  margin: 0 auto;
+  width:50%;
+  float:left;
 }
 .sirumoku-image img{
   width: 100%;
 }
-.tab_link{
-  position: relative;
-  bottom: 100px;
-}
-.tab_link .center{
-  text-align: center;
-}
-.tab_link_inside{
-  color: #fff;
-  font-size: 20px;
-  padding: 20px 50px;
-  border: solid 1px #fff;
-  box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	-ms-box-sizing:border-box;
-	-o-box-sizing:border-box;
-}
-.intro{
-  margin-top: 3rem;
-}
-.intro p{
-  font-size: 15px;
-  text-align: center;
-}
-.intro p.sub{
-  margin: 3rem auto;
+.introduce_sirumoku{
+  float: left;
+  width: 50%;
+  padding-left: 20px;
+  padding-top: 20px;
+  text-align: left;
 }
 .sirumoku_datas{
   margin-bottom: 5rem;
@@ -265,35 +237,13 @@ tr.days td{
   margin: 0 auto;
   margin-top: 20px;
 }
-.sirumoku_datas h1{
-  text-align: center;
-  font-size: 2rem;
-}
 .s_data_list{
   background-color: #2394ff;
 }
-.s_data_topic{
-  background-color: #e5edf3;
-}
 .sirumoku_datas th{
   text-align: center;
-}
-.s_data_topic .s_data_day, .s_data_topic .s_data_time{
-  position: relative;
-  top: 10px;
-}
-.s_past{
-  width: auto;
-  height: 20px;
-}
-.s_past span{
-  float: right;
-  position: relative;
-  right: 40px;
-}
-.s_past a{
-  text-decoration: none;
-  color: #333;
+  color: #fff;
+  font-weight: normal;
 }
 /*キャリアセンター所長からの挨拶*/
 .introduce{

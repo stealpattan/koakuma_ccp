@@ -202,32 +202,31 @@ function check_limit($str){
         }
       </script>
       <!-- 以下シルモク -->
-      <?php $day_what = array('Sun','Mon','Tue','Wed','Thr','Fri','Sut'); ?>
       <div id="sirumoku">
         <div class="center">
           <p class="contentsTitle">シルモク</p>
           <p class="b_contentsTitle">企業を知る木曜日</p>
         </div>
-        <div class='sirumoku_introduction' style='width:70%;margin:0 auto;padding-bottom:20px;'>
-          <div class="sirumoku-image" style='width:50%;float:left;margin-right:10px;margin-bottom:10px'>
+        <div class="sirumoku_introduction">
+          <div class="sirumoku-image">
             <img src="./assets/img/pic/sirumoku.jpg" alt=""/>
           </div>
-          <div class="" style='text-align:left;'>
+          <div class="introduce_sirumoku">
             <p>県内企業が自社の魅力・実力を学生に紹介する</p>
             <p>学内企業説明会</p>
-            <p>富山県に関係のある企業の方にお越しいただき</p>
+            <p>富山県に関係のある企業の方にお越しいただき、</p>
             <p>業務内容や自社製品について紹介していただきます。</p>
-            <p class="sub">シルモクの受付はキャリアカフェで行なっています。</p>
+            <p>シルモクの受付はキャリアカフェで行なっています。</p>
           </div>
         </div>
         <div class="sirumoku_datas">
           <table class="table table-bordered table-striped trhover">
             <tr class="s_data_list">
-              <th class="s_data_day" style='color:white;'>開催日</th>
-              <th class="s_data_time" style='color:white;'>時間帯</th>
-              <th class="s_data_place" style='color:white;'>開催場所</th>
-              <th class="s_data_name" style='color:white;'>企業名</th>
-              <th class="s_data_name" style='color:white;'>推薦学科</th>
+              <th class="s_data_day">開催日</th>
+              <th class="s_data_time">時間帯</th>
+              <th class="s_data_place">開催場所</th>
+              <th class="s_data_name">企業名</th>
+              <th class="s_data_major">推薦学科</th>
             </tr>
             <?php foreach($sirumoku_table as $st): ?>
               <tr style='text-align:center;'>
