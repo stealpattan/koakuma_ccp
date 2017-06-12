@@ -68,8 +68,7 @@ header{
 li.selected_tab,
 li.unselected_tab{
 	display: inline-block;
-	width: 25%;
-	margin: 0 3%;
+	width: 30%;
 	text-align: center;
 }
 li.selected_tab a,
