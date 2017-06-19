@@ -266,7 +266,7 @@ tr.days td{
   color: #fff;
   font-weight: normal;
 }
-/*キャリアセンター所長からの挨拶*/
+/*キャリアセンター長からの挨拶*/
 .introduce{
   width: 80%;
   overflow: auto;
@@ -274,15 +274,17 @@ tr.days td{
 }
 .introduce-image{
   float: left;
-  width: 20%;
-  margin: 2rem;
+  width: 16%;
+  margin: 0 2rem 1rem 0;
 }
 .introduce-image-inner{
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+}
+.introduce-introduction-title{
+  overflow: auto;
 }
 .introduce-introduction-title h1{
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 15px;
   font-size: 2rem;
 }
