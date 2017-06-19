@@ -167,16 +167,18 @@ function check_limit($str){
                     echo "<br>";
                     foreach($_SESSION['cal_event'] as $cal_event){
                       if($cal_event['day'] == $calendar[$i]['day']){
-                        $str = sprintf("<a href='event_detail.php?id=%s'><div style='padding-bottom:3px;color:blue;'>%s</div></a>",
+                        $rep_str = mb_substr($cal_event['title'], 5);
+                        $str = sprintf("<a href='event_detail.php?id=%s' title='%s'><div style='padding-bottom:3px;color:blue;'>%s</div></a>",
                                   $cal_event['id'],
-                                  $cal_event['title']);
+                                  $cal_event['title'],
+                                  str_replace($rep_str, "...", $cal_event['title']));
                         echo $str;
                       }
                     }
                     foreach($_SESSION['siru_event'] as $siru_event){
                       $dd = explode('-',$siru_event['date']);
                       if($dd[2] == $calendar[$i]['day']){
-                        $str = sprintf("<a href='#sirumoku'><div style='padding-bottom:3px;color:blue;'>シルモク開催日</div></a>");
+                        $str = sprintf("<a href='#sirumoku' title='シルモク開催日'><div style='padding-bottom:3px;color:blue;'>%s</div></a>", str_replace(mb_substr("シルモク開催日", 5), "...", "シルモク開催日"));
                         echo $str;
                       }
                     }
