@@ -4,6 +4,9 @@ date_default_timezone_set("Asia/Tokyo");
 require('dbconnect.php');
 require('function.php');
 $record = mysqli_query($db, 'SELECT * FROM news ORDER BY id DESC LIMIT 5');
+while ($table = mysqli_fetch_assoc($record)) {
+  $news_datas[] = $table;
+}
 require('calendar.php');
 if(empty($_GET['calendar']) && !isset($_GET['calendar'])){
   $year = (int)date('Y');
@@ -103,15 +106,15 @@ function check_limit($str){
         </div>
         <div class="info-content">
           <?php
-          while ($table = mysqli_fetch_assoc($record)) {
+          foreach($news_datas as $news_data){
           ?>
             <div class="info-topic">
-              <div class="info-date"><p><?php echo $table['year'], "/", $table['month'], "/", $table['day']; ?></p></div>
-              <div class="info-title"><p><?php echo htmlspecialchars($table['title']); ?></p></div>
+              <div class="info-date"><p><?php echo $news_data['year'], "/", $news_data['month'], "/", $news_data['day']; ?></p></div>
+              <div class="info-title" style='padding-bottom:3px;color:blue;'><a href="event_detail.php?id=<?php echo $news_data['id']; ?>" title="<?php echo $news_data['title']; ?>"><p><?php echo htmlspecialchars($news_data['title']); ?></p></a></div>
             </div>
             <div class="info-tags">
-              <div class="info-tag"><p><?php echo htmlspecialchars($table['target']); ?></p></div>
-              <div class="info-tag"><p><?php echo htmlspecialchars($table['event_type']); ?></p></div>
+              <div class="info-tag"><p><?php echo htmlspecialchars($news_data['target']); ?></p></div>
+              <div class="info-tag"><p><?php echo htmlspecialchars($news_data['event_type']); ?></p></div>
             </div>
           <?php
           }
