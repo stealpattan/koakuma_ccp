@@ -46,7 +46,6 @@ while($rec = mysqli_fetch_assoc($record2)){
   }
 }
 $_SESSION['siru_event'] = $table;
-//以上
 
 //シルモクのデータを取得する部分
 $sql = sprintf('SELECT * FROM `sirumoku_data` WHERE date>=NOW()');
